@@ -19,6 +19,12 @@ void Character::specialAttack(Entity* target)
 {
 }
 
+int Character::increaseAttackDamage(int amount)
+{
+    int finalAttackDamage = attackDamage + amount;
+    return finalAttackDamage;
+}
+
 void Character::die()
 {
     health = 0;

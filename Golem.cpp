@@ -16,6 +16,7 @@ void Golem::move()
 void Golem::die()
 {
     health = 0;
+    character->getMaxHealth();
 }
 
 int Golem::getMaxHealth()

@@ -5,15 +5,17 @@ class Character : public Entity
 {
 private:
     int attackDamage;
-    public:
-        Character();
-        ~Character();
-    public:
-        void specialAttack(Entity* target);
-        virtual void move();
-        virtual void die();
-        virtual int getMaxHealth();
-        virtual int getMP();
-        virtual int getAP();
-        virtual char getIcon();
+public:
+    Character();
+    ~Character();
+public:
+    void specialAttack(Entity* target);
+    int increaseAttackDamage(int amount);
+
+    virtual void move();
+    virtual void die();
+    virtual int getMaxHealth();
+    virtual int getMP();
+    virtual int getAP();
+    virtual char getIcon();
 };

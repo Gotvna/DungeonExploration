@@ -1,5 +1,6 @@
 #pragma once
 #include "Entity.h"
+#include "Character.h"
 
 class Ghost : public Entity
 {
@@ -13,4 +14,6 @@ class Ghost : public Entity
         virtual int getMP();
         virtual int getAP();
         virtual char getIcon();
+
+        Character* character;
 };
