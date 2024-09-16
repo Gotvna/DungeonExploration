@@ -10,7 +10,7 @@ class Reaper : public Entity
         virtual void move();
         virtual void die();
         virtual int getMaxHealth();
-        virtual int getMP();
-        virtual int getAP();
+        virtual int getMovementPoint();
+        virtual int getAttackDamage();
         virtual char getIcon();
 };

@@ -35,12 +35,12 @@ int Character::getMaxHealth()
     return 5;
 }
 
-int Character::getMP()
+int Character::getMovementPoint()
 {
     return 5;
 }
 
-int Character::getAP()
+int Character::getAttackDamage()
 {
     return attackDamage;
 }

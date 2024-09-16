@@ -23,12 +23,12 @@ int Reaper::getMaxHealth()
     return 2;
 }
 
-int Reaper::getMP()
+int Reaper::getMovementPoint()
 {
     return 6;
 }
 
-int Reaper::getAP()
+int Reaper::getAttackDamage()
 {
     return 3;
 }

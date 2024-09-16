@@ -24,12 +24,12 @@ int Ghost::getMaxHealth()
     return 5;
 }
 
-int Ghost::getMP()
+int Ghost::getMovementPoint()
 {
     return 5;
 }
 
-int Ghost::getAP()
+int Ghost::getAttackDamage()
 {
     return 3;
 }

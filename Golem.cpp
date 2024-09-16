@@ -24,12 +24,12 @@ int Golem::getMaxHealth()
     return 10;
 }
 
-int Golem::getMP()
+int Golem::getMovementPoint()
 {
     return 0;
 }
 
-int Golem::getAP()
+int Golem::getAttackDamage()
 {
     return 1;
 }

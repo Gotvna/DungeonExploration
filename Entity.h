@@ -19,7 +19,7 @@ friend class Map;
         virtual void die() = 0;
 
         virtual int getMaxHealth() = 0;
-        virtual int getMP() = 0;
-        virtual int getAP() = 0;
+        virtual int getMovementPoint() = 0;
+        virtual int getAttackDamage() = 0;
         virtual char getIcon() = 0;
 };
