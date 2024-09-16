@@ -9,8 +9,8 @@ class Golem : public Entity
     public:
         virtual void move();
         virtual void die();
-        virtual int getHealth();
+        virtual int getMaxHealth();
         virtual int getMP();
         virtual int getAP();
-        virtual char getIcon();
+        virtual std::string getIcon();
 };

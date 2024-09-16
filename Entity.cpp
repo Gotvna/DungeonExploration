@@ -1,17 +1,16 @@
 #include "Entity.h"
 
-void Entity::move()
-{
-}
 
 void Entity::attack(Entity* target)
 {
-}
-
-void Entity::specialAbility()
-{
+    target->takeDamage(this->AP);
 }
 
 void Entity::takeDamage(int damage)
 {
+    health -= damage;
+    if (health <= 0)
+    {
+        die();
+    }
 }

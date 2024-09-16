@@ -2,6 +2,10 @@
 
 Golem::Golem()
 {
+    health = getMaxHealth();
+    MP = getMP();
+    AP = getAP();
+    icon = getIcon();
 }
 
 Golem::~Golem()
@@ -14,11 +18,12 @@ void Golem::move()
 
 void Golem::die()
 {
+    health = 0;
 }
 
-int Golem::getHealth()
+int Golem::getMaxHealth()
 {
-    return 0;
+    return 10;
 }
 
 int Golem::getMP()
@@ -28,10 +33,10 @@ int Golem::getMP()
 
 int Golem::getAP()
 {
-    return 0;
+    return 1;
 }
 
 char Golem::getIcon()
 {
-    return 0;
+    return 'G';
 }

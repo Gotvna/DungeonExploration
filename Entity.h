@@ -11,14 +11,13 @@ class Entity
         std::string icon;
     protected:
         void attack(Entity* target);
-        void specialAbility();
         void takeDamage(int damage);
 
-        virtual void move();
+        virtual void move() = 0;
         virtual void die() = 0;
 
-        virtual int getHealth() = 0;
+        virtual int getMaxHealth() = 0;
         virtual int getMP() = 0;
         virtual int getAP() = 0;
-        virtual char getIcon() = 0;
+        virtual std::string getIcon() = 0;
 };
