@@ -3,9 +3,14 @@
 
 class Entity
 {
+friend class Map;
+
     protected:
         int health;
         std::string name;
+
+        int posX;
+        int posY;
     public:
         void attack(Entity* target);
         void takeDamage(int damage);
