@@ -128,10 +128,22 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Character.cpp" />
+    <ClCompile Include="Entity.cpp" />
+    <ClCompile Include="Ghost.cpp" />
+    <ClCompile Include="Golem.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="Map.cpp" />
+    <ClCompile Include="Monster.cpp" />
+    <ClCompile Include="Reaper.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Character.h" />
+    <ClInclude Include="Entity.h" />
+    <ClInclude Include="Ghost.h" />
+    <ClInclude Include="Golem.h" />
+    <ClInclude Include="Map.h" />
+    <ClInclude Include="Monster.h" />
+    <ClInclude Include="Reaper.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
