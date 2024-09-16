@@ -3,12 +3,12 @@
 
 void Entity::attack(Entity* target)
 {
-    target->takeDamage(this->getAP());
+    target->takeDamage(target->getDefense(), this->getAttackDamage());
 }
 
-void Entity::takeDamage(int damage)
+void Entity::takeDamage(int defense, int damage)
 {
-    health -= damage;
+    health = damage - (defense / 100);
     if (health <= 0)
     {
         die();

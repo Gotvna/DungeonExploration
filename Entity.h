@@ -13,7 +13,7 @@ friend class Map;
         int posY;
     public:
         void attack(Entity* target);
-        void takeDamage(int damage);
+        void takeDamage(int defense, int damage);
 
         virtual void move() = 0;
         virtual void die() = 0;
@@ -21,5 +21,7 @@ friend class Map;
         virtual int getMaxHealth() = 0;
         virtual int getMovementPoint() = 0;
         virtual int getAttackDamage() = 0;
+        virtual int getDefense() = 0;
+        virtual int getMana() = 0;
         virtual char getIcon() = 0;
 };

@@ -16,6 +16,7 @@ void Reaper::move()
 void Reaper::die()
 {
     health = 0;
+    character->increaseExperience(2);
 }
 
 int Reaper::getMaxHealth()
@@ -31,6 +32,16 @@ int Reaper::getMovementPoint()
 int Reaper::getAttackDamage()
 {
     return 3;
+}
+
+int Reaper::getDefense()
+{
+    return 1;
+}
+
+int Reaper::getMana()
+{
+    return 0;
 }
 
 char Reaper::getIcon()

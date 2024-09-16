@@ -17,6 +17,7 @@ void Ghost::die()
 {
     health = 0;
     character->increaseAttackDamage(1);
+    character->increaseExperience(1);
 }
 
 int Ghost::getMaxHealth()
@@ -32,6 +33,16 @@ int Ghost::getMovementPoint()
 int Ghost::getAttackDamage()
 {
     return 3;
+}
+
+int Ghost::getDefense()
+{
+    return 5;
+}
+
+int Ghost::getMana()
+{
+    return 0;
 }
 
 char Ghost::getIcon()

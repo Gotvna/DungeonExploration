@@ -17,6 +17,7 @@ void Golem::die()
 {
     health = 0;
     character->getMaxHealth();
+    character->increaseExperience(3);
 }
 
 int Golem::getMaxHealth()
@@ -32,6 +33,16 @@ int Golem::getMovementPoint()
 int Golem::getAttackDamage()
 {
     return 1;
+}
+
+int Golem::getDefense()
+{
+    return 10;
+}
+
+int Golem::getMana()
+{
+    return 0;
 }
 
 char Golem::getIcon()
