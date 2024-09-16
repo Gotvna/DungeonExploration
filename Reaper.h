@@ -12,5 +12,5 @@ class Reaper : public Entity
         virtual int getMaxHealth();
         virtual int getMP();
         virtual int getAP();
-        virtual std::string getIcon();
+        virtual char getIcon();
 };

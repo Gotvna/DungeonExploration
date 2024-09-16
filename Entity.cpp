@@ -3,7 +3,7 @@
 
 void Entity::attack(Entity* target)
 {
-    target->takeDamage(this->AP);
+    target->takeDamage(this->getAP());
 }
 
 void Entity::takeDamage(int damage)

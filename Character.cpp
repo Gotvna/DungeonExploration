@@ -2,10 +2,8 @@
 
 Character::Character()
 {
-    health = getMaxHealth();
-    MP = getMP();
-    AP = getAP();
-    icon = getIcon();
+    health = this->getMaxHealth();
+    attackDamage = getAP();
 }
 
 Character::~Character()
@@ -38,7 +36,7 @@ int Character::getMP()
 
 int Character::getAP()
 {
-    return 2;
+    return attackDamage;
 }
 
 char Character::getIcon()

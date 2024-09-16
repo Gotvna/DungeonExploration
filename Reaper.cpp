@@ -2,10 +2,7 @@
 
 Reaper::Reaper()
 {
-    health = getMaxHealth();
-    MP = getMP();
-    AP = getAP();
-    icon = getIcon();
+    health = this->getMaxHealth();
 }
 
 Reaper::~Reaper()

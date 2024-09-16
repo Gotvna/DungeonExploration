@@ -5,11 +5,8 @@ class Entity
 {
     protected:
         int health;
-        int AP;
-        int MP;
-        std::string name[20];
-        std::string icon;
-    protected:
+        std::string name;
+    public:
         void attack(Entity* target);
         void takeDamage(int damage);
 
@@ -19,5 +16,5 @@ class Entity
         virtual int getMaxHealth() = 0;
         virtual int getMP() = 0;
         virtual int getAP() = 0;
-        virtual std::string getIcon() = 0;
+        virtual char getIcon() = 0;
 };

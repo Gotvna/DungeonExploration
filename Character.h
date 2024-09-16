@@ -3,6 +3,8 @@
 
 class Character : public Entity
 {
+private:
+    int attackDamage;
     public:
         Character();
         ~Character();
@@ -13,5 +15,5 @@ class Character : public Entity
         virtual int getMaxHealth();
         virtual int getMP();
         virtual int getAP();
-        virtual std::string getIcon();
+        virtual char getIcon();
 };
