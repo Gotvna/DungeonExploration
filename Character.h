@@ -15,16 +15,16 @@ public:
     Character();
     ~Character();
 public:
-    void specialAttack(Entity* target);
     int increaseHealth(int amount);
     int increaseAttackDamage(int amount);
     int increaseMana(int amount);
     int increaseDefense(int amount);
     int increaseExperience(int amount);
-    int getLevel();
     int getExperience();
 
     void openChest();
+    void levelUp();
+    void specialAttack(Entity* target);
 
     virtual void move();
     virtual void die();

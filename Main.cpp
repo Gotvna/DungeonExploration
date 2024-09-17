@@ -6,6 +6,7 @@
 #include "Input.h"
 #include "Map.h"
 #include "Entity.h"
+#include "Character.h"
 
 #include "Renderer.h"
 
@@ -18,6 +19,8 @@ int main()
 
     Map::getInstance().clear();
     Map::getInstance().load("Map.txt");
+
+    Character* player = new Character();
 
     Map& map = Map::getInstance();
 
@@ -35,6 +38,7 @@ int main()
             r.drawEntity(e->getIcon(), e->getPosX(), e->getPosY());
         }
 
+        player->openChest();
 
         switch (key)
         {
