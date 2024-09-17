@@ -9,6 +9,8 @@ public: // Utilities.
 
 	static void getConsoleSizeForGrid(int& outWidth, int& outHeight, int gridWidth, int gridHeight);
 
+	static void calculateConsolePosition(int& outX, int& outY, int gridX, int gridY);
+
 public: // Drawing functions.
 
 	void drawGrid(int width, int height);
