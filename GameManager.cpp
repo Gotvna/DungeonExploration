@@ -56,7 +56,7 @@ void GameManager::redrawAll()
         renderer.drawEntity('c', c->getPosX(), c->getPosY());
     }
 
-    renderer.drawPlayerStats(p->name, p->health, p->getMaxHealth(), p->getAttackDamage(), p->level, p->xp, p->xpToLevelUp);
+    renderer.drawPlayerStats(p->name, p->health, p->maxHealth, p->attackDamage, p->defense, p->mana, p->level, p->xp, p->xpToLevelUp);
 }
 
 void GameManager::playerActionMove()

@@ -110,7 +110,7 @@ void Renderer::drawColor(uint16_t color, int posX, int posY)
 	WriteConsoleOutputAttribute(h, &color, 1, pos, &numWritten);
 }
 
-void Renderer::drawPlayerStats(const std::string &name, int health, int maxHealth, int attackDamage, int level, int xp, int xpToLevelUp)
+void Renderer::drawPlayerStats(const std::string &name, int health, int maxHealth, int attackDamage, int defense, int mana, int level, int xp, int xpToLevelUp)
 {
 	int w, h;
 	Renderer::getConsoleSizeForGrid(w, h, gridWidth, gridHeight);
@@ -119,12 +119,18 @@ void Renderer::drawPlayerStats(const std::string &name, int health, int maxHealt
 	color(0x07, name.size(), 2, h - 4);
 
 	drawHealthBar(2, h - 3, health, maxHealth);
+
+	std::string maxHP = "HP: " + std::to_string(health) + " " + " Max HP: " + std::to_string(maxHealth);
+	blitLine((uint8_t*) maxHP.c_str(), maxHP.size(), 30, h - 4);
 	
-	std::string levelString = std::to_string(level);
-	blitLine((uint8_t*) levelString.c_str(), levelString.size(), 30, h - 3);
+	std::string levelString = "Level: " + std::to_string(level);
+	blitLine((uint8_t*) levelString.c_str(), levelString.size(), 35, h - 3);
 
 	levelString = std::to_string(xp) + " / " + std::to_string(xpToLevelUp);
-	blitLine((uint8_t *)levelString.c_str(), levelString.size(), 34, h - 3);
+	blitLine((uint8_t *)levelString.c_str(), levelString.size(), 45, h - 3);
+
+	std::string statsString = " Attack: " + std::to_string(attackDamage) + " " + " Defense: " + std::to_string(defense) + " " + "Mana: " + std::to_string(mana);
+	blitLine((uint8_t *)statsString.c_str(), statsString.size(), 2, h - 2);
 }
 
 void Renderer::drawEnemyStats(const std::string &name, int health, int maxHealth, int attackDamage)

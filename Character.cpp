@@ -3,10 +3,12 @@
 
 Character::Character()
 {
+    maxHealth = 5;
+    attackDamage = 5;
+    defense = 5;
+    mana = 25;
+
     health = getMaxHealth() - 4;
-    attackDamage = getAttackDamage();
-    defense = getDefense();
-    mana = getMana();
     xp = 0;
     xpToLevelUp = 10;
     level = 1;
@@ -57,8 +59,8 @@ int Character::increaseExperience(int amount)
 
 int Character::increaseHealth(int amount)
 {
-    health += amount;
-    return health;
+    maxHealth += amount;
+    return maxHealth;
 }
 
 int Character::increaseMana(int amount)
@@ -69,44 +71,49 @@ int Character::increaseMana(int amount)
 
 void Character::fillHealth()
 {
-    health = getMaxHealth();
+    health = maxHealth;
 }
 
 void Character::levelUp()
 {
     level++;
     xp = 0;
-    xpToLevelUp += static_cast<int>(xpToLevelUp * 0.1);
+    xpToLevelUp += 5;
 
     int random = rand() % 4;
     switch (random)
     {
     case 0:
         increaseAttackDamage(rand() % 3 + 1);
+        printf("Votre attaque est maintenant de %d\n", attackDamage);
         break;
     case 1:
         increaseHealth((rand() % 3 + 1) * 5);
+        fillHealth();
+        printf("Votre santé est maintenant de %d\n", maxHealth);
         break;
     case 2:
         increaseDefense(rand() % 3 + 1);
+        printf("Votre défense est maintenant de %d\n", defense);
         break;
     case 3:
         increaseMana((rand() % 3 + 1) * 5);
+        printf("Votre mana est maintenant de %d\n", mana);
         break;
     }
 }
 
-int Character::getMaxHealth() { return 5; }
+int Character::getMaxHealth() { return maxHealth; }
 
 int Character::getMovementPoint() { return 5; }
 
-int Character::getAttackDamage() { return 5; }
+int Character::getAttackDamage() { return attackDamage; }
 
-int Character::getDefense() { return 5; }
+int Character::getDefense() { return defense; }
 
 int Character::getExperience() { return 0; }
 
-int Character::getMana() { return 25; }
+int Character::getMana() { return mana; }
 
 char Character::getIcon() { return '@'; }
 

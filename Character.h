@@ -4,6 +4,7 @@
 class Character : public Entity
 {
 public:
+    int maxHealth;
     int attackDamage;
     int xp;
     int xpToLevelUp;

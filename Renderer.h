@@ -26,7 +26,7 @@ public: // Drawing functions.
 
 	void drawColor(uint16_t color, int posX, int posY);
 
-	void drawPlayerStats(const std::string& name, int health, int maxHealth, int attackDamage, int level, int xp, int xpToLevelUp);
+	void drawPlayerStats(const std::string& name, int health, int maxHealth, int attackDamage, int defense, int mana, int level, int xp, int xpToLevelUp);
 
 	void drawEnemyStats(const std::string &name, int health, int maxHealth, int attackDamage);
 
