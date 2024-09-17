@@ -125,6 +125,7 @@ void GameManager::playerActionAttack()
 {
     Map& map = Map::getInstance();
     Entity* p = map.getPlayer();
+    int damage;
 
     if (nearbyEnemies.empty()) return;
 
@@ -156,12 +157,12 @@ void GameManager::playerActionAttack()
             enemyIndex++;
             if (enemyIndex == nearbyEnemies.size()) enemyIndex = 0;
             break;
-        case VK_RETURN: {
+        case VK_RETURN:
             renderer.clearPlayerRegion();
             renderer.drawMessage("You attacked " + selectedEnemy->name + '!');
             waitForEnter();
 
-            int damage = p->attack(selectedEnemy);
+            damage = p->attack(selectedEnemy);
 
             renderer.clearEnemyRegion();
             renderer.drawEnemyStats(selectedEnemy->name, selectedEnemy->health,
@@ -180,10 +181,7 @@ void GameManager::playerActionAttack()
             }
 
             updateNearbyEnemyAndChest();
-            if (nearbyEnemies.empty()) {
-                playerActionMove();
-            }
-            }
+
             done = true;
             break;
         case 'A':
