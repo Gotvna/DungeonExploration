@@ -30,7 +30,7 @@ public: // Drawing functions.
 
 	void drawEnemyStats(const std::string &name, int health, int maxHealth, int attackDamage);
 
-	void drawRange(int centerX, int centerY, int range);
+	void drawRange(uint16_t color, int centerX, int centerY, int range);
 
 	void drawMessage(const std::string& msg);
 

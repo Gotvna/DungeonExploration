@@ -148,7 +148,7 @@ void Renderer::drawEnemyStats(const std::string &name, int health, int maxHealth
 
 }
 
-void Renderer::drawRange(int centerX, int centerY, int range)
+void Renderer::drawRange(uint16_t c, int centerX, int centerY, int range)
 {
 	int cx, cy;
 
@@ -156,7 +156,7 @@ void Renderer::drawRange(int centerX, int centerY, int range)
 		int d = (range - abs(y - centerY));
 		for (int x = max(0, centerX - d); min(gridWidth - 1, x <= centerX + d); x++) {
 			calculateConsolePosition(cx, cy, x, y);
-			color(0x1F, 1, cx, cy);
+			color(c, 1, cx, cy);
 		}
 	}
 }

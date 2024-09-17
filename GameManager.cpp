@@ -56,13 +56,13 @@ void GameManager::redrawAll()
         renderer.drawEntity('c', c->getPosX(), c->getPosY());
     }
 
+    // Draw stats.
     renderer.drawPlayerStats(p->name, p->health, p->maxHealth, p->attackDamage, p->defense, p->mana, p->level, p->xp, p->xpToLevelUp);
 }
 
 void GameManager::playerActionMove()
 {
     Map &map = Map::getInstance();
-
     Entity *p = map.getPlayer();
 
     playerRemainingMP = p->getMovementPoint();
@@ -74,7 +74,7 @@ void GameManager::playerActionMove()
     {
         redrawAll();
 
-        renderer.drawRange(p->getPosX(), p->getPosY(), playerRemainingMP);
+        renderer.drawRange(0x1F, p->getPosX(), p->getPosY(), playerRemainingMP);
         renderer.drawColor(0x2F, cursorX, cursorY);
 
         WORD key = Input::getInstance().waitForInput();
@@ -90,13 +90,19 @@ void GameManager::playerActionMove()
         case VK_LEFT:  if (newX != 0)                   newX--; break;
         case VK_RIGHT: if (newX != map.getWidth() - 1)  newX++; break;
         case VK_SPACE:
-            playerRemainingMP -= getDistance(p, cursorX, cursorY);
-            p->posX = cursorX;
-            p->posY = cursorY;
+            movePlayerTo(cursorX, cursorY);
             break;
         case VK_RETURN:
             map.getEnemies()[0]->die();
             return;
+        case 'A':
+            if (nearbyEnemies.empty()) break;
+            playerActionAttack();
+            break;
+        case 'C':
+            if (nearbyChests.empty()) break;
+            playerActionCollect();
+            break;
         }
 
         // Move cursor.
@@ -113,7 +119,45 @@ void GameManager::playerActionMove()
 
 void GameManager::playerActionAttack()
 {
+    Map &map = Map::getInstance();
+    Entity *p = map.getPlayer();
 
+    int enemyIndex = 0;
+    while (1)
+    {
+        Entity* selectedEnemy = nearbyEnemies[enemyIndex];
+
+        renderer.drawRange(0x3F, p->getPosX(), p->getPosY(), 1);
+        renderer.drawColor(0x2F, selectedEnemy->getPosX(), selectedEnemy->getPosY());
+
+        renderer.drawEnemyStats(selectedEnemy->name, selectedEnemy->health, selectedEnemy->getMaxHealth(), selectedEnemy->getAttackDamage());
+
+        WORD key = Input::getInstance().waitForInput();
+
+        // Listen to action.
+        switch (key)
+        {
+        case VK_LEFT:  enemyIndex--; if (enemyIndex == -1)                   enemyIndex = nearbyEnemies.size() - 1; break;
+        case VK_RIGHT: enemyIndex++; if (enemyIndex == nearbyEnemies.size()) enemyIndex = 0;                        break;
+
+        case VK_RETURN:
+            break;
+        case 'A':
+            break;
+        }
+    }
+}
+
+void GameManager::playerActionCollect()
+{
+    Map &map = Map::getInstance();
+    Character *p = map.getPlayer();
+
+    for (Chest *chest : nearbyChests) {
+        chest->getLoot();
+        
+        waitForEnter();
+    }
 }
 
 void GameManager::enemyAction()
@@ -122,6 +166,47 @@ void GameManager::enemyAction()
     {
         enemy->move();
     }
+}
+
+void GameManager::updateNearbyEnemyAndChest()
+{
+    Map& map = Map::getInstance();
+    Character* p = map.getPlayer();
+
+    nearbyEnemies.clear();
+    nearbyChests.clear();
+
+    for (Entity *enemy : map.getEnemies()) {
+        if (getDistance(p, enemy->getPosX(), enemy->getPosY()) == 1) {
+            nearbyEnemies.push_back(enemy);
+        }
+    }
+
+    for (Chest *chest : map.getChests()) {
+        if (getDistance(p, chest->getPosX(), chest->getPosY()) == 1) {
+            nearbyChests.push_back(chest);
+        }
+    }
+}
+
+void GameManager::movePlayerTo(int x, int y)
+{
+    Map& map = Map::getInstance();
+    Entity* p = map.getPlayer();
+
+    playerRemainingMP -= getDistance(p, x, y);
+    p->posX = x;
+    p->posY = y;
+
+    updateNearbyEnemyAndChest();
+}
+
+void GameManager::waitForEnter()
+{
+    WORD key;
+    do {
+        key = Input::getInstance().waitForInput();
+    } while (key != VK_RETURN);
 }
 
 
