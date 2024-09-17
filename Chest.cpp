@@ -28,22 +28,22 @@ void Chest::getLoot()
         int randomStat = rand() % 4;
         switch (randomStat)
         {
-            case 0:
-                health = 1000;
-                std::cout << "You found a chest with 1000 health!" << std::endl;
-                break;
-            case 1:
-                attackDamage = 1000;
-                std::cout << "You found a chest with 1000 attack damage!" << std::endl;
-                break;
-            case 2:
-                defense = 1000;
-                std::cout << "You found a chest with 1000 defense!" << std::endl;
-                break;
-            case 3:
-                mana = 1000;
-                std::cout << "You found a chest with 1000 mana!" << std::endl;
-                break;
+        case 0:
+            health = 1000;
+            std::cout << "You found a chest with 1000 health!" << std::endl;
+            break;
+        case 1:
+            attackDamage = 1000;
+            std::cout << "You found a chest with 1000 attack damage!" << std::endl;
+            break;
+        case 2:
+            defense = 1000;
+            std::cout << "You found a chest with 1000 defense!" << std::endl;
+            break;
+        case 3:
+            mana = 1000;
+            std::cout << "You found a chest with 1000 mana!" << std::endl;
+            break;
         }
 
     }
@@ -117,12 +117,4 @@ void Chest::getLoot()
         }
     }
 
-}
-
-void Chest::setLoot(int health, int attackDamage, int defense, int mana)
-{
-    this->health = health;
-    this->attackDamage = attackDamage;
-    this->defense = defense;
-    this->mana = mana;
 }

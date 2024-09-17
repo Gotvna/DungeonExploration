@@ -16,8 +16,8 @@ void Ghost::move()
 void Ghost::die()
 {
     health = 0;
-    character->increaseAttackDamage(1);
     character->increaseExperience(1);
+    character->fillHealth();
 }
 
 int Ghost::getMaxHealth()

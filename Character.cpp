@@ -66,6 +66,11 @@ int Character::increaseMana(int amount)
     return mana;
 }
 
+void Character::fillHealth()
+{
+    health = getMaxHealth();
+}
+
 void Character::levelUp()
 {
     level++;

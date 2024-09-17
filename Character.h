@@ -22,6 +22,8 @@ public:
     int increaseExperience(int amount);
     int getExperience();
 
+    void fillHealth();
+
     void openChest();
     void levelUp();
     void specialAttack(Entity* target);

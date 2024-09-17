@@ -9,15 +9,25 @@ Golem::~Golem()
 {
 }
 
+void Golem::immuneDamage(int damage)
+{
+    if (rand() % 100 < 10)
+    {
+        return;
+    }
+}
+
 void Golem::move()
 {
+    return;
 }
 
 void Golem::die()
 {
     health = 0;
-    character->getMaxHealth();
+    printf("Golem died\n");
     character->increaseExperience(3);
+    character->increaseAttackDamage(rand() % 10 + 1);
 }
 
 int Golem::getMaxHealth()

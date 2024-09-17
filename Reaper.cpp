@@ -17,6 +17,10 @@ void Reaper::die()
 {
     health = 0;
     character->increaseExperience(2);
+    for (int i = 0; i < map->getEnemies().size(); i++)
+    {
+        map->getEnemies()[i]->takeDamage(0, 1);
+    }
 }
 
 int Reaper::getMaxHealth()
