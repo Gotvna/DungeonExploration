@@ -8,7 +8,7 @@ class Golem : public Entity
         ~Golem();
     public:
 
-        void immuneDamage(int damage);
+        bool immuneDamage(int damage);
 
         virtual void move();
         virtual void die();

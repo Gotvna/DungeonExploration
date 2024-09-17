@@ -12,11 +12,15 @@ Golem::~Golem()
 {
 }
 
-void Golem::immuneDamage(int damage)
+bool Golem::immuneDamage(int damage)
 {
     if (rand() % 100 < 10)
     {
-        return;
+        return true;
+    }
+    else
+    {
+        return false;
     }
 }
 
