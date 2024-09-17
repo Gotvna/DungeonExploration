@@ -3,6 +3,7 @@
 
 class Entity
 {
+friend class GameManager;
 friend class Map;
 
     protected:
