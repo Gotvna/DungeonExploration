@@ -24,6 +24,8 @@ public: // Drawing functions.
 
 	void drawEntity(char icon, int posX, int posY);
 
+	void drawColor(uint16_t color, int posX, int posY);
+
 	void drawPlayerStats(const std::string& name, int health, int attackDamage);
 
 	void drawEnemyStats(const std::string &name, int health, int attackDamage);

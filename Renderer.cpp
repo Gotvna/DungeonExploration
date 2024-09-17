@@ -62,28 +62,26 @@ void Renderer::drawGrid()
 	// Grid top.
 	fillGridBuffer(line, gridTop, numCharsPerLine);
 	blitLine(line, numCharsPerLine, 0, baseY);
-	color(0x70, numCharsPerLine, 0, baseY);
+	color(0x80, numCharsPerLine, 0, baseY);
 
 	// Grid cells.
 	fillGridBuffer(line, gridCells, numCharsPerLine);
 	for (int i = 0; i < gridHeight; i++) {
 		blitLine(line, numCharsPerLine, 0, baseY + 1 + i * 2);
-		color(0x70, numCharsPerLine, 0, baseY + 1 + i * 2);
+		color(0x80, numCharsPerLine, 0, baseY + 1 + i * 2);
 	}
 
 	// Horizontal delimiters.
 	fillGridBuffer(line, gridDelims, numCharsPerLine);
 	for (int i = 0; i < gridHeight - 1; i++) {
 		blitLine(line, numCharsPerLine, 0, baseY + 2 + i * 2);
-		color(0x70, numCharsPerLine, 0, baseY + 2 + i * 2);
+		color(0x80, numCharsPerLine, 0, baseY + 2 + i * 2);
 	}
 
 	// Grid bottom.
 	fillGridBuffer(line, gridBottom, numCharsPerLine);
 	blitLine(line, numCharsPerLine, 0, baseY + 2 + (gridHeight - 1) * 2);
-	color(0x70, numCharsPerLine, 0, baseY + 2 + (gridHeight - 1) * 2);
-
-	drawRange(2, 2, 3);
+	color(0x80, numCharsPerLine, 0, baseY + 2 + (gridHeight - 1) * 2);
 }
 
 void Renderer::drawEntity(char icon, int posX, int posY)
@@ -95,7 +93,21 @@ void Renderer::drawEntity(char icon, int posX, int posY)
 	COORD pos = { cx, cy };
 	DWORD numWritten;
 
+	WORD color = 0x8F;
 	WriteConsoleOutputCharacterA(h, &icon, 1, pos, &numWritten);
+	WriteConsoleOutputAttribute(h, &color, 1, pos, &numWritten);
+}
+
+void Renderer::drawColor(uint16_t color, int posX, int posY)
+{
+	int cx, cy;
+	calculateConsolePosition(cx, cy, posX, posY);
+
+	HANDLE h = GetStdHandle(STD_OUTPUT_HANDLE);
+	COORD pos = { cx, cy };
+	DWORD numWritten;
+
+	WriteConsoleOutputAttribute(h, &color, 1, pos, &numWritten);
 }
 
 void Renderer::drawPlayerStats(const std::string &name, int health, int attackDamage)
@@ -116,7 +128,7 @@ void Renderer::drawRange(int centerX, int centerY, int range)
 		int d = (range - abs(y - centerY));
 		for (int x = max(0, centerX - d); min(gridWidth, x <= centerX + d); x++) {
 			calculateConsolePosition(cx, cy, x, y);
-			color(0x90, 1, cx, cy);
+			color(0x1F, 1, cx, cy);
 		}
 	}
 }

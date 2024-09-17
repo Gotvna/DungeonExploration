@@ -10,6 +10,14 @@
 
 #include "Renderer.h"
 
+
+bool isMoveValid(Entity* entity, int desiredX, int desiredY)
+{
+    int distance = abs(desiredX - entity->getPosX()) + abs(desiredY - entity->getPosY());
+    return distance <= entity->getMovementPoint();
+}
+
+
 int main()
 {
     // Init.
@@ -28,6 +36,7 @@ int main()
     r.setGridSize(map.getWidth(), map.getHeight());
     r.drawGrid();
 
+    // Main game loop.
     while (1)
     {
         Entity *p = reinterpret_cast<Entity *>(map.getPlayer());
@@ -37,35 +46,53 @@ int main()
             r.drawEntity(e->getIcon(), e->getPosX(), e->getPosY());
         }
 
-        int cursorX = p->getPosX();
-        int cursorY = p->getPosY();
-        while (1)
+        // Player move loop.
+        int cursorX = p->getPosX(), cursorY = p->getPosY();
+        int newX = cursorX, newY = cursorY;
+        bool validatedMovement = false;
+        while (!validatedMovement)
         {
+            r.drawRange(p->getPosX(), p->getPosY(), p->getMovementPoint());
+            r.drawColor(0x2F, cursorX, cursorY);
+
             WORD key = Input::getInstance().waitForInput();
 
             // Erase.
-            r.drawEntity(' ', cursorX, cursorY);
+            r.drawColor(0x70, cursorX, cursorY);
 
             switch (key)
             {
             case VK_UP:
-                cursorY--;
+                newY--;
                 break;
             case VK_DOWN:
-                cursorY++;
+                newY++;
                 break;
             case VK_LEFT:
-                cursorX--;
+                newX--;
                 break;
             case VK_RIGHT:
-                cursorX++;
+                newX++;
+                break;
+            case VK_SPACE:
+                validatedMovement = true;
                 break;
             }
 
-            p->move();
+            if (validatedMovement) {
 
-            // Erase.
-            r.drawEntity(p->getIcon(), cursorX, cursorY);
+            }
+
+            if (isMoveValid(p, newX, newY)) {
+                cursorX = newX;
+                cursorY = newY;
+            }
+            else {
+                newX = cursorX;
+                newY = cursorY;
+            }
+
+            //p->move();
         }
 
     }
