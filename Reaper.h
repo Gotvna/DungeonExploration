@@ -1,7 +1,5 @@
 #pragma once
 #include "Entity.h"
-#include "Character.h"
-#include "Map.h"
 
 class Reaper : public Entity
 {
@@ -17,7 +15,4 @@ class Reaper : public Entity
         virtual int getDefense();
         virtual int getMana();
         virtual char getIcon();
-
-        Character* character;
-        Map* map;
 };

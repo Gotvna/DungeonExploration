@@ -11,8 +11,8 @@ public: // Utilities.
 
 	static void calculateConsolePosition(int& outX, int& outY, int gridX, int gridY);
 
-	static const int MARGIN_TOP = 3;
-	static const int MARGIN_BOTTOM = 3;
+	static const int MARGIN_TOP = 4;
+	static const int MARGIN_BOTTOM = 4;
 
 public: // States.
 
@@ -26,9 +26,9 @@ public: // Drawing functions.
 
 	void drawColor(uint16_t color, int posX, int posY);
 
-	void drawPlayerStats(const std::string& name, int health, int attackDamage);
+	void drawPlayerStats(const std::string& name, int health, int maxHealth, int attackDamage);
 
-	void drawEnemyStats(const std::string &name, int health, int attackDamage);
+	void drawEnemyStats(const std::string &name, int health, int maxHealth, int attackDamage);
 
 	void drawRange(int centerX, int centerY, int range);
 

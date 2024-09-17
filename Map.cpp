@@ -110,6 +110,8 @@ bool Map::load(const char *path)
 			case 'c':
 				{
 					Chest* chest = new Chest();
+					chest->posX = x;
+					chest->posY = y;
 					chests.push_back(chest);
 				}
 				break;

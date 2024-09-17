@@ -3,6 +3,7 @@
 #include "System.h"
 #include "Input.h"
 #include "Map.h"
+#include "Chest.h"
 #include "Character.h"
 
 
@@ -45,10 +46,17 @@ void GameManager::redrawAll()
     // Draw entities.
     Entity *p = map.getPlayer();
     renderer.drawEntity(p->getIcon(), p->getPosX(), p->getPosY());
+
     for (Entity *e : map.getEnemies())
     {
         renderer.drawEntity(e->getIcon(), e->getPosX(), e->getPosY());
     }
+    for (Chest *c : map.getChests())
+    {
+        renderer.drawEntity('c', c->getPosX(), c->getPosY());
+    }
+
+    renderer.drawPlayerStats(p->name, p->health, p->getMaxHealth(), p->getAttackDamage());
 }
 
 void GameManager::playerActionMove()
@@ -77,16 +85,17 @@ void GameManager::playerActionMove()
         // Listen to action.
         switch (key)
         {
-        case VK_UP:    newY--; break;
-        case VK_DOWN:  newY++; break;
-        case VK_LEFT:  newX--; break;
-        case VK_RIGHT: newX++; break;
+        case VK_UP:    if (newY != 0)                   newY--; break;
+        case VK_DOWN:  if (newY != map.getHeight() - 1) newY++; break;
+        case VK_LEFT:  if (newX != 0)                   newX--; break;
+        case VK_RIGHT: if (newX != map.getWidth() - 1)  newX++; break;
         case VK_SPACE:
             playerRemainingMP -= getDistance(p, cursorX, cursorY);
             p->posX = cursorX;
             p->posY = cursorY;
             break;
         case VK_RETURN:
+            map.getEnemies()[0]->die();
             return;
         }
 

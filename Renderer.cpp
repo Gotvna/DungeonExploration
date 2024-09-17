@@ -110,12 +110,25 @@ void Renderer::drawColor(uint16_t color, int posX, int posY)
 	WriteConsoleOutputAttribute(h, &color, 1, pos, &numWritten);
 }
 
-void Renderer::drawPlayerStats(const std::string &name, int health, int attackDamage)
+void Renderer::drawPlayerStats(const std::string &name, int health, int maxHealth, int attackDamage)
 {
-	
+	int w, h;
+	Renderer::getConsoleSizeForGrid(w, h, gridWidth, gridHeight);
+
+	uint8_t line[256];
+	line[0]  = '[';
+	line[26] = ']';
+	int i = 1;
+	for (i; i <= health * 25 / maxHealth; i++) {
+		line[i] = 254;
+	}
+	for (i; i < 26; i++) {
+		line[i] = ' ';
+	}
+	blitLine(line, 27, 2, h - 2);
 }
 
-void Renderer::drawEnemyStats(const std::string &name, int health, int attackDamage)
+void Renderer::drawEnemyStats(const std::string &name, int health, int maxHealth, int attackDamage)
 {
 
 }
@@ -124,9 +137,9 @@ void Renderer::drawRange(int centerX, int centerY, int range)
 {
 	int cx, cy;
 
-	for (int y = max(0, centerY - range), i = 0; y <= min(gridHeight, centerY + range); y++, i++) {
+	for (int y = max(0, centerY - range), i = 0; y <= min(gridHeight - 1, centerY + range); y++, i++) {
 		int d = (range - abs(y - centerY));
-		for (int x = max(0, centerX - d); min(gridWidth, x <= centerX + d); x++) {
+		for (int x = max(0, centerX - d); min(gridWidth - 1, x <= centerX + d); x++) {
 			calculateConsolePosition(cx, cy, x, y);
 			color(0x1F, 1, cx, cy);
 		}

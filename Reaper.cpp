@@ -1,5 +1,8 @@
 #include "Reaper.h"
 
+#include "Map.h"
+#include "Character.h"
+
 Reaper::Reaper()
 {
     health = this->getMaxHealth();
@@ -16,10 +19,14 @@ void Reaper::move()
 void Reaper::die()
 {
     health = 0;
-    character->increaseExperience(2);
-    for (int i = 0; i < map->getEnemies().size(); i++)
+
+    Map& map = Map::getInstance();
+    Character *p = map.getPlayer();
+    p->increaseExperience(2);
+
+    for (int i = 0; i < map.getEnemies().size(); i++)
     {
-        map->getEnemies()[i]->takeDamage(0, 1);
+        map.getEnemies()[i]->takeDamage(0, 1);
     }
 }
 

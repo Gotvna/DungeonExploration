@@ -3,7 +3,7 @@
 
 Character::Character()
 {
-    health = getMaxHealth();
+    health = getMaxHealth() - 4;
     attackDamage = getAttackDamage();
     defense = getDefense();
     mana = getMana();

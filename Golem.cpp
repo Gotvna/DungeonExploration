@@ -1,5 +1,8 @@
 #include "Golem.h"
 
+#include "Map.h"
+#include "Character.h"
+
 Golem::Golem()
 {
     health = this->getMaxHealth();
@@ -25,9 +28,10 @@ void Golem::move()
 void Golem::die()
 {
     health = 0;
-    printf("Golem died\n");
-    character->increaseExperience(3);
-    character->increaseAttackDamage(rand() % 10 + 1);
+    
+    Character *p = Map::getInstance().getPlayer();
+    p->increaseExperience(3);
+    p->increaseAttackDamage(rand() % 10 + 1);
 }
 
 int Golem::getMaxHealth()

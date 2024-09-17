@@ -1,5 +1,8 @@
 #include "Ghost.h"
 
+#include "Map.h"
+#include "Character.h"
+
 Ghost::Ghost()
 {
     health = this->getMaxHealth();
@@ -16,8 +19,10 @@ void Ghost::move()
 void Ghost::die()
 {
     health = 0;
-    character->increaseExperience(1);
-    character->fillHealth();
+
+    Character* p = Map::getInstance().getPlayer();
+    p->increaseExperience(1);
+    p->fillHealth();
 }
 
 int Ghost::getMaxHealth()
