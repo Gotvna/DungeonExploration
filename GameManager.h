@@ -17,12 +17,21 @@ private:
 
 	void loadMap();
 
-	void playerAction();
+	void redrawAll();
 
-	bool isMoveValid(Entity *entity, int desiredX, int desiredY);
+	void playerActionMove();
+	void playerActionAttack();
+
+	void enemyAction();
+
+	int getDistance(Entity *entity, int x, int y);
+	bool isMoveValid(Entity *entity, int mp, int desiredX, int desiredY);
 
 
 private:
 
 	Renderer renderer;
+
+	// Remaining movement points for the player during their turn.
+	int playerRemainingMP;
 };

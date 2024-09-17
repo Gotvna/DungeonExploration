@@ -112,7 +112,7 @@ void Renderer::drawColor(uint16_t color, int posX, int posY)
 
 void Renderer::drawPlayerStats(const std::string &name, int health, int attackDamage)
 {
-
+	
 }
 
 void Renderer::drawEnemyStats(const std::string &name, int health, int attackDamage)
