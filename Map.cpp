@@ -131,6 +131,18 @@ bool Map::load(const char *path)
 	return true;
 }
 
+void Map::removeEnemy(Entity *e)
+{
+	enemies.erase(std::remove(enemies.begin(), enemies.end(), e));
+	delete e;
+}
+
+void Map::removeChest(Chest *c)
+{
+	chests.erase(std::remove(chests.begin(), chests.end(), c));
+	delete c;
+}
+
 std::string Map::generateEnemiesName(int length)
 {
 	std::vector<std::string> syllabes = {

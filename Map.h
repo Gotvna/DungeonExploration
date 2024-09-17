@@ -18,6 +18,11 @@ public:
 
 	bool load(const char* path);
 
+	// Removing enemies and chests from the map.
+	// This also destroys them, so be sure to never access them after calling remove.
+	void removeEnemy(Entity* e);
+	void removeChest(Chest* c);
+
 	std::string generateEnemiesName(int length);
 	inline std::string getRandomName() { return characterNames[rand() % characterNames.size()]; }
 

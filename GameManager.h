@@ -32,6 +32,9 @@ private:
 
 	void movePlayerTo(int x, int y);
 
+	void killEnemy(Entity* e);
+	void removeChest(Chest* c);
+
 	void waitForEnter();
 
 	int getDistance(Entity *entity, int x, int y);

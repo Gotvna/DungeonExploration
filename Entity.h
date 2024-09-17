@@ -13,8 +13,9 @@ friend class Map;
         int posX;
         int posY;
     public:
-        void attack(Entity* target);
-        void takeDamage(int defense, int damage);
+        int attack(Entity* target);
+        int takeDamage(int damage);
+        int takeDamageIgnoreDefense(int damage);
 
         virtual void move() = 0;
         virtual void die() = 0;
@@ -27,6 +28,8 @@ friend class Map;
         virtual char getIcon() = 0;
 
         inline void setName(const std::string& name) { this->name = name; }
+
+    inline bool isDead() const { return health <= 0; }
 
     inline int getPosX() const { return posX; }
     inline int getPosY() const { return posY; }

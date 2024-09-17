@@ -57,6 +57,7 @@ void GameManager::redrawAll()
     }
 
     // Draw stats.
+    renderer.clearPlayerRegion();
     renderer.drawPlayerStats(p->name, p->health, p->maxHealth, p->attackDamage, p->defense, p->mana, p->level, p->xp, p->xpToLevelUp);
 }
 
@@ -94,7 +95,6 @@ void GameManager::playerActionMove()
             updateNearbyEnemyAndChest();
             break;
         case VK_RETURN:
-            map.getEnemies()[0]->die();
             updateNearbyEnemyAndChest();
             return;
         case 'A':
@@ -117,6 +117,8 @@ void GameManager::playerActionMove()
             newY = cursorY;
         }
     }
+
+    updateNearbyEnemyAndChest();
 }
 
 void GameManager::playerActionAttack()
@@ -127,7 +129,8 @@ void GameManager::playerActionAttack()
     if (nearbyEnemies.empty()) return;
 
     int enemyIndex = 0;
-    while (1)
+    bool done = false;
+    while (!done)
     {
         Entity* selectedEnemy = nearbyEnemies[enemyIndex];
 
@@ -153,24 +156,43 @@ void GameManager::playerActionAttack()
             enemyIndex++;
             if (enemyIndex == nearbyEnemies.size()) enemyIndex = 0;
             break;
-        case VK_RETURN:
-            p->attack(selectedEnemy);
-            if (selectedEnemy->health <= 0) {
-                selectedEnemy->die();
-                updateNearbyEnemyAndChest();
-                if (nearbyEnemies.empty()) {
-                    playerActionMove();
-                }
-                return;
+        case VK_RETURN: {
+            renderer.clearPlayerRegion();
+            renderer.drawMessage("You attacked " + selectedEnemy->name + '!');
+            waitForEnter();
+
+            int damage = p->attack(selectedEnemy);
+
+            renderer.clearEnemyRegion();
+            renderer.drawEnemyStats(selectedEnemy->name, selectedEnemy->health,
+                selectedEnemy->getMaxHealth(), selectedEnemy->getAttackDamage(),
+                selectedEnemy->getDefense());
+            renderer.clearPlayerRegion();
+            renderer.drawMessage("You dealt " + std::to_string(damage) + " damage.");
+            waitForEnter();
+
+            if (selectedEnemy->isDead()) {
+                renderer.clearPlayerRegion();
+                renderer.drawMessage(selectedEnemy->name + " is dead!");
+                waitForEnter();
+
+                killEnemy(selectedEnemy);
             }
-            else {
-                return;
+
+            updateNearbyEnemyAndChest();
+            if (nearbyEnemies.empty()) {
+                playerActionMove();
             }
+            }
+            done = true;
+            break;
         case 'A':
-            playerActionMove();
+            done = true;
             break;
         }
     }
+
+    renderer.clearEnemyRegion();
 }
 
 void GameManager::playerActionCollect()
@@ -180,8 +202,13 @@ void GameManager::playerActionCollect()
 
     for (Chest *chest : nearbyChests) {
         chest->getLoot();
-        
+
+        // TODO : Actually display the chest's loot.
+        renderer.clearPlayerRegion();
+        renderer.drawMessage("You found a chest with ...!");
         waitForEnter();
+
+        removeChest(chest);
     }
 }
 
@@ -224,6 +251,16 @@ void GameManager::movePlayerTo(int x, int y)
     p->posY = y;
 
     updateNearbyEnemyAndChest();
+}
+
+void GameManager::killEnemy(Entity *e)
+{
+    Map::getInstance().removeEnemy(e);
+}
+
+void GameManager::removeChest(Chest *c)
+{
+    Map::getInstance().removeChest(c);
 }
 
 void GameManager::waitForEnter()

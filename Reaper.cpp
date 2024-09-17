@@ -26,7 +26,7 @@ void Reaper::die()
 
     for (int i = 0; i < map.getEnemies().size(); i++)
     {
-        map.getEnemies()[i]->takeDamage(0, 1);
+        map.getEnemies()[i]->takeDamageIgnoreDefense(1);
     }
 }
 

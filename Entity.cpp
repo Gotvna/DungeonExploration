@@ -1,16 +1,31 @@
 #include "Entity.h"
 
 
-void Entity::attack(Entity* target)
+int Entity::attack(Entity* target)
 {
-    target->takeDamage(target->getDefense(), this->getAttackDamage());
+    return target->takeDamage(this->getAttackDamage());
 }
 
-void Entity::takeDamage(int defense, int damage)
+int Entity::takeDamage(int damage)
 {
-    health = damage - (defense / 100);
+    int actualDamage = damage - (this->getDefense() / 100.0f);
+    health -= actualDamage;
+
     if (health <= 0)
     {
         die();
     }
+
+    return actualDamage;
+}
+
+int Entity::takeDamageIgnoreDefense(int damage)
+{
+    health -= damage;
+    if (health <= 0)
+    {
+        die();
+    }
+
+    return damage;
 }

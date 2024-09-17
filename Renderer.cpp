@@ -161,13 +161,48 @@ void Renderer::drawRange(uint16_t c, int centerX, int centerY, int range)
 	}
 }
 
+void Renderer::clearPlayerRegion()
+{
+	uint8_t line[256];
+
+	int w, h;
+	Renderer::getConsoleSizeForGrid(w, h, gridWidth, gridHeight);
+
+	memset(line, ' ', w);
+
+	for (int y = h - MARGIN_BOTTOM; y < h; y++) {
+		blitLine(line, w, 0, y);
+		color(0x07, w, 0, y);
+	}
+}
+
+void Renderer::clearEnemyRegion()
+{
+	uint8_t line[256];
+
+	int w, h;
+	Renderer::getConsoleSizeForGrid(w, h, gridWidth, gridHeight);
+
+	memset(line, ' ', w);
+
+	for (int y = 0; y < MARGIN_TOP; y++) {
+		blitLine(line, w, 0, y);
+		color(0x07, w, 0, y);
+	}
+}
+
 void Renderer::drawMessage(const std::string &msg)
 {
-	size_t offset = 0;
-	size_t lineBreak = msg.find('\n', offset);
+	//size_t offset = 0;
+	//size_t lineBreak = msg.find('\n', offset);
 	//int y = ??;
 
 	//blitLine(msg.c_str() + offset, lineBreak - offset, );
+
+	int w, h;
+	Renderer::getConsoleSizeForGrid(w, h, gridWidth, gridHeight);
+
+	blitLine((uint8_t*) msg.c_str(), msg.size(), 2, h - 4);
 }
 
 

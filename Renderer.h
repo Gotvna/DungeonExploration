@@ -27,11 +27,12 @@ public: // Drawing functions.
 	void drawColor(uint16_t color, int posX, int posY);
 
 	void drawPlayerStats(const std::string& name, int health, int maxHealth, int attackDamage, int defense, int mana, int level, int xp, int xpToLevelUp);
-
 	void drawEnemyStats(const std::string &name, int health, int maxHealth, int attackDamage, int defense);
 
 	void drawRange(uint16_t color, int centerX, int centerY, int range);
 
+	void clearPlayerRegion();
+	void clearEnemyRegion();
 	void drawMessage(const std::string& msg);
 
 private:

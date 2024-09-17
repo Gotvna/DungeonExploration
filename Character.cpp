@@ -26,7 +26,7 @@ void Character::specialAttack(Entity* target)
         printf("Pas assez de mana !\n");
         return;
     }
-    target->takeDamage(target->getDefense(), attackDamage * 2);
+    target->takeDamage(attackDamage * 2);
     mana -= 10;
 }
 
