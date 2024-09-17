@@ -44,7 +44,7 @@ void GameManager::redrawAll()
     renderer.drawGrid();
 
     // Draw entities.
-    Entity *p = map.getPlayer();
+    Character *p = map.getPlayer();
     renderer.drawEntity(p->getIcon(), p->getPosX(), p->getPosY());
 
     for (Entity *e : map.getEnemies())
@@ -56,7 +56,7 @@ void GameManager::redrawAll()
         renderer.drawEntity('c', c->getPosX(), c->getPosY());
     }
 
-    renderer.drawPlayerStats(p->name, p->health, p->getMaxHealth(), p->getAttackDamage());
+    renderer.drawPlayerStats(p->name, p->health, p->getMaxHealth(), p->getAttackDamage(), p->level, p->xp, p->xpToLevelUp);
 }
 
 void GameManager::playerActionMove()

@@ -3,7 +3,7 @@
 
 class Character : public Entity
 {
-private:
+public:
     int attackDamage;
     int xp;
     int xpToLevelUp;

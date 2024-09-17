@@ -10,6 +10,7 @@ Character::Character()
     xp = 0;
     xpToLevelUp = 10;
     level = 1;
+    name = "Mario";
 }
 
 Character::~Character() {}

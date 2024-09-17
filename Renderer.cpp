@@ -110,27 +110,26 @@ void Renderer::drawColor(uint16_t color, int posX, int posY)
 	WriteConsoleOutputAttribute(h, &color, 1, pos, &numWritten);
 }
 
-void Renderer::drawPlayerStats(const std::string &name, int health, int maxHealth, int attackDamage)
+void Renderer::drawPlayerStats(const std::string &name, int health, int maxHealth, int attackDamage, int level, int xp, int xpToLevelUp)
 {
 	int w, h;
 	Renderer::getConsoleSizeForGrid(w, h, gridWidth, gridHeight);
 
-	uint8_t line[256];
-	line[0]  = '[';
-	line[26] = ']';
-	int i = 1;
-	for (i; i <= health * 25 / maxHealth; i++) {
-		line[i] = 254;
-	}
-	for (i; i < 26; i++) {
-		line[i] = ' ';
-	}
-	blitLine(line, 27, 2, h - 2);
+	blitLine((uint8_t*) name.c_str(), name.size(), 2, h - 4);
+	color(0x07, name.size(), 2, h - 4);
+
+	drawHealthBar(2, h - 3, health, maxHealth);
+	
+	std::string levelString = std::to_string(level);
+	blitLine((uint8_t*) levelString.c_str(), levelString.size(), 30, h - 3);
+
+	levelString = std::to_string(xp) + " / " + std::to_string(xpToLevelUp);
+	blitLine((uint8_t *)levelString.c_str(), levelString.size(), 34, h - 3);
 }
 
 void Renderer::drawEnemyStats(const std::string &name, int health, int maxHealth, int attackDamage)
 {
-
+	drawHealthBar(2, 2, health, maxHealth);
 }
 
 void Renderer::drawRange(int centerX, int centerY, int range)
@@ -155,6 +154,22 @@ void Renderer::drawMessage(const std::string &msg)
 	//blitLine(msg.c_str() + offset, lineBreak - offset, );
 }
 
+
+void Renderer::drawHealthBar(int x, int y, int hp, int maxhp)
+{
+	uint8_t line[256];
+	line[0] = '[';
+	line[26] = ']';
+	int i = 1;
+	for (i; i <= hp * 25 / maxhp; i++) {
+		line[i] = 254;
+	}
+	for (i; i < 26; i++) {
+		line[i] = ' ';
+	}
+	blitLine(line, 27, x, y);
+	color(0x02, 25, x + 1, y);
+}
 
 
 void Renderer::getConsoleSizeForGrid(int &outWidth, int &outHeight, int gridWidth, int gridHeight)
