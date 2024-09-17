@@ -13,13 +13,15 @@
 
 int main()
 {
+    // Init.
     System::getInstance().initialize();
     Input::getInstance().initialize();
 
+    // Load map & inform subsystems.
     Map::getInstance().clear();
     Map::getInstance().load("Map.txt");
-
-    Map& map = Map::getInstance();
+    Map &map = Map::getInstance();
+    System::getInstance().resizeForGridSize(map.getWidth(), map.getHeight());
 
     while (1)
     {
@@ -34,7 +36,6 @@ int main()
         {
             r.drawEntity(e->getIcon(), e->getPosX(), e->getPosY());
         }
-
 
         switch (key)
         {

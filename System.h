@@ -13,9 +13,12 @@ public:
 
 	void initialize();
 
+	void resizeForGridSize(int gridWidth, int gridHeight);
+
 private:
 
 	HWND hConsoleWindow;
+	HANDLE hConsoleOutput;
 };
 
 

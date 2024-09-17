@@ -5,7 +5,11 @@
 
 class Renderer
 {
-public:
+public: // Utilities.
+
+	static void getConsoleSizeForGrid(int& outWidth, int& outHeight, int gridWidth, int gridHeight);
+
+public: // Drawing functions.
 
 	void drawGrid(int width, int height);
 
