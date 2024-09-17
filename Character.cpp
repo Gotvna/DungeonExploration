@@ -1,129 +1,115 @@
 #include "Character.h"
+#include "Chest.h"
 
 Character::Character()
 {
-    health = this->getMaxHealth();
+    health = getMaxHealth();
     attackDamage = getAttackDamage();
     defense = getDefense();
     mana = getMana();
-    xp = getExperience();
+    xp = 0;
     xpToLevelUp = 10;
-    xp = xpToLevelUp;
     level = 1;
 }
 
-Character::~Character()
-{
-}
+Character::~Character() {}
 
-
-void Character::move()
-{
-}
+void Character::move() {}
 
 void Character::specialAttack(Entity* target)
 {
-    if (getMana() < 10)
+    if (mana < 10)
     {
+        printf("Pas assez de mana !\n");
         return;
     }
     target->takeDamage(target->getDefense(), attackDamage * 2);
-    getMana() - 10;
-}
-
-int Character::increaseAttackDamage(int amount)
-{
-    return attackDamage + amount;
-}
-
-int Character::increaseDefense(int amount)
-{
-    return 0;
-}
-
-int Character::increaseExperience(int amount)
-{
-    return xp + amount;
-}
-
-int Character::increaseHealth(int amount)
-{
-    return health + amount;
-}
-
-int Character::increaseMana(int amount)
-{
-    return mana + amount;
-}
-
-int Character::getLevel()
-{
-    if (xp >= xpToLevelUp)
-    {
-        level++;
-        xp = 0;
-        xpToLevelUp = xpToLevelUp + (xpToLevelUp * 0.1);
-    }
-
-    if (level++)
-    {
-        int random = rand() % 4;
-        switch (random)
-        {
-        case 0:
-            increaseAttackDamage(rand() % 3 + 1);
-            break;
-        case 1:
-            increaseHealth(rand() % 3 + 1 * 5);
-            break;
-        case 2:
-            increaseDefense(rand() % 3 + 1);
-            break;
-        case 3:
-            increaseMana(rand() % 3 + 1 * 5);
-            break;
-        }
-    }
-
-    return level;
+    mana -= 10;
 }
 
 void Character::die()
 {
-    health = 0;
+    printf("Vous êtes mort !\n");
 }
 
-int Character::getMaxHealth()
+int Character::increaseAttackDamage(int amount)
 {
-    return 5;
+    attackDamage += amount;
+    return attackDamage;
 }
 
-int Character::getMovementPoint()
+int Character::increaseDefense(int amount)
 {
-    return 5;
+    defense += amount;
+    return defense;
 }
 
-int Character::getAttackDamage()
+int Character::increaseExperience(int amount)
 {
-    return 5;
+    xp += amount;
+    if (xp >= xpToLevelUp)
+    {
+        levelUp();
+    }
+    return xp;
 }
 
-int Character::getDefense()
+int Character::increaseHealth(int amount)
 {
-    return 5;
+    health += amount;
+    return health;
 }
 
-int Character::getExperience()
+int Character::increaseMana(int amount)
 {
-    return 0;
+    mana += amount;
+    return mana;
 }
 
-int Character::getMana()
+void Character::levelUp()
 {
-    return 25;
+    level++;
+    xp = 0;
+    xpToLevelUp += static_cast<int>(xpToLevelUp * 0.1);
+
+    int random = rand() % 4;
+    switch (random)
+    {
+    case 0:
+        increaseAttackDamage(rand() % 3 + 1);
+        break;
+    case 1:
+        increaseHealth((rand() % 3 + 1) * 5);
+        break;
+    case 2:
+        increaseDefense(rand() % 3 + 1);
+        break;
+    case 3:
+        increaseMana((rand() % 3 + 1) * 5);
+        break;
+    }
 }
 
-char Character::getIcon()
+int Character::getMaxHealth() { return 5; }
+
+int Character::getMovementPoint() { return 5; }
+
+int Character::getAttackDamage() { return 5; }
+
+int Character::getDefense() { return 5; }
+
+int Character::getExperience() { return 0; }
+
+int Character::getMana() { return 25; }
+
+char Character::getIcon() { return '@'; }
+
+void Character::openChest()
 {
-    return '@';
+    Chest chest;
+    chest.openChest();
+    increaseAttackDamage(chest.getAttackDamage());
+    increaseDefense(chest.getDefense());
+    increaseHealth(chest.getHealth());
+    increaseMana(chest.getMana());
 }

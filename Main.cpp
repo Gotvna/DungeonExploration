@@ -6,10 +6,9 @@
 #include "Input.h"
 #include "Map.h"
 #include "Entity.h"
+#include "Character.h"
 
 #include "Renderer.h"
-
-
 
 int main()
 {
@@ -20,9 +19,11 @@ int main()
     // Load map & inform subsystems.
     Map::getInstance().clear();
     Map::getInstance().load("Map.txt");
+
     Map &map = Map::getInstance();
     System::getInstance().resizeForGridSize(map.getWidth(), map.getHeight());
 
+    // Setup renderer.
     Renderer r;
     r.setGridSize(map.getWidth(), map.getHeight());
     r.drawGrid();
