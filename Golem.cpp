@@ -12,18 +12,6 @@ Golem::~Golem()
 {
 }
 
-bool Golem::immuneDamage(int damage)
-{
-    if (rand() % 100 < 10)
-    {
-        return true;
-    }
-    else
-    {
-        return false;
-    }
-}
-
 void Golem::move()
 {
     return;
@@ -66,4 +54,12 @@ int Golem::getMana()
 char Golem::getIcon()
 {
     return 'G';
+}
+
+float Golem::getBlockChance()
+{
+    if (rand() % 100 <= 10)
+    {
+		return 0.1f;
+	}
 }

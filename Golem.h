@@ -8,8 +8,6 @@ class Golem : public Entity
         ~Golem();
     public:
 
-        bool immuneDamage(int damage);
-
         virtual void move();
         virtual void die();
         virtual int getMaxHealth();
@@ -18,4 +16,6 @@ class Golem : public Entity
         virtual int getDefense();
         virtual int getMana();
         virtual char getIcon();
+
+        virtual float getBlockChance() override;
 };
