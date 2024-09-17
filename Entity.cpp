@@ -8,20 +8,25 @@ int Entity::attack(Entity* target)
 
 int Entity::takeDamage(int damage)
 {
-    int actualDamage = damage - (this->getDefense() / 100.0f);
-    health -= actualDamage;
+    int effectiveDamage = damage - (this->getDefense() / 100.0f);
+    if (effectiveDamage < 0) {
+        effectiveDamage = 0;
+    }
+
+    health -= effectiveDamage;
 
     if (health <= 0)
     {
         die();
     }
 
-    return actualDamage;
+    return effectiveDamage;
 }
 
 int Entity::takeDamageIgnoreDefense(int damage)
 {
     health -= damage;
+
     if (health <= 0)
     {
         die();
