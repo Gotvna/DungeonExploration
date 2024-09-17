@@ -17,6 +17,12 @@ void System::initialize()
 	// Disable maximize & resizing.
 	LONG style = GetWindowLong(hConsoleWindow, GWL_STYLE);
 	SetWindowLong(hConsoleWindow, GWL_STYLE, style & ~(WS_MAXIMIZEBOX | WS_THICKFRAME));
+
+	// Hide blinking cursor.
+	CONSOLE_CURSOR_INFO cursorInfo;
+	GetConsoleCursorInfo(hConsoleOutput, &cursorInfo);
+	cursorInfo.bVisible = false;
+	SetConsoleCursorInfo(hConsoleOutput, &cursorInfo);
 }
 
 void System::resizeForGridSize(int gridWidth, int gridHeight)
