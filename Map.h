@@ -17,6 +17,12 @@ public:
 
 	bool load(const char* path);
 
+	inline int getWidth() const { return width; }
+	inline int getHeight() const { return height; }
+
+	inline Character* getPlayer() const { return player; }
+	inline const std::vector<Entity*>& getEnemies() const { return enemies; }
+
 
 private: // Parsing utils.
 
