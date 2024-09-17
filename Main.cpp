@@ -5,6 +5,9 @@
 #include "System.h"
 #include "Input.h"
 #include "Map.h"
+#include "Entity.h"
+
+#include "Renderer.h"
 
 
 
@@ -21,6 +24,17 @@ int main()
     while (1)
     {
         WORD key = Input::getInstance().waitForInput();
+
+        Renderer r;
+        r.drawGrid(map.getWidth(), map.getHeight());
+
+        Entity* p = reinterpret_cast<Entity*>(map.getPlayer());
+        r.drawEntity(p->getIcon(), p->getPosX(), p->getPosY());
+        for (Entity *e : map.getEnemies())
+        {
+            r.drawEntity(e->getIcon(), e->getPosX(), e->getPosY());
+        }
+
 
         switch (key)
         {

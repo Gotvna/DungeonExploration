@@ -24,4 +24,7 @@ friend class Map;
         virtual int getDefense() = 0;
         virtual int getMana() = 0;
         virtual char getIcon() = 0;
+
+    inline int getPosX() const { return posX; }
+    inline int getPosY() const { return posY; }
 };
