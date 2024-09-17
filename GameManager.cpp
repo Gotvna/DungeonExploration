@@ -91,9 +91,11 @@ void GameManager::playerActionMove()
         case VK_RIGHT: if (newX != map.getWidth() - 1)  newX++; break;
         case VK_SPACE:
             movePlayerTo(cursorX, cursorY);
+            updateNearbyEnemyAndChest();
             break;
         case VK_RETURN:
             map.getEnemies()[0]->die();
+            updateNearbyEnemyAndChest();
             return;
         case 'A':
             if (nearbyEnemies.empty()) break;
@@ -119,8 +121,10 @@ void GameManager::playerActionMove()
 
 void GameManager::playerActionAttack()
 {
-    Map &map = Map::getInstance();
-    Entity *p = map.getPlayer();
+    Map& map = Map::getInstance();
+    Entity* p = map.getPlayer();
+
+    if (nearbyEnemies.empty()) return;
 
     int enemyIndex = 0;
     while (1)
@@ -130,19 +134,40 @@ void GameManager::playerActionAttack()
         renderer.drawRange(0x3F, p->getPosX(), p->getPosY(), 1);
         renderer.drawColor(0x2F, selectedEnemy->getPosX(), selectedEnemy->getPosY());
 
-        renderer.drawEnemyStats(selectedEnemy->name, selectedEnemy->health, selectedEnemy->getMaxHealth(), selectedEnemy->getAttackDamage(), selectedEnemy->getDefense());
+        if (getDistance(p, selectedEnemy->getPosX(), selectedEnemy->getPosY()) == 1) {
+            renderer.drawEnemyStats(selectedEnemy->name, selectedEnemy->health,
+                selectedEnemy->getMaxHealth(), selectedEnemy->getAttackDamage(),
+                selectedEnemy->getDefense());
+        }
 
         WORD key = Input::getInstance().waitForInput();
 
         // Listen to action.
         switch (key)
         {
-        case VK_LEFT:  enemyIndex--; if (enemyIndex == -1)                   enemyIndex = nearbyEnemies.size() - 1; break;
-        case VK_RIGHT: enemyIndex++; if (enemyIndex == nearbyEnemies.size()) enemyIndex = 0;                        break;
-
-        case VK_RETURN:
+        case VK_LEFT:
+            enemyIndex--;
+            if (enemyIndex == -1) enemyIndex = nearbyEnemies.size() - 1;
             break;
+        case VK_RIGHT:
+            enemyIndex++;
+            if (enemyIndex == nearbyEnemies.size()) enemyIndex = 0;
+            break;
+        case VK_RETURN:
+            p->attack(selectedEnemy);
+            if (selectedEnemy->health <= 0) {
+                selectedEnemy->die();
+                updateNearbyEnemyAndChest();
+                if (nearbyEnemies.empty()) {
+                    playerActionMove();
+                }
+                return;
+            }
+            else {
+                return;
+            }
         case 'A':
+            playerActionMove();
             break;
         }
     }
