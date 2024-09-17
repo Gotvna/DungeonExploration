@@ -24,6 +24,8 @@ public:
     int getLevel();
     int getExperience();
 
+    void openChest();
+
     virtual void move();
     virtual void die();
     virtual int getMaxHealth();
