@@ -6,11 +6,18 @@ void Entity::attack(Entity* target)
     target->takeDamage(target->getDefense(), this->getAttackDamage());
 }
 
-void Entity::takeDamage(int defense, int damage)
+void Entity::takeDamage(int damage, int defense)
 {
-    health = damage - (defense / 100);
+    int effectiveDamage = damage - (defense / 100);
+    if (effectiveDamage < 0) {
+        effectiveDamage = 0;
+    }
+
+    health -= effectiveDamage;
+
     if (health <= 0)
     {
         die();
     }
+
 }
