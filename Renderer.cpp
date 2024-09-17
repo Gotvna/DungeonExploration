@@ -135,7 +135,17 @@ void Renderer::drawPlayerStats(const std::string &name, int health, int maxHealt
 
 void Renderer::drawEnemyStats(const std::string &name, int health, int maxHealth, int attackDamage)
 {
+	blitLine((uint8_t *)name.c_str(), name.size(), 2, 1);
+	color(0x07, name.size(), 2, 1);
+
 	drawHealthBar(2, 2, health, maxHealth);
+
+	std::string maxHP = "HP: " + std::to_string(health) + " " + " Max HP: " + std::to_string(maxHealth);
+	blitLine((uint8_t *)maxHP.c_str(), maxHP.size(), 30, 2);
+
+	std::string statsString = " Attack: " + std::to_string(attackDamage);
+	blitLine((uint8_t *)statsString.c_str(), statsString.size(), 2, 3);
+
 }
 
 void Renderer::drawRange(int centerX, int centerY, int range)
