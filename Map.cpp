@@ -80,6 +80,7 @@ bool Map::load(const char *path)
 						player = new Character();
 						player->posX = x;
 						player->posY = y;
+						player->setName(getRandomName());
 					}
 				}
 				break;
@@ -88,6 +89,7 @@ bool Map::load(const char *path)
 					Entity* enemy = new Golem();
 					enemy->posX = x;
 					enemy->posY = y;
+					enemy->setName(generateEnemiesName(10));
 					enemies.push_back(enemy);
 				}
 				break;
@@ -96,6 +98,7 @@ bool Map::load(const char *path)
 					Entity* enemy = new Ghost();
 					enemy->posX = x;
 					enemy->posY = y;
+					enemy->setName(generateEnemiesName(10));
 					enemies.push_back(enemy);
 				}
 				break;
@@ -104,6 +107,7 @@ bool Map::load(const char *path)
 					Entity* enemy = new Reaper();
 					enemy->posX = x;
 					enemy->posY = y;
+					enemy->setName(generateEnemiesName(10));
 					enemies.push_back(enemy);
 				}
 				break;
@@ -125,6 +129,32 @@ bool Map::load(const char *path)
 
 	file.close();
 	return true;
+}
+
+std::string Map::generateEnemiesName(int length)
+{
+	std::vector<std::string> syllabes = {
+		   "al", "an", "gio", "ma", "ri", "lu", "ca", "vi", "li", "ta", "le", "no", "ro", "si", "ni", "fi", "do", "sa"
+	};
+	std::vector<std::string> ending = { "a", "o", "i", "e" };
+	std::string name;
+
+	name += (char)(rand() % 26 + 'A');
+
+	int nameLength = 1; 
+
+	while (nameLength < length - 1) {
+		std::string syllabe = syllabes[rand() % syllabes.size()];
+		if (nameLength + syllabe.size() >= length - 1) {
+			break;
+		}
+		name += syllabe;
+		nameLength += syllabe.size();
+	}
+
+	name += ending[rand() % ending.size()];
+
+	return name;
 }
 
 

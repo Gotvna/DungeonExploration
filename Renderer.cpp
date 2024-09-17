@@ -133,7 +133,7 @@ void Renderer::drawPlayerStats(const std::string &name, int health, int maxHealt
 	blitLine((uint8_t *)statsString.c_str(), statsString.size(), 2, h - 2);
 }
 
-void Renderer::drawEnemyStats(const std::string &name, int health, int maxHealth, int attackDamage)
+void Renderer::drawEnemyStats(const std::string &name, int health, int maxHealth, int attackDamage, int defense)
 {
 	blitLine((uint8_t *)name.c_str(), name.size(), 2, 1);
 	color(0x07, name.size(), 2, 1);
@@ -143,7 +143,7 @@ void Renderer::drawEnemyStats(const std::string &name, int health, int maxHealth
 	std::string maxHP = "HP: " + std::to_string(health) + " " + " Max HP: " + std::to_string(maxHealth);
 	blitLine((uint8_t *)maxHP.c_str(), maxHP.size(), 30, 2);
 
-	std::string statsString = " Attack: " + std::to_string(attackDamage);
+	std::string statsString = " Attack: " + std::to_string(attackDamage) + " " + "Defense: " + std::to_string(defense);
 	blitLine((uint8_t *)statsString.c_str(), statsString.size(), 2, 3);
 
 }

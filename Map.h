@@ -18,6 +18,9 @@ public:
 
 	bool load(const char* path);
 
+	std::string generateEnemiesName(int length);
+	inline std::string getRandomName() { return characterNames[rand() % characterNames.size()]; }
+
 	inline int getWidth() const { return width; }
 	inline int getHeight() const { return height; }
 
@@ -40,6 +43,11 @@ private:
 
 	int width;
 	int height;
+
+	std::vector<std::string> characterNames = {
+	"Ezio", "Mario", "Luigi", "Dante", "Enzo",
+	"Giovanni", "Riccardo", "Stefano", "Vittorio", "Salvatore"
+	};
 };
 
 

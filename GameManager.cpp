@@ -130,7 +130,7 @@ void GameManager::playerActionAttack()
         renderer.drawRange(0x3F, p->getPosX(), p->getPosY(), 1);
         renderer.drawColor(0x2F, selectedEnemy->getPosX(), selectedEnemy->getPosY());
 
-        renderer.drawEnemyStats(selectedEnemy->name, selectedEnemy->health, selectedEnemy->getMaxHealth(), selectedEnemy->getAttackDamage());
+        renderer.drawEnemyStats(selectedEnemy->name, selectedEnemy->health, selectedEnemy->getMaxHealth(), selectedEnemy->getAttackDamage(), selectedEnemy->getDefense());
 
         WORD key = Input::getInstance().waitForInput();
 
