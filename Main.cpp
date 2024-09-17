@@ -23,29 +23,50 @@ int main()
     Map &map = Map::getInstance();
     System::getInstance().resizeForGridSize(map.getWidth(), map.getHeight());
 
+    Renderer r;
+    r.setGridSize(map.getWidth(), map.getHeight());
+    r.drawGrid();
+
     while (1)
     {
-        WORD key = Input::getInstance().waitForInput();
-
-        Renderer r;
-        r.drawGrid(map.getWidth(), map.getHeight());
-
-        Entity* p = reinterpret_cast<Entity*>(map.getPlayer());
+        Entity *p = reinterpret_cast<Entity *>(map.getPlayer());
         r.drawEntity(p->getIcon(), p->getPosX(), p->getPosY());
         for (Entity *e : map.getEnemies())
         {
             r.drawEntity(e->getIcon(), e->getPosX(), e->getPosY());
         }
 
-        switch (key)
+        int cursorX = p->getPosX();
+        int cursorY = p->getPosY();
+        while (1)
         {
-        case VK_UP:
-            std::cout << "up!\n";
-            break;
-        case VK_DOWN:
-            std::cout << "down!\n";
-            break;
+            WORD key = Input::getInstance().waitForInput();
+
+            // Erase.
+            r.drawEntity(' ', cursorX, cursorY);
+
+            switch (key)
+            {
+            case VK_UP:
+                cursorY--;
+                break;
+            case VK_DOWN:
+                cursorY++;
+                break;
+            case VK_LEFT:
+                cursorX--;
+                break;
+            case VK_RIGHT:
+                cursorX++;
+                break;
+            }
+
+            p->move();
+
+            // Erase.
+            r.drawEntity(p->getIcon(), cursorX, cursorY);
         }
+
     }
 
     return 0;

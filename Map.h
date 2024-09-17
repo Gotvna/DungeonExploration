@@ -3,6 +3,7 @@
 #include <vector>
 #include <string>
 
+class Chest;
 class Entity;
 class Character;
 
@@ -21,6 +22,7 @@ public:
 	inline int getHeight() const { return height; }
 
 	inline Character* getPlayer() const { return player; }
+	inline const std::vector<Chest*>& getChests() const { return chests; }
 	inline const std::vector<Entity*>& getEnemies() const { return enemies; }
 
 
@@ -32,8 +34,9 @@ private: // Parsing utils.
 
 private:
 
-	std::vector<Entity*> enemies;
 	Character* player;
+	std::vector<Chest*> chests;
+	std::vector<Entity*> enemies;
 
 	int width;
 	int height;

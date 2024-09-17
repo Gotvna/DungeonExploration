@@ -5,6 +5,7 @@
 #include "Reaper.h"
 #include "Ghost.h"
 #include "Character.h"
+#include "Chest.h"
 
 #include <iostream>
 #include <fstream>
@@ -18,6 +19,12 @@ void Map::clear()
 		delete e;
 	}
 	enemies.clear();
+
+	for (Chest *c : chests)
+	{
+		delete c;
+	}
+	chests.clear();
 
 	if (player)
 	{
@@ -98,6 +105,12 @@ bool Map::load(const char *path)
 					enemy->posX = x;
 					enemy->posY = y;
 					enemies.push_back(enemy);
+				}
+				break;
+			case 'c':
+				{
+					Chest* chest = new Chest();
+					chests.push_back(chest);
 				}
 				break;
 			}

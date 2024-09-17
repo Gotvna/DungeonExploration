@@ -11,9 +11,16 @@ public: // Utilities.
 
 	static void calculateConsolePosition(int& outX, int& outY, int gridX, int gridY);
 
+	static const int MARGIN_TOP = 3;
+	static const int MARGIN_BOTTOM = 3;
+
+public: // States.
+
+	void setGridSize(int width, int height);
+
 public: // Drawing functions.
 
-	void drawGrid(int width, int height);
+	void drawGrid();
 
 	void drawEntity(char icon, int posX, int posY);
 
@@ -24,4 +31,10 @@ public: // Drawing functions.
 	void drawRange(int centerX, int centerY, int range);
 
 	void drawMessage(const std::string& msg);
+
+
+private:
+
+	int gridWidth;
+	int gridHeight;
 };
