@@ -10,19 +10,18 @@
 
 #include "Renderer.h"
 
-
-
 int main()
 {
+    // Init.
     System::getInstance().initialize();
     Input::getInstance().initialize();
 
+    // Load map & inform subsystems.
     Map::getInstance().clear();
     Map::getInstance().load("Map.txt");
 
-    Character* player = new Character();
-
-    Map& map = Map::getInstance();
+    Map &map = Map::getInstance();
+    System::getInstance().resizeForGridSize(map.getWidth(), map.getHeight());
 
     while (1)
     {
@@ -31,14 +30,12 @@ int main()
         Renderer r;
         r.drawGrid(map.getWidth(), map.getHeight());
 
-        Entity* p = reinterpret_cast<Entity*>(map.getPlayer());
+        Entity *p = reinterpret_cast<Entity *>(map.getPlayer());
         r.drawEntity(p->getIcon(), p->getPosX(), p->getPosY());
         for (Entity *e : map.getEnemies())
         {
             r.drawEntity(e->getIcon(), e->getPosX(), e->getPosY());
         }
-
-        player->openChest();
 
         switch (key)
         {

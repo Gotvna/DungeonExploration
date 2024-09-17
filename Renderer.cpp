@@ -38,7 +38,7 @@ static void fillGridBuffer(uint8_t *buf, uint8_t *linePattern, int numCharsPerLi
 	buf[0] = linePattern[0];
 	for (int i = 1; i < numCharsPerLine - 1; i++)
 	{
-		buf[i] = (i % 4 == 0) ? linePattern[2] : linePattern[1];
+		buf[i] = (i % 2 == 0) ? linePattern[2] : linePattern[1];
 	}
 	buf[numCharsPerLine - 1] = linePattern[3];
 }
@@ -48,7 +48,7 @@ void Renderer::drawGrid(int width, int height)
 {
 	uint8_t line[256];
 
-	const int numCharsPerLine = width * 4 + 1;
+	const int numCharsPerLine = width * 2 + 1;
 
 	// Grid top.
 	fillGridBuffer(line, gridTop, numCharsPerLine);
@@ -79,8 +79,11 @@ void Renderer::drawGrid(int width, int height)
 
 void Renderer::drawEntity(char icon, int posX, int posY)
 {
+	int cx, cy;
+	calculateConsolePosition(cx, cy, posX, posY);
+
 	HANDLE h = GetStdHandle(STD_OUTPUT_HANDLE);
-	COORD pos = { posX, posY };
+	COORD pos = { cx, cy };
 	DWORD numWritten;
 
 	WriteConsoleOutputCharacterA(h, &icon, 1, pos, &numWritten);
@@ -111,4 +114,20 @@ void Renderer::drawMessage(const std::string &msg)
 	//int y = ??;
 
 	//blitLine(msg.c_str() + offset, lineBreak - offset, );
+}
+
+
+
+void Renderer::getConsoleSizeForGrid(int &outWidth, int &outHeight, int gridWidth, int gridHeight)
+{
+	const int MARGIN_TOP = 2, MARGIN_BOTTOM = 2;
+
+	outWidth = gridWidth * 2 + 1;
+	outHeight = gridHeight * 2 + 1 + MARGIN_TOP + MARGIN_BOTTOM;
+}
+
+void Renderer::calculateConsolePosition(int &outX, int &outY, int gridX, int gridY)
+{
+	outX = gridX * 2 + 1;
+	outY = gridY * 2 + 1 + 4;
 }
