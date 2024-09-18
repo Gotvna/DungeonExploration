@@ -19,12 +19,12 @@ public:
 
 private:
 
-	HWND hConsoleWindow;
+	HWND hConsoleWindow; //convention de nommage pour les membres
 	HANDLE hConsoleOutput;
 };
 
 
-inline System &System::getInstance()
+inline System& System::getInstance()
 {
 	static System instance;
 	return instance;
