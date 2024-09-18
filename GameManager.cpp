@@ -7,6 +7,13 @@
 #include "Character.h"
 
 
+const char *GameManager::defaultMaps[]
+{
+    "Map.txt",
+    "Map2.txt",
+};
+
+
 GameManager::GameManager()
 {
 
@@ -14,13 +21,19 @@ GameManager::GameManager()
 
 void GameManager::run()
 {
+    currentMap = 0;
+
     loadMap();
 
-    while (!Map::getInstance().getPlayer()->isDead())
+    while (1)
     {
         playerActionMove();
 
         enemyAction();
+
+        if (Map::getInstance().getPlayer()->isDead()) {
+            loadMap();
+        }
     }
 }
 
@@ -41,7 +54,7 @@ void GameManager::notifyEnemyAttack(Entity *attacker, Entity *target)
 void GameManager::loadMap()
 {
     Map::getInstance().clear();
-    Map::getInstance().load("Map.txt");
+    Map::getInstance().load(GameManager::defaultMaps[currentMap]);
 
     Map &map = Map::getInstance();
     System::getInstance().resizeForGridSize(map.getWidth(), map.getHeight());

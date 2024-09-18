@@ -14,6 +14,8 @@ public:
 
 	static inline GameManager& getInstance();
 
+	static const char* defaultMaps[];
+
 	GameManager();
 
 	void run();
@@ -52,6 +54,8 @@ private:
 
 	// Remaining movement points for the player during their turn.
 	int playerRemainingMP;
+
+	int currentMap;
 
 	std::vector<Entity*> nearbyEnemies;
 	std::vector<Chest*> nearbyChests;
