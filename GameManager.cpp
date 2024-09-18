@@ -109,7 +109,7 @@ void GameManager::redrawAll()
     Map &map = Map::getInstance();
 
     // Redraw grid (forces contents to be cleared & redrawn).
-    renderer.drawGrid();
+    renderer.drawGrid(map.getWalls());
 
     // Draw entities.
     Character *p = map.getPlayer();
@@ -149,7 +149,7 @@ void GameManager::playerActionMove()
         canMove = !map.isTileOccupied(cursorX, cursorY);
         uint16_t cursorColor = canMove ? 0x2F : 0x4F;
 
-        renderer.drawRange(0x1F, p->getPosX(), p->getPosY(), playerRemainingMP);
+        renderer.drawRange(0x1F, p->getPosX(), p->getPosY(), playerRemainingMP, map.getWalls());
         renderer.drawColor(cursorColor, cursorX, cursorY);
 
         // Draw actions.
@@ -219,7 +219,7 @@ void GameManager::playerActionAttack()
     {
         Entity* selectedEnemy = nearbyEnemies[enemyIndex];
 
-        renderer.drawRange(0x3F, p->getPosX(), p->getPosY(), 1);
+        renderer.drawRange(0x3F, p->getPosX(), p->getPosY(), 1, map.getWalls());
         renderer.drawColor(0x2F, selectedEnemy->getPosX(), selectedEnemy->getPosY());
 
         if (getDistance(p, selectedEnemy->getPosX(), selectedEnemy->getPosY()) == 1) {
@@ -360,10 +360,12 @@ void GameManager::moveEnemyTo(Entity* entity, int x, int y)
 {
     if (isEnemyMoveValid(entity, x, y))
     {
+        Map::getInstance().removeWall(entity->posX, entity->posY);
+
         entity->posX = x;
         entity->posY = y;
 
-
+        Map::getInstance().addWall(entity->posX, entity->posY);
     }
 }
 

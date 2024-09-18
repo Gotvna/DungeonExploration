@@ -20,7 +20,7 @@ public: // States.
 
 public: // Drawing functions.
 
-	void drawGrid();
+	void drawGrid(const uint8_t* walls);
 
 	void drawEntity(char icon, int posX, int posY);
 
@@ -29,7 +29,7 @@ public: // Drawing functions.
 	void drawPlayerStats(const std::string& name, int health, int maxHealth, int attackDamage, int defense, int mana, int level, int xp, int xpToLevelUp);
 	void drawEnemyStats(const std::string &name, int health, int maxHealth, int attackDamage, int defense);
 
-	void drawRange(uint16_t color, int centerX, int centerY, int range);
+	void drawRange(uint16_t color, int centerX, int centerY, int range, const uint8_t* walls);
 
 	void clearPlayerRegion();
 	void clearEnemyRegion();

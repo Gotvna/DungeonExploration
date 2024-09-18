@@ -35,6 +35,11 @@ void Map::clear()
 
 	width = 0;
 	height = 0;
+
+	if (walls) {
+		free(walls);
+		walls = 0;
+	}
 }
 
 void Map::restorePlayerState()
@@ -62,6 +67,9 @@ bool Map::load(const char *path)
 		return false;
 	}
 
+	walls = reinterpret_cast<uint8_t*>(malloc(width * height));
+	memset(walls, 0, width * height);
+
 	int x = 0, y = 0;
 
 	for (int i = 1; i < lines.size() - 1; i++)
@@ -80,50 +88,28 @@ bool Map::load(const char *path)
 
 			switch (c) {
 			case '@':
-				{
-					if (!player) {
-						player = new Character();
-						player->setName(getRandomName());
-					}
-					player->posX = x;
-					player->posY = y;
-					savedPlayerState = *player;
+				if (!player) {
+					player = new Character();
+					player->setName(getRandomName());
 				}
+				player->posX = x;
+				player->posY = y;
+				savedPlayerState = *player;
 				break;
 			case 'G':
-				{
-					Entity* enemy = new Golem();
-					enemy->posX = x;
-					enemy->posY = y;
-					enemy->setName(generateEnemiesName(10));
-					enemies.push_back(enemy);
-				}
+				spawnEnemy<Golem>(x, y);
 				break;
 			case 'S':
-				{
-					Entity* enemy = new Ghost();
-					enemy->posX = x;
-					enemy->posY = y;
-					enemy->setName(generateEnemiesName(10));
-					enemies.push_back(enemy);
-				}
+				spawnEnemy<Ghost>(x, y);
 				break;
 			case 'F':
-				{
-					Entity* enemy = new Reaper();
-					enemy->posX = x;
-					enemy->posY = y;
-					enemy->setName(generateEnemiesName(10));
-					enemies.push_back(enemy);
-				}
+				spawnEnemy<Reaper>(x, y);
 				break;
 			case 'c':
-				{
-					Chest* chest = new Chest();
-					chest->posX = x;
-					chest->posY = y;
-					chests.push_back(chest);
-				}
+				spawnChest(x, y);
+				break;
+			case '#':
+				addWall(x, y);
 				break;
 			}
 
@@ -139,18 +125,34 @@ bool Map::load(const char *path)
 
 void Map::removeEnemy(Entity *e)
 {
+	removeWall(e->getPosX(), e->getPosY());
 	enemies.erase(std::remove(enemies.begin(), enemies.end(), e));
 	delete e;
 }
 
 void Map::removeChest(Chest *c)
 {
+	removeWall(c->getPosX(), c->getPosY());
 	chests.erase(std::remove(chests.begin(), chests.end(), c));
 	delete c;
 }
 
+void Map::addWall(int x, int y)
+{
+	walls[y * width + x] = 1;
+}
+
+void Map::removeWall(int x, int y)
+{
+	walls[y * width + x] = 0;
+}
+
 bool Map::isTileOccupied(int x, int y) const
 {
+	if (walls[y * width + x] == 1) {
+		return true;
+	}
+
 	for (Entity *enemy : enemies) {
 		if (enemy->getPosX() == x && enemy->getPosY() == y) {
 			return true;
@@ -190,6 +192,18 @@ std::string Map::generateEnemiesName(int length)
 	name += ending[rand() % ending.size()];
 
 	return name;
+}
+
+
+Chest* Map::spawnChest(int x, int y)
+{
+	Chest *chest = new Chest();
+	chest->posX = x;
+	chest->posY = y;
+	chests.push_back(chest);
+
+	addWall(x, y);
+	return chest;
 }
 
 

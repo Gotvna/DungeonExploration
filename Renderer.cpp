@@ -51,7 +51,7 @@ void Renderer::setGridSize(int width, int height)
 }
 
 
-void Renderer::drawGrid()
+void Renderer::drawGrid(const uint8_t *walls)
 {
 	uint8_t line[256];
 
@@ -65,8 +65,11 @@ void Renderer::drawGrid()
 	color(0x80, numCharsPerLine, 0, baseY);
 
 	// Grid cells.
-	fillGridBuffer(line, gridCells, numCharsPerLine);
 	for (int i = 0; i < gridHeight; i++) {
+		fillGridBuffer(line, gridCells, numCharsPerLine);
+		for (int x = 0; x < gridWidth; x++) {
+			line[1 + x * 2] = (walls[i * gridWidth + x] == 1 ? 219 : ' ');
+		}
 		blitLine(line, numCharsPerLine, 0, baseY + 1 + i * 2);
 		color(0x80, numCharsPerLine, 0, baseY + 1 + i * 2);
 	}
@@ -148,13 +151,15 @@ void Renderer::drawEnemyStats(const std::string &name, int health, int maxHealth
 
 }
 
-void Renderer::drawRange(uint16_t c, int centerX, int centerY, int range)
+void Renderer::drawRange(uint16_t c, int centerX, int centerY, int range, const uint8_t *walls)
 {
 	int cx, cy;
 
 	for (int y = max(0, centerY - range), i = 0; y <= min(gridHeight - 1, centerY + range); y++, i++) {
 		int d = (range - abs(y - centerY));
 		for (int x = max(0, centerX - d); min(gridWidth - 1, x <= centerX + d); x++) {
+			if (walls[y * gridWidth + x] == 1) continue;
+
 			calculateConsolePosition(cx, cy, x, y);
 			color(c, 1, cx, cy);
 		}
