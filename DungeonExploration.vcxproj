@@ -137,6 +137,7 @@
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Map.cpp" />
+    <ClCompile Include="Object.cpp" />
     <ClCompile Include="Reaper.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="System.cpp" />
@@ -150,6 +151,7 @@
     <ClInclude Include="Golem.h" />
     <ClInclude Include="Input.h" />
     <ClInclude Include="Map.h" />
+    <ClInclude Include="Object.h" />
     <ClInclude Include="Reaper.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="System.h" />
