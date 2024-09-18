@@ -122,6 +122,7 @@ void GameManager::playerActionMove()
         case 'A':
             if (nearbyEnemies.empty()) break;
             playerActionAttack();
+            playerRemainingMP = 0;
             break;
         case 'C':
             if (nearbyChests.empty()) break;
