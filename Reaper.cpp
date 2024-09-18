@@ -13,7 +13,7 @@ Reaper::~Reaper()
 {
 }
 
-static int sign(int i)
+int sign(int i)
 {
     if (i > 0) return 1;
     if (i < 0) return -1;
@@ -25,22 +25,19 @@ void Reaper::update()
     Map& map = Map::getInstance();
     Character *p = map.getPlayer();
 
-    //if (GameManager::getDistance(this, p->getPosX(), p->getPosY()) <= 4)
-    {
-        // move away from player
-        int dx = p->getPosX() - getPosX();
-        int dy = p->getPosY() - getPosY();
-        if (abs(dx) > abs(dy)) {
-            dx = sign(dx) * this->getMovementPoint();
-            dy = 0;
-        }
-        else {
-            dx = 0;
-            dy = sign(dy) * this->getMovementPoint();
-        }
-
-        GameManager::getInstance().moveEnemyTo(this, getPosX() - dx, getPosY() - dy);
+    // move away from player
+    int dx = p->getPosX() - getPosX();
+    int dy = p->getPosY() - getPosY();
+    if (abs(dx) > abs(dy)) {
+        dx = sign(dx) * this->getMovementPoint();
+        dy = 0;
     }
+    else {
+        dx = 0;
+        dy = sign(dy) * this->getMovementPoint();
+    }
+
+    GameManager::getInstance().moveEnemyTo(this, getPosX() - dx, getPosY() - dy);
 }
 
 void Reaper::die()

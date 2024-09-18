@@ -12,6 +12,13 @@
 #include <string>
 
 
+void Map::reset()
+{
+	clear();
+
+	restorePlayerState();
+}
+
 void Map::clear()
 {
 	for (Entity* e : enemies)
@@ -26,14 +33,15 @@ void Map::clear()
 	}
 	chests.clear();
 
-	if (player)
-	{
-		delete player;
-		player = 0;
-	}
-
 	width = 0;
 	height = 0;
+}
+
+void Map::restorePlayerState()
+{
+	if (player) {
+		*player = savedPlayerState;
+	}
 }
 
 bool Map::load(const char *path)
@@ -73,15 +81,13 @@ bool Map::load(const char *path)
 			switch (c) {
 			case '@':
 				{
-					if (player) {
-						std::cout << "Map contains more than one player spawn\n";
-					}
-					else {
+					if (!player) {
 						player = new Character();
 						player->posX = x;
 						player->posY = y;
 						player->setName(getRandomName());
 					}
+					savedPlayerState = *player;
 				}
 				break;
 			case 'G':

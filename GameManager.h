@@ -28,7 +28,8 @@ public:
 
 private:
 
-	void loadMap();
+	void reloadMap();
+	void loadNextMap();
 
 	void redrawAll();
 

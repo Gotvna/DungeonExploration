@@ -23,7 +23,7 @@ void GameManager::run()
 {
     currentMap = 0;
 
-    loadMap();
+    reloadMap();
 
     while (1)
     {
@@ -49,14 +49,14 @@ void GameManager::run()
                 currentMap = 0;
             }
             
-            loadMap();
+            loadNextMap();
             continue;
         }
 
         enemyAction();
 
         if (Map::getInstance().getPlayer()->isDead()) {
-            loadMap();
+            reloadMap();
         }
     }
 }
@@ -75,7 +75,21 @@ void GameManager::notifyEnemyAttack(Entity *attacker, Entity *target)
     waitForEnter();
 }
 
-void GameManager::loadMap()
+void GameManager::reloadMap()
+{
+    Map::getInstance().reset();
+    Map::getInstance().load(GameManager::defaultMaps[currentMap]);
+
+    Map &map = Map::getInstance();
+    System::getInstance().resizeForGridSize(map.getWidth(), map.getHeight());
+
+    // Setup renderer.
+    renderer.setGridSize(map.getWidth(), map.getHeight());
+    renderer.clearEnemyRegion();
+    renderer.clearPlayerRegion();
+}
+
+void GameManager::loadNextMap()
 {
     Map::getInstance().clear();
     Map::getInstance().load(GameManager::defaultMaps[currentMap]);
@@ -286,6 +300,8 @@ void GameManager::playerActionCollect()
 
         removeChest(chest);
     }
+
+    updateNearbyEnemyAndChest();
 }
 
 void GameManager::enemyAction()
@@ -341,6 +357,8 @@ void GameManager::moveEnemyTo(Entity* entity, int x, int y)
     {
         entity->posX = x;
         entity->posY = y;
+
+
     }
 }
 

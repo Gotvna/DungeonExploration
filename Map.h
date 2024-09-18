@@ -1,11 +1,12 @@
 #pragma once
 
+#include "Character.h"
+
 #include <vector>
 #include <string>
 
 class Chest;
 class Entity;
-class Character;
 
 
 class Map
@@ -14,7 +15,13 @@ public:
 
 	static inline Map& getInstance();
 
+	// Reset the entire map, including the player's stats.
+	void reset();
+
+	// Reset the contents of the map, but keep the player.
 	void clear();
+
+	void restorePlayerState();
 
 	bool load(const char* path);
 
@@ -45,6 +52,7 @@ private: // Parsing utils.
 private:
 
 	Character* player;
+	Character savedPlayerState;
 	std::vector<Chest*> chests;
 	std::vector<Entity*> enemies;
 
