@@ -7,7 +7,7 @@ class Input
 {
 public:
 
-    static Input &getInstance() { static Input g_instance; return g_instance; }
+    static Input &getInstance() { static Input g_instance; return g_instance; } //#TODO Not Consistent
 
     Input();
 

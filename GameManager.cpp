@@ -27,6 +27,7 @@ void GameManager::run()
 
     while (1)
     {
+        // Only functions, 0 variables
         updateNearbyEnemyAndChest();
         playerActionMove();
 
@@ -147,7 +148,7 @@ void GameManager::playerActionMove()
 
         // Check if over object or enemy.
         canMove = !map.isTileOccupied(cursorX, cursorY);
-        uint16_t cursorColor = canMove ? 0x2F : 0x4F;
+        uint16_t cursorColor = canMove ? 0x2F : 0x4F; // define color
 
         renderer.drawRange(0x1F, p->getPosX(), p->getPosY(), playerRemainingMP, map.getWalls());
         renderer.drawColor(cursorColor, cursorX, cursorY);
@@ -182,12 +183,16 @@ void GameManager::playerActionMove()
             playerRemainingMP = 0;
             break;
         case 'A':
-            if (nearbyEnemies.empty()) break;
-            playerActionAttack();
+            if (nearbyEnemies.empty() == false)
+            {
+                playerActionAttack();
+            }
             break;
         case 'C':
-            if (nearbyChests.empty()) break;
-            playerActionCollect();
+            if (nearbyChests.empty() == false)
+            {
+               playerActionCollect();
+            }
             break;
         }
 

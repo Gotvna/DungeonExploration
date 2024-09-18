@@ -33,7 +33,7 @@ void System::initialize()
 void System::resizeForGridSize(int gridWidth, int gridHeight)
 {
 	// Win32 hack : first resize to impossible size, then shrink down.
-	COORD size = { 260, 50 };
+	COORD size = { 260, 50 }; // HARDCODE FAIRE UN DEFINE
 	SetConsoleScreenBufferSize(hConsoleOutput, size);
 
 	int width, height;
