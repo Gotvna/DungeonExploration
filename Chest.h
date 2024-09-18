@@ -4,12 +4,18 @@
 class Chest : public Object
 {
 public:
+    enum Loot
+    {
+        HEALTH,
+        ATTACK,
+        DEFENSE,
+        MANA
+    };
+
     Chest();
     ~Chest();
 
-    void openChest();
-
-    void getLoot();
+    Loot getLoot();
 
     int getHealth() { return health; }
     int getAttackDamage() { return attackDamage; }

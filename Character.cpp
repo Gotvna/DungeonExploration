@@ -116,11 +116,12 @@ int Character::getMana() { return mana; }
 
 char Character::getIcon() { return '@'; }
 
-void Character::openChest(Chest* chest)
+Chest::Loot Character::openChest(Chest* chest)
 {
-    chest->getLoot();
+    Chest::Loot loot = chest->getLoot();
     increaseAttackDamage(chest->getAttackDamage());
     increaseDefense(chest->getDefense());
     increaseHealth(chest->getHealth());
     increaseMana(chest->getMana());
+    return loot;
 }

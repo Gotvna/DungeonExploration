@@ -9,8 +9,8 @@
 
 const char *GameManager::defaultMaps[]
 {
-    "Map.txt",
-    "Map2.txt",
+    "data/Map.txt",
+    "data/Map2.txt",
 };
 
 
@@ -291,11 +291,16 @@ void GameManager::playerActionCollect()
     Character *p = map.getPlayer();
 
     for (Chest *chest : nearbyChests) {
-        p->openChest(chest);
+        Chest::Loot loot = p->openChest(chest);
 
         // TODO : Actually display the chest's loot.
         renderer.clearPlayerRegion();
-        renderer.drawMessage("You found a chest with ...!");
+        switch (loot) {
+        case Chest::HEALTH:  renderer.drawMessage("You found a chest with " + std::to_string(chest->getHealth())       + " health!");        break;
+        case Chest::ATTACK:  renderer.drawMessage("You found a chest with " + std::to_string(chest->getAttackDamage()) + " attack damage!"); break;
+        case Chest::DEFENSE: renderer.drawMessage("You found a chest with " + std::to_string(chest->getDefense())      + " defense!");       break;
+        case Chest::MANA:    renderer.drawMessage("You found a chest with " + std::to_string(chest->getMana())         + " mana!");          break;
+        }
         waitForEnter();
 
         removeChest(chest);
