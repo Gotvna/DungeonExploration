@@ -13,10 +13,8 @@ int Entity::takeDamage(int damage)
         return 0;
     }
 
-    int effectiveDamage = damage - (this->getDefense() / 100.0f);
-    if (effectiveDamage < 0) {
-        effectiveDamage = 0;
-    }
+    float reductionPercentage = this->getDefense() / 100.0f;
+    int effectiveDamage = static_cast<int>(damage * (1.0f - reductionPercentage));
 
     health -= effectiveDamage;
 
