@@ -205,6 +205,14 @@ void Renderer::drawMessage(const std::string &msg)
 	blitLine((uint8_t*) msg.c_str(), msg.size(), 2, h - 4);
 }
 
+void Renderer::drawAction(const std::string &msg, int row)
+{
+	int w, h;
+	Renderer::getConsoleSizeForGrid(w, h, gridWidth, gridHeight);
+
+	blitLine((uint8_t *)msg.c_str(), msg.size(), w - 3 - msg.length(), h - 4 + row);
+}
+
 
 void Renderer::drawHealthBar(int x, int y, int hp, int maxhp)
 {

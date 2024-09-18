@@ -1,6 +1,8 @@
 #pragma once
 #include "Entity.h"
 
+class Chest;
+
 class Character : public Entity
 {
 public:
@@ -25,7 +27,7 @@ public:
 
     void fillHealth();
 
-    void openChest();
+    void openChest(Chest* chest);
     void levelUp();
     void specialAttack(Entity* target);
 

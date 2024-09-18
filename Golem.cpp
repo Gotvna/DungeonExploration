@@ -44,7 +44,7 @@ int Golem::getMovementPoint()
 
 int Golem::getAttackDamage()
 {
-    return 20;
+    return 10;
 }
 
 int Golem::getDefense()

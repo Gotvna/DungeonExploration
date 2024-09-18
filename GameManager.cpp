@@ -113,6 +113,14 @@ void GameManager::playerActionMove()
         renderer.drawRange(0x1F, p->getPosX(), p->getPosY(), playerRemainingMP);
         renderer.drawColor(cursorColor, cursorX, cursorY);
 
+        // Draw actions.
+        if (!nearbyEnemies.empty()) {
+            renderer.drawAction("(A) Attack", 0);
+        }
+        if (!nearbyChests.empty()) {
+            renderer.drawAction("(C) Open chest", 1);
+        }
+
         WORD key = Input::getInstance().waitForInput();
 
         // Erase.
@@ -240,7 +248,7 @@ void GameManager::playerActionCollect()
     Character *p = map.getPlayer();
 
     for (Chest *chest : nearbyChests) {
-        chest->getLoot();
+        p->openChest(chest);
 
         // TODO : Actually display the chest's loot.
         renderer.clearPlayerRegion();
@@ -300,7 +308,7 @@ void GameManager::movePlayerTo(int x, int y)
 
 void GameManager::moveEnemyTo(Entity* entity, int x, int y)
 {
-    if (isMoveValid(entity, entity->getMovementPoint(), x, y))
+    if (isEnemyMoveValid(entity, x, y))
     {
         entity->posX = x;
         entity->posY = y;
@@ -344,6 +352,7 @@ bool GameManager::isEnemyMoveValid(Entity* entity, int desiredX, int desiredY)
 
     if (getDistance(entity, desiredX, desiredY) > entity->getMovementPoint()) return false;
     if (map.isTileOccupied(desiredX, desiredY)) return false;
+    if (desiredX < 0 || desiredX >= map.getWidth() || desiredY < 0 || desiredY >= map.getHeight()) return false;
 
     return true;
 }

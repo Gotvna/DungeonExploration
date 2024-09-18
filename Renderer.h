@@ -34,6 +34,7 @@ public: // Drawing functions.
 	void clearPlayerRegion();
 	void clearEnemyRegion();
 	void drawMessage(const std::string& msg);
+	void drawAction(const std::string& msg, int row);
 
 private:
 
