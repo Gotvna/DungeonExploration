@@ -149,17 +149,21 @@ void Map::removeWall(int x, int y)
 
 bool Map::isTileOccupied(int x, int y) const
 {
+	if (x < 0 || x >= width || y < 0 || y >= height) {
+		return false;
+	}
+
 	if (walls[y * width + x] == 1) {
 		return true;
 	}
 
-	for (Entity *enemy : enemies) {
+	for (Entity* enemy : enemies) {
 		if (enemy->getPosX() == x && enemy->getPosY() == y) {
 			return true;
 		}
 	}
 
-	for (Chest *chest : chests) {
+	for (Chest* chest : chests) {
 		if (chest->getPosX() == x && chest->getPosY() == y) {
 			return true;
 		}

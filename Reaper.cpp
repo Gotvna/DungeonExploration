@@ -1,8 +1,8 @@
 #include "Reaper.h"
-
 #include "Map.h"
 #include "Character.h"
 #include "GameManager.h"
+#include "AStarPathfinder.h"
 
 Reaper::Reaper()
 {
@@ -13,31 +13,26 @@ Reaper::~Reaper()
 {
 }
 
-int sign(int i)
-{
-    if (i > 0) return 1;
-    if (i < 0) return -1;
-    return 0;
-}
-
 void Reaper::update()
 {
     Map& map = Map::getInstance();
-    Character *p = map.getPlayer();
+    Character* player = map.getPlayer();
 
-    // move away from player
-    int dx = p->getPosX() - getPosX();
-    int dy = p->getPosY() - getPosY();
-    if (abs(dx) > abs(dy)) {
-        dx = sign(dx) * this->getMovementPoint();
-        dy = 0;
-    }
-    else {
-        dx = 0;
-        dy = sign(dy) * this->getMovementPoint();
-    }
+    int startX = getPosX();
+    int startY = getPosY();
+    int playerX = player->getPosX();
+    int playerY = player->getPosY();
 
-    GameManager::getInstance().moveEnemyTo(this, getPosX() - dx, getPosY() - dy);
+    int movementPoints = this->getMovementPoint();
+
+    AStarPathfinder pathfinder(true);
+    std::vector<AStarPathfinder::Node*> path = pathfinder.findPath(startX, startY, playerX, playerY, map);
+
+    if (!path.empty() && path.size() > 1) {
+        int steps = std::min(movementPoints, (int)path.size() - 1);
+        AStarPathfinder::Node* nextStep = path[steps];
+        GameManager::getInstance().moveEnemyTo(this, nextStep->x, nextStep->y);
+    }
 }
 
 void Reaper::die()
@@ -45,7 +40,7 @@ void Reaper::die()
     health = 0;
 
     Map& map = Map::getInstance();
-    Character *p = map.getPlayer();
+    Character* p = map.getPlayer();
     p->increaseExperience(2);
 
     for (int i = 0; i < map.getEnemies().size(); i++)
