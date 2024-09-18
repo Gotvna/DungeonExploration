@@ -61,6 +61,8 @@ void GameManager::loadMap()
 
     // Setup renderer.
     renderer.setGridSize(map.getWidth(), map.getHeight());
+    renderer.clearEnemyRegion();
+    renderer.clearPlayerRegion();
 }
 
 void GameManager::redrawAll()
@@ -135,7 +137,6 @@ void GameManager::playerActionMove()
         case 'A':
             if (nearbyEnemies.empty()) break;
             playerActionAttack();
-            playerRemainingMP = 0;
             break;
         case 'C':
             if (nearbyChests.empty()) break;
@@ -218,6 +219,9 @@ void GameManager::playerActionAttack()
             }
 
             updateNearbyEnemyAndChest();
+
+            // End turn automatically.
+            playerRemainingMP = 0;
 
             done = true;
             break;
