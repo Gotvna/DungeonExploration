@@ -148,9 +148,16 @@ void GameManager::playerActionMove()
 
         // Check if over object or enemy.
         canMove = !map.isTileOccupied(cursorX, cursorY);
-        uint16_t cursorColor = canMove ? 0x2F : 0x4F; // define color
+        uint16_t cursorColor = canMove ? 0x2F : 0x4F; // TODO : use macros for color
 
-        renderer.drawRange(0x1F, p->getPosX(), p->getPosY(), playerRemainingMP, map.getWalls());
+        const int MAX_MP_SIZE = 5 + 5 + 1;
+        uint32_t distmap[MAX_MP_SIZE * MAX_MP_SIZE];
+        bool rangemap[MAX_MP_SIZE * MAX_MP_SIZE];
+        Map::getInstance().findDistanceToTilesRect(distmap, p->getPosX(), p->getPosY(), playerRemainingMP);
+        Map::getInstance().getReachableTiles(rangemap, distmap, playerRemainingMP);
+
+        const int bitmapSize = playerRemainingMP + playerRemainingMP + 1;
+        renderer.drawBitmap(0x1F, rangemap, p->getPosX() - playerRemainingMP, p->getPosY() - playerRemainingMP, bitmapSize, bitmapSize);
         renderer.drawColor(cursorColor, cursorX, cursorY);
 
         // Draw actions.
@@ -197,7 +204,7 @@ void GameManager::playerActionMove()
         }
 
         // Move cursor.
-        if (isMoveValid(p, playerRemainingMP, newX, newY)) {
+        if (isMoveValid(p, playerRemainingMP, newX, newY) && rangemap[(newY - p->getPosY() + playerRemainingMP) * bitmapSize + (newX - p->getPosX() + playerRemainingMP)]) {
             cursorX = newX;
             cursorY = newY;
         }

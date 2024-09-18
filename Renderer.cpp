@@ -153,6 +153,25 @@ void Renderer::drawEnemyStats(const std::string &name, int health, int maxHealth
 
 }
 
+void Renderer::drawBitmap(uint16_t color, const bool* map, int x, int y, int w, int h)
+{
+	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+
+	for (int i = 0; i < h; i++) {
+		for (int j = 0; j < w; j++) {
+			if (map[i * w + j]) {
+				int cx, cy;
+				calculateConsolePosition(cx, cy, j + x, i + y);
+
+				COORD pos = { cx, cy };
+				DWORD numWritten;
+
+				WriteConsoleOutputAttribute(hConsole, &color, 1, pos, &numWritten);
+			}
+		}
+	}
+}
+
 void Renderer::drawRange(uint16_t c, int centerX, int centerY, int range, const uint8_t *walls)
 {
 	int cx, cy;

@@ -168,6 +168,89 @@ bool Map::isTileOccupied(int x, int y) const
 	return false;
 }
 
+#include <Windows.h>
+void Map::findDistanceToTilesRect(uint32_t* distance, int cx, int cy, int d) const
+{
+	bool visited[17 * 17]; // TODO : Hardcoded, ideally this is a "maximum supported map size".
+	std::vector<int> stack;
+	int rx, ry, dist;
+
+	const int row = d * 2 + 1;
+
+	memset(visited,  0,    row * row);
+	memset(distance, 0xFF, row * row * 4);
+
+	// Center tile.
+	int i = (d) * row + (d);
+	distance[i] = 0;
+	stack.push_back(i);
+
+	while (!stack.empty()) {
+		i = stack.front();
+		stack.erase(stack.begin());
+
+		visited[i] = true;
+		dist = distance[i];
+
+		rx = (i % row);
+		ry = (i / row);
+
+		if (rx+cx-d > 0 && rx > 0) {
+			i = (ry) * row + (rx - 1);
+			if (!isTileOccupied(rx+cx-d-1, ry+cy-d)) {
+				if (distance[i] > dist + 1) distance[i] = dist + 1;
+				if (!visited[i]) stack.push_back(i);
+			}
+		}
+		if (ry+cy-d > 0 && ry > 0) {
+			i = (ry - 1) * row + (rx);
+			if (!isTileOccupied(rx+cx-d, ry+cy-d-1)) {
+				if (distance[i] > dist + 1) distance[i] = dist + 1;
+				if (!visited[i]) stack.push_back(i);
+			}
+		}
+		if (rx+cx-d < width - 1 && rx < row - 1) {
+			i = (ry) * row + (rx + 1);
+			if (!isTileOccupied(rx+cx-d+1, ry+cy-d)) {
+				if (distance[i] > dist + 1) distance[i] = dist + 1;
+				if (!visited[i]) stack.push_back(i);
+			}
+		}
+		if (ry+cy-d < height - 1 && ry < row - 1) {
+			i = (ry + 1) * row + (rx);
+			if (!isTileOccupied(rx+cx-d, ry+cy-d+1)) {
+				if (distance[i] > dist + 1) distance[i] = dist + 1;
+				if (!visited[i]) stack.push_back(i);
+			}
+		}
+
+		/*SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), {0, 0});
+		i = 0;
+		for (int y = 0; y < row; y++) {
+			for (int x = 0; x < row; x++) {
+				if (distance[i] == 0xFFFFFFFF) std::cout << "u  ";
+				else std::cout << distance[i] << "  ";
+				i++;
+			}
+
+			std::cout << '\n';
+		}*/
+	}
+}
+
+void Map::getReachableTiles(bool* outReachable, const uint32_t* distances, int d) const
+{
+	const int row = d * 2 + 1;
+
+	int i = 0;
+	for (int y = 0; y < row; y++) {
+		for (int x = 0; x < row; x++) {
+			outReachable[i] = (distances[i] <= d);
+			i++;
+		}
+	}
+}
+
 std::string Map::generateEnemiesName(int length)
 {
 	std::vector<std::string> syllabes = {
