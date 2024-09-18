@@ -83,10 +83,10 @@ bool Map::load(const char *path)
 				{
 					if (!player) {
 						player = new Character();
-						player->posX = x;
-						player->posY = y;
 						player->setName(getRandomName());
 					}
+					player->posX = x;
+					player->posY = y;
 					savedPlayerState = *player;
 				}
 				break;
