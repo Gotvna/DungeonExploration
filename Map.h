@@ -23,6 +23,8 @@ public:
 	void removeEnemy(Entity* e);
 	void removeChest(Chest* c);
 
+	bool isTileOccupied(int x, int y) const;
+
 	std::string generateEnemiesName(int length);
 	inline std::string getRandomName() { return characterNames[rand() % characterNames.size()]; }
 

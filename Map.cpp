@@ -143,6 +143,23 @@ void Map::removeChest(Chest *c)
 	delete c;
 }
 
+bool Map::isTileOccupied(int x, int y) const
+{
+	for (Entity *enemy : enemies) {
+		if (enemy->getPosX() == x && enemy->getPosY() == y) {
+			return true;
+		}
+	}
+
+	for (Chest *chest : chests) {
+		if (chest->getPosX() == x && chest->getPosY() == y) {
+			return true;
+		}
+	}
+
+	return false;
+}
+
 std::string Map::generateEnemiesName(int length)
 {
 	std::vector<std::string> syllabes = {

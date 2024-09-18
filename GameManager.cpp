@@ -71,12 +71,18 @@ void GameManager::playerActionMove()
     // Player move loop.
     int cursorX = p->getPosX(), cursorY = p->getPosY();
     int newX = cursorX, newY = cursorY;
+    bool canMove = true;
+
     while (playerRemainingMP > 0)
     {
         redrawAll();
 
+        // Check if over object or enemy.
+        canMove = !map.isTileOccupied(cursorX, cursorY);
+        uint16_t cursorColor = canMove ? 0x2F : 0x4F;
+
         renderer.drawRange(0x1F, p->getPosX(), p->getPosY(), playerRemainingMP);
-        renderer.drawColor(0x2F, cursorX, cursorY);
+        renderer.drawColor(cursorColor, cursorX, cursorY);
 
         WORD key = Input::getInstance().waitForInput();
 
@@ -91,8 +97,10 @@ void GameManager::playerActionMove()
         case VK_LEFT:  if (newX != 0)                   newX--; break;
         case VK_RIGHT: if (newX != map.getWidth() - 1)  newX++; break;
         case VK_SPACE:
-            movePlayerTo(cursorX, cursorY);
-            updateNearbyEnemyAndChest();
+            if (canMove) {
+                movePlayerTo(cursorX, cursorY);
+                updateNearbyEnemyAndChest();
+            }
             break;
         case VK_RETURN:
             updateNearbyEnemyAndChest();
