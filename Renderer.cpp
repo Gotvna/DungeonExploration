@@ -65,13 +65,15 @@ void Renderer::drawGrid(const uint8_t *walls)
 	color(0x80, numCharsPerLine, 0, baseY);
 
 	// Grid cells.
+	fillGridBuffer(line, gridCells, numCharsPerLine);
 	for (int i = 0; i < gridHeight; i++) {
-		fillGridBuffer(line, gridCells, numCharsPerLine);
-		for (int x = 0; x < gridWidth; x++) {
-			line[1 + x * 2] = (walls[i * gridWidth + x] == 1 ? 219 : ' ');
-		}
 		blitLine(line, numCharsPerLine, 0, baseY + 1 + i * 2);
 		color(0x80, numCharsPerLine, 0, baseY + 1 + i * 2);
+		for (int x = 0; x < gridWidth; x++) {
+			if (walls[i * gridWidth + x] == 1) {
+				drawColor(0x0F, x, i);
+			}
+		}
 	}
 
 	// Horizontal delimiters.
