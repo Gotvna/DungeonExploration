@@ -147,6 +147,7 @@
     <ClInclude Include="AStarPathFinder.h" />
     <ClInclude Include="Character.h" />
     <ClInclude Include="Chest.h" />
+    <ClInclude Include="Config\Color.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="GameManager.h" />
     <ClInclude Include="Ghost.h" />

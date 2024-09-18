@@ -51,7 +51,7 @@ void Renderer::setGridSize(int width, int height)
 }
 
 
-void Renderer::drawGrid(const uint8_t *walls)
+void Renderer::drawGrid(uint16_t backColor, uint16_t wallColor, const uint8_t *walls)
 {
 	uint8_t line[256];
 
@@ -62,16 +62,16 @@ void Renderer::drawGrid(const uint8_t *walls)
 	// Grid top.
 	fillGridBuffer(line, gridTop, numCharsPerLine);
 	blitLine(line, numCharsPerLine, 0, baseY);
-	color(0x80, numCharsPerLine, 0, baseY);
+	color(backColor, numCharsPerLine, 0, baseY);
 
 	// Grid cells.
 	fillGridBuffer(line, gridCells, numCharsPerLine);
 	for (int i = 0; i < gridHeight; i++) {
 		blitLine(line, numCharsPerLine, 0, baseY + 1 + i * 2);
-		color(0x80, numCharsPerLine, 0, baseY + 1 + i * 2);
+		color(backColor, numCharsPerLine, 0, baseY + 1 + i * 2);
 		for (int x = 0; x < gridWidth; x++) {
 			if (walls[i * gridWidth + x] == 1) {
-				drawColor(0x0F, x, i);
+				drawColor(wallColor, x, i);
 			}
 		}
 	}
@@ -80,13 +80,13 @@ void Renderer::drawGrid(const uint8_t *walls)
 	fillGridBuffer(line, gridDelims, numCharsPerLine);
 	for (int i = 0; i < gridHeight - 1; i++) {
 		blitLine(line, numCharsPerLine, 0, baseY + 2 + i * 2);
-		color(0x80, numCharsPerLine, 0, baseY + 2 + i * 2);
+		color(backColor, numCharsPerLine, 0, baseY + 2 + i * 2);
 	}
 
 	// Grid bottom.
 	fillGridBuffer(line, gridBottom, numCharsPerLine);
 	blitLine(line, numCharsPerLine, 0, baseY + 2 + (gridHeight - 1) * 2);
-	color(0x80, numCharsPerLine, 0, baseY + 2 + (gridHeight - 1) * 2);
+	color(backColor, numCharsPerLine, 0, baseY + 2 + (gridHeight - 1) * 2);
 }
 
 void Renderer::drawEntity(char icon, int posX, int posY)
@@ -156,7 +156,7 @@ void Renderer::drawEnemyStats(const std::string &name, int health, int maxHealth
 void Renderer::drawBitmap(uint16_t color, const bool* map, int x, int y, int w, int h)
 {
 	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
-
+	
 	for (int i = 0; i < h; i++) {
 		for (int j = 0; j < w; j++) {
 			if (map[i * w + j]) {
@@ -172,15 +172,13 @@ void Renderer::drawBitmap(uint16_t color, const bool* map, int x, int y, int w, 
 	}
 }
 
-void Renderer::drawRange(uint16_t c, int centerX, int centerY, int range, const uint8_t *walls)
+void Renderer::drawRange(uint16_t c, int centerX, int centerY, int range)
 {
 	int cx, cy;
 
 	for (int y = max(0, centerY - range), i = 0; y <= min(gridHeight - 1, centerY + range); y++, i++) {
 		int d = (range - abs(y - centerY));
 		for (int x = max(0, centerX - d); min(gridWidth - 1, x <= centerX + d); x++) {
-			if (walls[y * gridWidth + x] == 1) continue;
-
 			calculateConsolePosition(cx, cy, x, y);
 			color(c, 1, cx, cy);
 		}

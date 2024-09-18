@@ -6,6 +6,8 @@
 #include "Chest.h"
 #include "Character.h"
 
+#include "Config/Color.h"
+
 #include <iostream>
 
 
@@ -112,7 +114,7 @@ void GameManager::redrawAll()
     Map &map = Map::getInstance();
 
     // Redraw grid (forces contents to be cleared & redrawn).
-    renderer.drawGrid(map.getWalls());
+    renderer.drawGrid(COLOR_GRID, COLOR_WALL, map.getWalls());
 
     // Draw entities.
     Character *p = map.getPlayer();
@@ -142,15 +144,10 @@ void GameManager::playerActionMove()
     // Player move loop.
     int cursorX = p->getPosX(), cursorY = p->getPosY();
     int newX = cursorX, newY = cursorY;
-    bool canMove = true;
 
     while (playerRemainingMP > 0)
     {
         redrawAll();
-
-        // Check if over object or enemy.
-        canMove = !map.isTileOccupied(cursorX, cursorY);
-        uint16_t cursorColor = canMove ? 0x2F : 0x4F; // TODO : use macros for color
 
         const int MAX_MP_SIZE = 5 + 5 + 1;
         uint32_t distmap[MAX_MP_SIZE * MAX_MP_SIZE];
@@ -159,8 +156,8 @@ void GameManager::playerActionMove()
         Map::getInstance().getReachableTiles(rangemap, distmap, playerRemainingMP);
 
         const int bitmapSize = playerRemainingMP + playerRemainingMP + 1;
-        renderer.drawBitmap(0x1F, rangemap, p->getPosX() - playerRemainingMP, p->getPosY() - playerRemainingMP, bitmapSize, bitmapSize);
-        renderer.drawColor(cursorColor, cursorX, cursorY);
+        renderer.drawBitmap(COLOR_RANGE, rangemap, p->getPosX() - playerRemainingMP, p->getPosY() - playerRemainingMP, bitmapSize, bitmapSize);
+        renderer.drawColor(COLOR_CURSOR, cursorX, cursorY);
 
         // Draw actions.
         if (!nearbyEnemies.empty()) {
@@ -172,9 +169,6 @@ void GameManager::playerActionMove()
 
         WORD key = Input::getInstance().waitForInput();
 
-        // Erase.
-        renderer.drawColor(0x70, cursorX, cursorY);
-
         // Listen to action.
         switch (key)
         {
@@ -183,10 +177,8 @@ void GameManager::playerActionMove()
         case VK_LEFT:  if (newX != 0)                   newX--; break;
         case VK_RIGHT: if (newX != map.getWidth() - 1)  newX++; break;
         case VK_SPACE:
-            if (canMove) {
-                movePlayerTo(cursorX, cursorY);
-                updateNearbyEnemyAndChest();
-            }
+            movePlayerTo(cursorX, cursorY);
+            updateNearbyEnemyAndChest();
             break;
         case VK_RETURN:
             playerRemainingMP = 0;
@@ -205,7 +197,7 @@ void GameManager::playerActionMove()
             break;
         }
 
-        // Move cursor.
+        // Move cursor with check.
         if (isMoveValid(p, playerRemainingMP, newX, newY) && rangemap[(newY - p->getPosY() + playerRemainingMP) * bitmapSize + (newX - p->getPosX() + playerRemainingMP)]) {
             cursorX = newX;
             cursorY = newY;
@@ -233,8 +225,8 @@ void GameManager::playerActionAttack()
     {
         Entity* selectedEnemy = nearbyEnemies[enemyIndex];
 
-        renderer.drawRange(0x3F, p->getPosX(), p->getPosY(), 1, map.getWalls());
-        renderer.drawColor(0x2F, selectedEnemy->getPosX(), selectedEnemy->getPosY());
+        renderer.drawRange(COLOR_ATTACK_RANGE, p->getPosX(), p->getPosY(), 1);
+        renderer.drawColor(COLOR_CURSOR, selectedEnemy->getPosX(), selectedEnemy->getPosY());
 
         if (getDistance(p, selectedEnemy->getPosX(), selectedEnemy->getPosY()) == 1) {
             renderer.drawEnemyStats(selectedEnemy->name, selectedEnemy->health,

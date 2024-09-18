@@ -20,7 +20,7 @@ public: // States.
 
 public: // Drawing functions.
 
-	void drawGrid(const uint8_t* walls);
+	void drawGrid(uint16_t backColor, uint16_t wallColor, const uint8_t* walls);
 
 	// Draw an entity. This essentially prints a character inside the grid tile at (posX, posY).
 	void drawEntity(char icon, int posX, int posY);
@@ -36,7 +36,7 @@ public: // Drawing functions.
 	void drawBitmap(uint16_t color, const bool* map, int x, int y, int w, int h);
 
 	// Draws a diamond pattern around a given center.
-	void drawRange(uint16_t color, int centerX, int centerY, int range, const uint8_t* walls);
+	void drawRange(uint16_t color, int centerX, int centerY, int range);
 
 	void clearPlayerRegion();
 	void clearEnemyRegion();
