@@ -29,6 +29,30 @@ void GameManager::run()
     {
         playerActionMove();
 
+        if (hasPlayerWon()) {
+            if (currentMap == 0) {
+                renderer.clearPlayerRegion();
+                renderer.drawMessage("Congratulations! You have completed the first dungeon!");
+                waitForEnter();
+
+                renderer.clearPlayerRegion();
+                renderer.drawMessage("But your quest is not over yet. Onward, hero!");
+                waitForEnter();
+
+                currentMap++;
+            }
+            else {
+                renderer.clearPlayerRegion();
+                renderer.drawMessage("You have completed the game!!!");
+                waitForEnter();
+
+                currentMap = 0;
+            }
+            
+            loadMap();
+            continue;
+        }
+
         enemyAction();
 
         if (Map::getInstance().getPlayer()->isDead()) {
@@ -338,6 +362,12 @@ void GameManager::waitForEnter()
     } while (key != VK_RETURN);
 }
 
+
+bool GameManager::hasPlayerWon() const
+{
+    Map& map = Map::getInstance();
+    return map.getEnemies().empty() && !map.getPlayer()->isDead();
+}
 
 int GameManager::getDistance(Entity *entity, int x, int y)
 {

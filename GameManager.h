@@ -47,8 +47,9 @@ private:
 
 	void waitForEnter();
 
-	bool isMoveValid(Entity *entity, int mp, int desiredX, int desiredY);
+	bool hasPlayerWon() const;
 
+	bool isMoveValid(Entity *entity, int mp, int desiredX, int desiredY);
 	bool isEnemyMoveValid(Entity* entity, int desiredX, int desiredY);
 
 
