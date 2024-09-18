@@ -190,6 +190,11 @@ void GameManager::playerActionAttack()
                 selectedEnemy->getDefense());
         }
 
+        // Draw actions.
+        renderer.drawAction("(Left/Right) Select enemy", 0);
+        renderer.drawAction("(Enter) Attack", 1);
+        renderer.drawAction("(A) Cancel", 2);
+
         WORD key = Input::getInstance().waitForInput();
 
         // Listen to action.
