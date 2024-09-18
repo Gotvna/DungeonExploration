@@ -25,6 +25,7 @@ public:
 	void notifyEnemyAttack(Entity* attacker, Entity* target);
 
 	void moveEnemyTo(Entity* entity, int x, int y);
+	bool isEnemyMoveValid(Entity* entity, int desiredX, int desiredY);
 
 private:
 
@@ -51,7 +52,7 @@ private:
 	bool hasPlayerWon() const;
 
 	bool isMoveValid(Entity *entity, int mp, int desiredX, int desiredY);
-	bool isEnemyMoveValid(Entity* entity, int desiredX, int desiredY);
+	
 
 
 private:
