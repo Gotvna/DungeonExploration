@@ -15,6 +15,8 @@ public:
 
 	void resizeForGridSize(int gridWidth, int gridHeight);
 
+	void setTitle(const char* title);
+
 private:
 
 	HWND hConsoleWindow;

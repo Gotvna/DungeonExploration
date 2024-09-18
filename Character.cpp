@@ -12,12 +12,11 @@ Character::Character()
     xp = 0;
     xpToLevelUp = 10;
     level = 1;
-    name = "Mario";
 }
 
 Character::~Character() {}
 
-void Character::move() {}
+void Character::update() {}
 
 void Character::specialAttack(Entity* target)
 {
@@ -32,7 +31,7 @@ void Character::specialAttack(Entity* target)
 
 void Character::die()
 {
-    printf("Vous êtes mort !\n");
+    
 }
 
 int Character::increaseAttackDamage(int amount)

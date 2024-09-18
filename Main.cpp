@@ -10,8 +10,7 @@ int main()
     Input::getInstance().initialize();
 
     // Enter main loop right now.
-    GameManager gameManager;    
-    gameManager.run();
+    GameManager::getInstance().run();
 
     return 0;
 }

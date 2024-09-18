@@ -12,7 +12,7 @@ Ghost::~Ghost()
 {
 }
 
-void Ghost::move()
+void Ghost::update()
 {
 }
 

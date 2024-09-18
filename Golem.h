@@ -8,7 +8,7 @@ class Golem : public Entity
         ~Golem();
     public:
 
-        virtual void move();
+        virtual void update();
         virtual void die();
         virtual int getMaxHealth();
         virtual int getMovementPoint();

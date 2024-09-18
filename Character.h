@@ -29,7 +29,7 @@ public:
     void levelUp();
     void specialAttack(Entity* target);
 
-    virtual void move();
+    virtual void update();
     virtual void die();
     virtual int getMaxHealth();
     virtual int getMovementPoint();

@@ -3,6 +3,9 @@
 #include "Renderer.h"
 
 
+#define TITLE "Dungeon Exploration"
+
+
 System::System()
 	: hConsoleWindow(NULL)
 {
@@ -23,6 +26,8 @@ void System::initialize()
 	GetConsoleCursorInfo(hConsoleOutput, &cursorInfo);
 	cursorInfo.bVisible = false;
 	SetConsoleCursorInfo(hConsoleOutput, &cursorInfo);
+
+	SetConsoleTitleA(TITLE);
 }
 
 void System::resizeForGridSize(int gridWidth, int gridHeight)
@@ -37,4 +42,11 @@ void System::resizeForGridSize(int gridWidth, int gridHeight)
 
 	SMALL_RECT rect = { 0, 0, width - 1, height - 1 };
 	SetConsoleWindowInfo(hConsoleOutput, true, &rect);
+}
+
+void System::setTitle(const char *title)
+{
+	std::string s = TITLE;
+	s += " - ";
+	s += title;
 }

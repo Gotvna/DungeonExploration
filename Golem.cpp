@@ -2,6 +2,7 @@
 
 #include "Map.h"
 #include "Character.h"
+#include "GameManager.h"
 
 Golem::Golem()
 {
@@ -12,9 +13,14 @@ Golem::~Golem()
 {
 }
 
-void Golem::move()
+void Golem::update()
 {
-    return;
+    Map& map = Map::getInstance();
+    Character* p = map.getPlayer();
+
+    if (GameManager::getDistance(this, p->getPosX(), p->getPosY()) == 1) {
+        GameManager::getInstance().notifyEnemyAttack(this, p);
+    }
 }
 
 void Golem::die()
@@ -38,7 +44,7 @@ int Golem::getMovementPoint()
 
 int Golem::getAttackDamage()
 {
-    return 1;
+    return 20;
 }
 
 int Golem::getDefense()
@@ -58,8 +64,5 @@ char Golem::getIcon()
 
 float Golem::getBlockChance()
 {
-    if (rand() % 100 <= 10)
-    {
-		return 0.1f;
-	}
+    return 0.1f;
 }

@@ -16,12 +16,26 @@ void GameManager::run()
 {
     loadMap();
 
-    while (1)
+    while (!Map::getInstance().getPlayer()->isDead())
     {
         playerActionMove();
 
         enemyAction();
     }
+}
+
+
+void GameManager::notifyEnemyAttack(Entity *attacker, Entity *target)
+{
+    renderer.clearPlayerRegion();
+    renderer.drawMessage(attacker->name + " attacked you!");
+    waitForEnter();
+
+    int damage = attacker->attack(target);
+
+    renderer.clearPlayerRegion();
+    renderer.drawMessage(attacker->name + " deals " + std::to_string(damage) + " damage.");
+    waitForEnter();
 }
 
 void GameManager::loadMap()
@@ -103,8 +117,8 @@ void GameManager::playerActionMove()
             }
             break;
         case VK_RETURN:
-            updateNearbyEnemyAndChest();
-            return;
+            playerRemainingMP = 0;
+            break;
         case 'A':
             if (nearbyEnemies.empty()) break;
             playerActionAttack();
@@ -126,6 +140,7 @@ void GameManager::playerActionMove()
         }
     }
 
+    redrawAll();
     updateNearbyEnemyAndChest();
 }
 
@@ -222,7 +237,13 @@ void GameManager::enemyAction()
 {
     for (Entity *enemy : Map::getInstance().getEnemies())
     {
-        enemy->move();
+        enemy->update();
+    }
+
+    if (Map::getInstance().getPlayer()->isDead()) {
+        renderer.clearPlayerRegion();
+        renderer.drawMessage("You are dead! Game over!");
+        waitForEnter();
     }
 }
 

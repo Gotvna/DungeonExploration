@@ -12,9 +12,15 @@ class GameManager
 {
 public:
 
+	static inline GameManager& getInstance();
+
 	GameManager();
 
 	void run();
+
+	static int getDistance(Entity *entity, int x, int y);
+
+	void notifyEnemyAttack(Entity* attacker, Entity* target);
 
 private:
 
@@ -37,7 +43,6 @@ private:
 
 	void waitForEnter();
 
-	int getDistance(Entity *entity, int x, int y);
 	bool isMoveValid(Entity *entity, int mp, int desiredX, int desiredY);
 
 
@@ -51,3 +56,10 @@ private:
 	std::vector<Entity*> nearbyEnemies;
 	std::vector<Chest*> nearbyChests;
 };
+
+
+inline GameManager &GameManager::getInstance()
+{
+	static GameManager instance;
+	return instance;
+}

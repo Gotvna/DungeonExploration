@@ -7,7 +7,7 @@ class Ghost : public Entity
         Ghost();
         ~Ghost();
     public:
-        virtual void move();
+        virtual void update();
         virtual void die();
         virtual int getMaxHealth();
         virtual int getMovementPoint();

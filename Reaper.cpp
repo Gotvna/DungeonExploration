@@ -12,7 +12,7 @@ Reaper::~Reaper()
 {
 }
 
-void Reaper::move()
+void Reaper::update()
 {
 }
 

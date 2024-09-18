@@ -7,7 +7,7 @@ class Reaper : public Entity
         Reaper();
         ~Reaper();
     public:
-        virtual void move();
+        virtual void update();
         virtual void die();
         virtual int getMaxHealth();
         virtual int getMovementPoint();

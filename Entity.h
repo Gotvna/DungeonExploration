@@ -17,7 +17,7 @@ friend class Map;
         int takeDamage(int damage);
         int takeDamageIgnoreDefense(int damage);
 
-        virtual void move() = 0;
+        virtual void update() = 0;
         virtual void die() = 0;
 
         virtual int getMaxHealth() = 0;
