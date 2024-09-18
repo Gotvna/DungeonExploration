@@ -24,6 +24,8 @@ public:
 
 	void notifyEnemyAttack(Entity* attacker, Entity* target);
 
+	void moveEnemyTo(Entity* entity, int x, int y);
+
 private:
 
 	void loadMap();
@@ -46,6 +48,8 @@ private:
 	void waitForEnter();
 
 	bool isMoveValid(Entity *entity, int mp, int desiredX, int desiredY);
+
+	bool isEnemyMoveValid(Entity* entity, int desiredX, int desiredY);
 
 
 private:

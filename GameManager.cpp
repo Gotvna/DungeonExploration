@@ -298,6 +298,15 @@ void GameManager::movePlayerTo(int x, int y)
     updateNearbyEnemyAndChest();
 }
 
+void GameManager::moveEnemyTo(Entity* entity, int x, int y)
+{
+    if (isMoveValid(entity, entity->getMovementPoint(), x, y))
+    {
+        entity->posX = x;
+        entity->posY = y;
+    }
+}
+
 void GameManager::killEnemy(Entity *e)
 {
     Map::getInstance().removeEnemy(e);
@@ -326,4 +335,15 @@ bool GameManager::isMoveValid(Entity *entity, int mp, int desiredX, int desiredY
 {
     int distance = getDistance(entity, desiredX, desiredY);
     return distance <= mp;
+}
+
+bool GameManager::isEnemyMoveValid(Entity* entity, int desiredX, int desiredY)
+{
+    Map& map = Map::getInstance();
+    Character* p = map.getPlayer();
+
+    if (getDistance(entity, desiredX, desiredY) > entity->getMovementPoint()) return false;
+    if (map.isTileOccupied(desiredX, desiredY)) return false;
+
+    return true;
 }

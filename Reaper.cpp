@@ -2,6 +2,7 @@
 
 #include "Map.h"
 #include "Character.h"
+#include "GameManager.h"
 
 Reaper::Reaper()
 {
@@ -14,6 +15,16 @@ Reaper::~Reaper()
 
 void Reaper::update()
 {
+    Map& map = Map::getInstance();
+    Character *p = map.getPlayer();
+
+    if (GameManager::getDistance(this, p->getPosX(), p->getPosY() <= 2))
+    {
+        // move away from player
+        int dx = p->getPosX() - getPosX();
+        int dy = p->getPosY() - getPosY();
+        GameManager::getInstance().moveEnemyTo(this, getPosX() - dx, getPosY() - dy);
+    }
 }
 
 void Reaper::die()
