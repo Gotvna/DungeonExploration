@@ -1,9 +1,8 @@
 #pragma once
+#include "Object.h"
 
-class Chest
+class Chest : public Object
 {
-    friend class Map;
-
 public:
     Chest();
     ~Chest();
@@ -17,15 +16,10 @@ public:
     int getDefense() { return defense; }
     int getMana() { return mana; }
 
-    inline int getPosX() const { return posX; }
-    inline int getPosY() const { return posY; }
-
 private:
     int health;
     int attackDamage;
     int defense;
     int mana;
 
-    int posX;
-    int posY;
 };
