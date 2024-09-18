@@ -27,6 +27,7 @@ void GameManager::run()
 
     while (1)
     {
+        updateNearbyEnemyAndChest();
         playerActionMove();
 
         if (hasPlayerWon()) {
@@ -202,7 +203,6 @@ void GameManager::playerActionMove()
     }
 
     redrawAll();
-    updateNearbyEnemyAndChest();
 }
 
 void GameManager::playerActionAttack()
