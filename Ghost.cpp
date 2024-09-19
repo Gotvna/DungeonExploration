@@ -52,12 +52,12 @@ void Ghost::die()
 
 int Ghost::getMaxHealth()
 {
-    return 5;
+    return 10;
 }
 
 int Ghost::getMovementPoint()
 {
-    return 3;
+    return 4;
 }
 
 int Ghost::getAttackDamage()

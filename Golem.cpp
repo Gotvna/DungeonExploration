@@ -29,7 +29,7 @@ void Golem::die()
     
     Character *p = Map::getInstance().getPlayer();
     p->increaseExperience(3);
-    p->increaseAttackDamage(rand() % 10 + 1);
+    p->increaseAttackDamage(rand() % 4 + 1);
 }
 
 int Golem::getMaxHealth()
