@@ -34,7 +34,7 @@ void Golem::die()
 
 int Golem::getMaxHealth()
 {
-    return 10;
+    return 25;
 }
 
 int Golem::getMovementPoint()
@@ -44,7 +44,7 @@ int Golem::getMovementPoint()
 
 int Golem::getAttackDamage()
 {
-    return 10;
+    return 5;
 }
 
 int Golem::getDefense()
