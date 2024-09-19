@@ -234,6 +234,37 @@ void GameManager::playerActionAttack()
             enemyIndex++;
             if (enemyIndex == nearbyEnemies.size()) enemyIndex = 0;
             break;
+        case 'S':
+            renderer.clearPlayerRegion();
+            renderer.drawMessage("You used a special attack on " + selectedEnemy->name + '!');
+            waitForEnter();
+
+            p->specialAttack(selectedEnemy);
+
+            renderer.clearEnemyRegion();
+            renderer.drawEnemyStats(selectedEnemy->name, selectedEnemy->health,
+                selectedEnemy->getMaxHealth(), selectedEnemy->getAttackDamage(),
+                selectedEnemy->getDefense());
+
+            renderer.clearPlayerRegion();
+            renderer.drawMessage("You dealt damage.");
+            waitForEnter();
+
+            if (selectedEnemy->isDead()) {
+                renderer.clearPlayerRegion();
+                renderer.drawMessage(selectedEnemy->name + " is dead!");
+                waitForEnter();
+
+                killEnemy(selectedEnemy);
+            }
+
+            updateNearbyEnemyAndChest();
+
+            playerRemainingMP = 0;
+
+            done = true;
+            break;
+
         case VK_RETURN:
             renderer.clearPlayerRegion();
             renderer.drawMessage("You attacked " + selectedEnemy->name + '!');

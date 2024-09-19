@@ -24,11 +24,13 @@ public:
     int increaseExperience(int amount);
     int getExperience();
 
+
     void fillHealth();
+    void fillMana();
 
     Chest::Loot openChest(Chest* chest);
     void levelUp();
-    void specialAttack(Entity* target);
+    void specialAttack(Entity* target) override;
 
     virtual void update();
     virtual void die();
