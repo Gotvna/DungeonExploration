@@ -28,7 +28,7 @@ public:
 
     Chest::Loot openChest(Chest* chest);
     void levelUp();
-    void specialAttack(Entity* target);
+    void specialAttack(Entity* target) override;
 
     virtual void update();
     virtual void die();

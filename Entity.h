@@ -29,6 +29,8 @@ friend class Map;
 
         virtual float getBlockChance() { return 0.0f; }
 
+        virtual void specialAttack(Entity* target) {}
+
         inline void setName(const std::string& name) { this->name = name; }
 
     inline bool isDead() const { return health <= 0; }
