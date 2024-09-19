@@ -20,7 +20,7 @@ public:
     int getHealth() { return health; }
     int getAttackDamage() { return attackDamage; }
     int getDefense() { return defense; }
-    int getMana() { return mana; }
+    int getMaxMana() { return mana; }
 
 private:
     int health;

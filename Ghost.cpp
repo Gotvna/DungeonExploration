@@ -70,11 +70,6 @@ int Ghost::getDefense()
     return 5;
 }
 
-int Ghost::getMana()
-{
-    return 0;
-}
-
 char Ghost::getIcon()
 {
     return 'S';

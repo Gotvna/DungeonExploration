@@ -10,6 +10,7 @@ public:
     int xp;
     int xpToLevelUp;
     int level;
+    int maxMana;
     int mana;
     int defense;
 
@@ -26,11 +27,13 @@ public:
 
 
     void fillHealth();
-    void fillMana();
+    void fillMana() override;
 
     Chest::Loot openChest(Chest* chest);
     void levelUp();
     void specialAttack(Entity* target) override;
+
+    inline int getMana() override { return mana; };
 
     virtual void update();
     virtual void die();
@@ -38,6 +41,6 @@ public:
     virtual int getMovementPoint();
     virtual int getAttackDamage();
     virtual int getDefense();
-    virtual int getMana();
+    virtual int getMaxMana() override;
     virtual char getIcon();
 };

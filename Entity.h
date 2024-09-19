@@ -24,12 +24,15 @@ friend class Map;
         virtual int getMovementPoint() = 0;
         virtual int getAttackDamage() = 0;
         virtual int getDefense() = 0;
-        virtual int getMana() = 0;
         virtual char getIcon() = 0;
 
         virtual float getBlockChance() { return 0.0f; }
 
         virtual void specialAttack(Entity* target) {}
+
+        virtual void fillMana() {}
+        virtual int getMaxMana() { return 0; }
+        virtual int getMana() { return 0;  }
 
         inline void setName(const std::string& name) { this->name = name; }
 

@@ -52,11 +52,6 @@ int Golem::getDefense()
     return 10;
 }
 
-int Golem::getMana()
-{
-    return 0;
-}
-
 char Golem::getIcon()
 {
     return 'G';

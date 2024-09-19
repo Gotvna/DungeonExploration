@@ -104,11 +104,6 @@ int Reaper::getDefense()
     return 3;
 }
 
-int Reaper::getMana()
-{
-    return 0;
-}
-
 char Reaper::getIcon()
 {
     return 'F';

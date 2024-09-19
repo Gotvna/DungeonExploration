@@ -13,6 +13,5 @@ class Ghost : public Entity
         virtual int getMovementPoint();
         virtual int getAttackDamage();
         virtual int getDefense();
-        virtual int getMana();
         virtual char getIcon();
 };

@@ -161,9 +161,11 @@ void GameManager::playerActionMove()
         case VK_SPACE:
             movePlayerTo(cursorX, cursorY);
             updateNearbyEnemyAndChest();
+            p->fillMana();
             break;
         case VK_RETURN:
             playerRemainingMP = 0;
+            p->fillMana();
             break;
         case 'A':
             if (nearbyEnemies.empty() == false)
@@ -263,6 +265,7 @@ void GameManager::playerActionAttack()
             playerRemainingMP = 0;
 
             done = true;
+            p->fillMana();
             break;
 
         case VK_RETURN:
@@ -294,6 +297,7 @@ void GameManager::playerActionAttack()
             playerRemainingMP = 0;
 
             done = true;
+            p->fillMana();
             break;
         case 'A':
             done = true;
@@ -317,9 +321,10 @@ void GameManager::playerActionCollect()
         case Chest::HEALTH:  renderer.drawMessage("You found a chest with " + std::to_string(chest->getHealth())       + " health!");        break;
         case Chest::ATTACK:  renderer.drawMessage("You found a chest with " + std::to_string(chest->getAttackDamage()) + " attack damage!"); break;
         case Chest::DEFENSE: renderer.drawMessage("You found a chest with " + std::to_string(chest->getDefense())      + " defense!");       break;
-        case Chest::MANA:    renderer.drawMessage("You found a chest with " + std::to_string(chest->getMana())         + " mana!");          break;
+        case Chest::MANA:    renderer.drawMessage("You found a chest with " + std::to_string(chest->getMaxMana())         + " mana!");          break;
         }
         waitForEnter();
+        p->fillMana();
 
         removeChest(chest);
     }

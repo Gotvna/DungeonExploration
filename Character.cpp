@@ -6,7 +6,8 @@ Character::Character()
     maxHealth = 15;
     attackDamage = 5;
     defense = 5;
-    mana = 25;
+    maxMana = 25;
+    mana = getMaxMana();
 
     health = getMaxHealth();
     xp = 0;
@@ -73,6 +74,15 @@ void Character::fillHealth()
     health = maxHealth;
 }
 
+void Character::fillMana()
+{
+    increaseMana(2);
+    if (mana > getMaxMana())
+    {
+        mana = getMaxMana();
+    }
+}
+
 void Character::levelUp()
 {
     level++;
@@ -112,7 +122,7 @@ int Character::getDefense() { return defense; }
 
 int Character::getExperience() { return 0; }
 
-int Character::getMana() { return mana; }
+int Character::getMaxMana() { return maxMana; }
 
 char Character::getIcon() { return '@'; }
 
@@ -122,6 +132,6 @@ Chest::Loot Character::openChest(Chest* chest)
     increaseAttackDamage(chest->getAttackDamage());
     increaseDefense(chest->getDefense());
     increaseHealth(chest->getHealth());
-    increaseMana(chest->getMana());
+    increaseMana(chest->getMaxMana());
     return loot;
 }
