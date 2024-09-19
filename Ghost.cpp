@@ -16,7 +16,6 @@ Ghost::~Ghost()
 
 int sign(int i);
 
-#include <iostream>
 void Ghost::update()
 {
     Map& map = Map::getInstance();
@@ -28,25 +27,17 @@ void Ghost::update()
     int playerY = player->getPosY();
     int movementPoints = this->getMovementPoint();
 
-    // Si le Ghost est à une case du joueur et ne peut pas fuir, il attaque
     if (std::abs(startX - playerX) + std::abs(startY - playerY) == 1) {
-        std::cout << "Ghost attaque le joueur." << std::endl;
         GameManager::getInstance().notifyEnemyAttack(this, player);
         return;
     }
 
-    // Utiliser le FleePathfinder pour fuir
     FleePathfinder fleePathfinder;
     std::vector<FleePathfinder::Node*> path = fleePathfinder.findFleePath(startX, startY, playerX, playerY, movementPoints, map);
 
     if (!path.empty()) {
-        // Se déplacer vers la meilleure destination possible en utilisant les points de mouvement
         FleePathfinder::Node* destination = path.back();
-        std::cout << "Ghost fuit vers (" << destination->x << ", " << destination->y << ")" << std::endl;
         GameManager::getInstance().moveEnemyTo(this, destination->x, destination->y);
-    }
-    else {
-        std::cout << "Aucun chemin trouvé pour fuir, Ghost reste sur place." << std::endl;
     }
 }
 
