@@ -3,7 +3,7 @@
 #include "Map.h"
 #include "Character.h"
 #include "GameManager.h"
-#include "AStarPathfinder.h"
+#include "FleePathfinder.h"
 
 Ghost::Ghost()
 {
@@ -26,48 +26,27 @@ void Ghost::update()
     int startY = getPosY();
     int playerX = player->getPosX();
     int playerY = player->getPosY();
-
     int movementPoints = this->getMovementPoint();
 
-    // Calculer la distance actuelle entre le Ghost et le joueur
-    int distanceToPlayer = std::abs(startX - playerX) + std::abs(startY - playerY);
+    // Si le Ghost est à une case du joueur et ne peut pas fuir, il attaque
+    if (std::abs(startX - playerX) + std::abs(startY - playerY) == 1) {
+        std::cout << "Ghost attaque le joueur." << std::endl;
+        GameManager::getInstance().notifyEnemyAttack(this, player);
+        return;
+    }
 
-    AStarPathfinder pathfinder(false);  // false pour fuir (maximiser la distance)
-    std::vector<AStarPathfinder::Node*> path = pathfinder.findPath(startX, startY, playerX, playerY, map);
+    // Utiliser le FleePathfinder pour fuir
+    FleePathfinder fleePathfinder;
+    std::vector<FleePathfinder::Node*> path = fleePathfinder.findFleePath(startX, startY, playerX, playerY, movementPoints, map);
 
-    if (!path.empty() && path.size() > 1) {
-        int steps = std::min(movementPoints, (int)path.size() - 1);
-        AStarPathfinder::Node* nextStep = path[steps];
-        GameManager::getInstance().moveEnemyTo(this, nextStep->x, nextStep->y);
+    if (!path.empty()) {
+        // Se déplacer vers la meilleure destination possible en utilisant les points de mouvement
+        FleePathfinder::Node* destination = path.back();
+        std::cout << "Ghost fuit vers (" << destination->x << ", " << destination->y << ")" << std::endl;
+        GameManager::getInstance().moveEnemyTo(this, destination->x, destination->y);
     }
     else {
-
-        // Essayer de se déplacer localement
-        std::vector<std::pair<int, int>> directions = { {1, 0}, {-1, 0}, {0, 1}, {0, -1} };
-        bool canMove = false;
-        int bestX = startX, bestY = startY;
-
-        for (auto dir : directions) {
-            int newX = startX + dir.first;
-            int newY = startY + dir.second;
-
-            if (newX >= 0 && newX < map.getWidth() && newY >= 0 && newY < map.getHeight()) {
-                if (!map.isTileOccupied(newX, newY)) {
-                    bestX = newX;
-                    bestY = newY;
-                    canMove = true;
-                }
-            }
-        }
-
-        if (canMove) {
-            GameManager::getInstance().moveEnemyTo(this, bestX, bestY);
-        }
-        else {
-            if (distanceToPlayer == 1) {
-                GameManager::getInstance().notifyEnemyAttack(this, player);
-            }
-        }
+        std::cout << "Aucun chemin trouvé pour fuir, Ghost reste sur place." << std::endl;
     }
 }
 
@@ -87,7 +66,7 @@ int Ghost::getMaxHealth()
 
 int Ghost::getMovementPoint()
 {
-    return 5;
+    return 3;
 }
 
 int Ghost::getAttackDamage()

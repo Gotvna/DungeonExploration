@@ -132,6 +132,7 @@
     <ClCompile Include="Character.cpp" />
     <ClCompile Include="Chest.cpp" />
     <ClCompile Include="Entity.cpp" />
+    <ClCompile Include="FleePathFinder.cpp" />
     <ClCompile Include="GameManager.cpp" />
     <ClCompile Include="Ghost.cpp" />
     <ClCompile Include="Golem.cpp" />
@@ -149,6 +150,7 @@
     <ClInclude Include="Chest.h" />
     <ClInclude Include="Config\Color.h" />
     <ClInclude Include="Entity.h" />
+    <ClInclude Include="FleePathFinder.h" />
     <ClInclude Include="GameManager.h" />
     <ClInclude Include="Ghost.h" />
     <ClInclude Include="Golem.h" />

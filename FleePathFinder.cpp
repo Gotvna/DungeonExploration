@@ -1,39 +1,33 @@
-#include "AStarPathfinder.h"
-#include "Map.h"
+#include "FleePathfinder.h"
 #include <cmath>
 #include <algorithm>
 #include <unordered_set>
 #include <unordered_map>
-#include <iostream>
+#include <queue>
 
-AStarPathfinder::AStarPathfinder(bool ascend) : ascending(ascend) {}
+FleePathfinder::FleePathfinder() {}
 
-int AStarPathfinder::calculateHeuristic(int x1, int y1, int goalX, int goalY, Map& map) {
-    return std::abs(x1 - goalX) + std::abs(y1 - goalY);
+int FleePathfinder::calculateHeuristic(int x1, int y1, int playerX, int playerY, Map& map) {
+    return std::abs(x1 - playerX) + std::abs(y1 - playerY);
 }
 
-std::vector<AStarPathfinder::Node*> AStarPathfinder::findPath(int startX, int startY, int goalX, int goalY, Map& map) {
-    auto compare = [this](Node* a, Node* b) {
-        return ascending ? a->getFCost() > b->getFCost() : a->getFCost() < b->getFCost();
+std::vector<FleePathfinder::Node*> FleePathfinder::findFleePath(int startX, int startY, int playerX, int playerY, int movementPoints, Map& map) {
+    auto compare = [](Node* a, Node* b) {
+        return a->getFCost() < b->getFCost();
         };
 
     std::priority_queue<Node*, std::vector<Node*>, decltype(compare)> openSet(compare);
     std::unordered_set<int> closedSet;
 
-    Node* startNode = new Node{ startX, startY, 0, calculateHeuristic(startX, startY, goalX, goalY, map), nullptr };
+    Node* startNode = new Node{ startX, startY, 0, calculateHeuristic(startX, startY, playerX, playerY, map), nullptr };
     openSet.push(startNode);
 
     std::unordered_map<int, Node*> allNodes;
-
     allNodes[startY * map.getWidth() + startX] = startNode;
 
     while (!openSet.empty()) {
         Node* currentNode = openSet.top();
         openSet.pop();
-
-        if (currentNode->x == goalX && currentNode->y == goalY) {
-            return reconstructPath(currentNode);
-        }
 
         closedSet.insert(currentNode->y * map.getWidth() + currentNode->x);
 
@@ -50,7 +44,7 @@ std::vector<AStarPathfinder::Node*> AStarPathfinder::findPath(int startX, int st
 
             if (allNodes.find(neighborPos) == allNodes.end() || tentativeGCost < allNodes[neighborPos]->gCost) {
                 neighbor->gCost = tentativeGCost;
-                neighbor->hCost = calculateHeuristic(neighbor->x, neighbor->y, goalX, goalY, map);
+                neighbor->hCost = calculateHeuristic(neighbor->x, neighbor->y, playerX, playerY, map);
                 neighbor->parent = currentNode;
 
                 openSet.push(neighbor);
@@ -62,10 +56,23 @@ std::vector<AStarPathfinder::Node*> AStarPathfinder::findPath(int startX, int st
         }
     }
 
-    return std::vector<Node*>();
+    std::vector<Node*> bestPath;
+    int maxDistance = -1;
+
+    for (const auto& pair : allNodes) {
+        Node* node = pair.second;
+        int distance = std::abs(node->x - playerX) + std::abs(node->y - playerY);
+        if (distance > maxDistance && node->gCost <= movementPoints) {
+            maxDistance = distance;
+            bestPath = reconstructPath(node);
+        }
+    }
+
+
+    return bestPath;
 }
 
-std::vector<AStarPathfinder::Node*> AStarPathfinder::reconstructPath(Node* currentNode) {
+std::vector<FleePathfinder::Node*> FleePathfinder::reconstructPath(Node* currentNode) {
     std::vector<Node*> path;
     while (currentNode != nullptr) {
         path.push_back(currentNode);
@@ -75,7 +82,7 @@ std::vector<AStarPathfinder::Node*> AStarPathfinder::reconstructPath(Node* curre
     return path;
 }
 
-std::vector<AStarPathfinder::Node*> AStarPathfinder::getNeighbors(Node* node, Map& map) {
+std::vector<FleePathfinder::Node*> FleePathfinder::getNeighbors(Node* node, Map& map) {
     std::vector<Node*> neighbors;
     int directions[4][2] = { {1, 0}, {-1, 0}, {0, 1}, {0, -1} };
 
@@ -93,6 +100,6 @@ std::vector<AStarPathfinder::Node*> AStarPathfinder::getNeighbors(Node* node, Ma
     return neighbors;
 }
 
-bool AStarPathfinder::isWalkable(int x, int y, Map& map) {
+bool FleePathfinder::isWalkable(int x, int y, Map& map) {
     return !map.isTileOccupied(x, y);
 }

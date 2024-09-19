@@ -24,6 +24,7 @@ public:
     AStarPathfinder(bool ascend = true);
 
     std::vector<Node*> findPath(int startX, int startY, int goalX, int goalY, Map& map);
+    std::vector<AStarPathfinder::Node*> exploreAllReachableNodes(int startX, int startY, int movementPoints, Map& map);
 
 private:
     bool ascending;
