@@ -20,6 +20,7 @@ public:
 	// Reset the contents of the map, but keep the player.
 	void clear();
 
+	void resetPlayerState();
 	void restorePlayerState();
 
 	bool load(const char* path);

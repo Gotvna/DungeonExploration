@@ -42,6 +42,14 @@ void Map::clear()
 	}
 }
 
+void Map::resetPlayerState()
+{
+	if (player) {
+		delete player;
+		player = 0;
+	}
+}
+
 void Map::restorePlayerState()
 {
 	if (player) {

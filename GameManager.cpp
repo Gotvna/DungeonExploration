@@ -323,6 +323,7 @@ bool GameManager::checkPlayerWin()
             waitForEnter();
 
             currentMap++;
+            loadNextMap();
         }
         else {
             renderer.clearPlayerRegion();
@@ -330,9 +331,10 @@ bool GameManager::checkPlayerWin()
             waitForEnter();
 
             currentMap = 0;
+            Map::getInstance().resetPlayerState();
+            reloadMap();
         }
 
-        loadNextMap();
         return true;
     }
 
