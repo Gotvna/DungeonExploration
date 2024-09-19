@@ -86,12 +86,12 @@ void Reaper::die()
 
 int Reaper::getMaxHealth()
 {
-    return 2;
+    return 6;
 }
 
 int Reaper::getMovementPoint()
 {
-    return 3;
+    return 4;
 }
 
 int Reaper::getAttackDamage()
@@ -101,7 +101,7 @@ int Reaper::getAttackDamage()
 
 int Reaper::getDefense()
 {
-    return 1;
+    return 3;
 }
 
 int Reaper::getMana()
