@@ -8,6 +8,11 @@ Input::Input()
 
 void Input::initialize()
 {
+    Input::getInstance()._initialize();
+}
+
+void Input::_initialize()
+{
     hConsoleInput = GetStdHandle(STD_INPUT_HANDLE);
 }
 

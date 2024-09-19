@@ -11,7 +11,7 @@ public:
 
 	System();
 
-	void initialize();
+	static void initialize();
 
 	void resizeForGridSize(int gridWidth, int gridHeight);
 
@@ -19,7 +19,11 @@ public:
 
 private:
 
-	HWND hConsoleWindow; //convention de nommage pour les membres
+	void _initialize();
+
+private:
+
+	HWND hConsoleWindow;
 	HANDLE hConsoleOutput;
 };
 

@@ -25,45 +25,27 @@ GameManager::GameManager()
 
 void GameManager::run()
 {
+    GameManager::getInstance()._run();
+}
+
+void GameManager::_run()
+{
     currentMap = 0;
 
     reloadMap();
 
     while (1)
     {
-        // Only functions, 0 variables
         updateNearbyEnemyAndChest();
         playerActionMove();
 
-        if (hasPlayerWon()) {
-            if (currentMap == 0) {
-                renderer.clearPlayerRegion();
-                renderer.drawMessage("Congratulations! You have completed the first dungeon!");
-                waitForEnter();
-
-                renderer.clearPlayerRegion();
-                renderer.drawMessage("But your quest is not over yet. Onward, hero!");
-                waitForEnter();
-
-                currentMap++;
-            }
-            else {
-                renderer.clearPlayerRegion();
-                renderer.drawMessage("You have completed the game!!!");
-                waitForEnter();
-
-                currentMap = 0;
-            }
-            
-            loadNextMap();
+        if (checkPlayerWin()) {
             continue;
         }
 
         enemyAction();
 
-        if (Map::getInstance().getPlayer()->isDead()) {
-            reloadMap();
-        }
+        checkPlayerDeath();
     }
 }
 
@@ -299,7 +281,6 @@ void GameManager::playerActionCollect()
     for (Chest *chest : nearbyChests) {
         Chest::Loot loot = p->openChest(chest);
 
-        // TODO : Actually display the chest's loot.
         renderer.clearPlayerRegion();
         switch (loot) {
         case Chest::HEALTH:  renderer.drawMessage("You found a chest with " + std::to_string(chest->getHealth())       + " health!");        break;
@@ -326,6 +307,42 @@ void GameManager::enemyAction()
         renderer.clearPlayerRegion();
         renderer.drawMessage("You are dead! Game over!");
         waitForEnter();
+    }
+}
+
+bool GameManager::checkPlayerWin()
+{
+    if (hasPlayerWon()) {
+        if (currentMap == 0) {
+            renderer.clearPlayerRegion();
+            renderer.drawMessage("Congratulations! You have completed the first dungeon!");
+            waitForEnter();
+
+            renderer.clearPlayerRegion();
+            renderer.drawMessage("But your quest is not over yet. Onward, hero!");
+            waitForEnter();
+
+            currentMap++;
+        }
+        else {
+            renderer.clearPlayerRegion();
+            renderer.drawMessage("You have completed the game!!!");
+            waitForEnter();
+
+            currentMap = 0;
+        }
+
+        loadNextMap();
+        return true;
+    }
+
+    return false;
+}
+
+void GameManager::checkPlayerDeath()
+{
+    if (Map::getInstance().getPlayer()->isDead()) {
+        reloadMap();
     }
 }
 

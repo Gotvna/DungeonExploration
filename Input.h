@@ -7,15 +7,26 @@ class Input
 {
 public:
 
-    static Input &getInstance() { static Input g_instance; return g_instance; } //#TODO Not Consistent
+    static inline Input& getInstance();
 
     Input();
 
-    void initialize();
+    static void initialize();
 
     WORD waitForInput();
 
 private:
 
+    void _initialize();
+
+private:
+
     HANDLE hConsoleInput;
 };
+
+
+inline Input& Input::getInstance()
+{
+    static Input instance;
+    return instance;
+}

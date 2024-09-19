@@ -5,6 +5,9 @@
 
 #define TITLE "Dungeon Exploration"
 
+#define MAX_CONSOLE_WIDTH 300
+#define MAX_COLSOLE_HEIGHT 80
+
 
 System::System()
 	: hConsoleWindow(NULL)
@@ -13,6 +16,11 @@ System::System()
 }
 
 void System::initialize()
+{
+	System::getInstance()._initialize();
+}
+
+void System::_initialize()
 {
 	hConsoleWindow = GetConsoleWindow();
 	hConsoleOutput = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -33,7 +41,7 @@ void System::initialize()
 void System::resizeForGridSize(int gridWidth, int gridHeight)
 {
 	// Win32 hack : first resize to impossible size, then shrink down.
-	COORD size = { 260, 50 }; // HARDCODE FAIRE UN DEFINE
+	COORD size = { MAX_CONSOLE_WIDTH, MAX_COLSOLE_HEIGHT };
 	SetConsoleScreenBufferSize(hConsoleOutput, size);
 
 	int width, height;

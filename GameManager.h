@@ -18,7 +18,7 @@ public:
 
 	GameManager();
 
-	void run();
+	static void run();
 
 	static int getDistance(Entity *entity, int x, int y);
 
@@ -28,6 +28,8 @@ public:
 	bool isEnemyMoveValid(Entity* entity, int desiredX, int desiredY);
 
 private:
+
+	void _run();
 
 	void reloadMap();
 	void loadNextMap();
@@ -39,6 +41,9 @@ private:
 	void playerActionCollect();
 
 	void enemyAction();
+
+	bool checkPlayerWin();
+	void checkPlayerDeath();
 
 	void updateNearbyEnemyAndChest();
 

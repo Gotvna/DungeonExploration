@@ -11,11 +11,11 @@ int main()
     srand(time(0));
 
     // Init.
-    System::getInstance().initialize(); //faire une fonction static directement
-    Input::getInstance().initialize();
+    System::initialize();
+    Input::initialize();
 
     // Enter main loop right now.
-    GameManager::getInstance().run(); //faire une fonction static directement
+    GameManager::run();
 
     return 0;
 }
