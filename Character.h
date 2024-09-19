@@ -24,7 +24,9 @@ public:
     int increaseExperience(int amount);
     int getExperience();
 
+
     void fillHealth();
+    void fillMana();
 
     Chest::Loot openChest(Chest* chest);
     void levelUp();

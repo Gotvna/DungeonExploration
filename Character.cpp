@@ -26,7 +26,7 @@ void Character::specialAttack(Entity* target)
         return;
     }
     target->takeDamage(attackDamage * 2);
-    mana -= 10;
+    mana -= 20;
 }
 
 void Character::die()
