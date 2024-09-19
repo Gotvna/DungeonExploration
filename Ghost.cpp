@@ -16,6 +16,7 @@ Ghost::~Ghost()
 
 int sign(int i);
 
+#include <iostream>
 void Ghost::update()
 {
     Map& map = Map::getInstance();
@@ -28,7 +29,10 @@ void Ghost::update()
 
     int movementPoints = this->getMovementPoint();
 
-    AStarPathfinder pathfinder(false);
+    // Calculer la distance actuelle entre le Ghost et le joueur
+    int distanceToPlayer = std::abs(startX - playerX) + std::abs(startY - playerY);
+
+    AStarPathfinder pathfinder(false);  // false pour fuir (maximiser la distance)
     std::vector<AStarPathfinder::Node*> path = pathfinder.findPath(startX, startY, playerX, playerY, map);
 
     if (!path.empty() && path.size() > 1) {
@@ -36,8 +40,36 @@ void Ghost::update()
         AStarPathfinder::Node* nextStep = path[steps];
         GameManager::getInstance().moveEnemyTo(this, nextStep->x, nextStep->y);
     }
-}
+    else {
 
+        // Essayer de se déplacer localement
+        std::vector<std::pair<int, int>> directions = { {1, 0}, {-1, 0}, {0, 1}, {0, -1} };
+        bool canMove = false;
+        int bestX = startX, bestY = startY;
+
+        for (auto dir : directions) {
+            int newX = startX + dir.first;
+            int newY = startY + dir.second;
+
+            if (newX >= 0 && newX < map.getWidth() && newY >= 0 && newY < map.getHeight()) {
+                if (!map.isTileOccupied(newX, newY)) {
+                    bestX = newX;
+                    bestY = newY;
+                    canMove = true;
+                }
+            }
+        }
+
+        if (canMove) {
+            GameManager::getInstance().moveEnemyTo(this, bestX, bestY);
+        }
+        else {
+            if (distanceToPlayer == 1) {
+                GameManager::getInstance().notifyEnemyAttack(this, player);
+            }
+        }
+    }
+}
 
 void Ghost::die()
 {

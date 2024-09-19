@@ -150,7 +150,7 @@ void Map::removeWall(int x, int y)
 bool Map::isTileOccupied(int x, int y) const
 {
 	if (x < 0 || x >= width || y < 0 || y >= height) {
-		return false;
+		return true;
 	}
 
 	if (walls[y * width + x] == 1) {
@@ -169,8 +169,13 @@ bool Map::isTileOccupied(int x, int y) const
 		}
 	}
 
+	if (player && player->getPosX() == x && player->getPosY() == y) {
+		return true;
+	}
+
 	return false;
 }
+
 
 #include <Windows.h>
 void Map::findDistanceToTilesRect(uint32_t* distance, int cx, int cy, int d) const

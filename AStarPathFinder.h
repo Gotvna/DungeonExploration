@@ -28,7 +28,7 @@ public:
 private:
     bool ascending;
 
-    int calculateHeuristic(int x1, int y1, int goalX, int goalY);
+    int calculateHeuristic(int x1, int y1, int goalX, int goalY, Map& map);
 
     std::vector<Node*> getNeighbors(Node* node, Map& map);
 
