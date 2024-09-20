@@ -21,39 +21,39 @@ void Map::reset()
 
 void Map::clear()
 {
-	for (Entity* e : enemies)
+	for (Entity* e : m_enemies)
 	{
 		delete e;
 	}
-	enemies.clear();
+	m_enemies.clear();
 
-	for (Chest *c : chests)
+	for (Chest *c : m_chests)
 	{
 		delete c;
 	}
-	chests.clear();
+	m_chests.clear();
 
-	width = 0;
-	height = 0;
+	m_width = 0;
+	m_height = 0;
 
-	if (walls) {
-		free(walls);
-		walls = 0;
+	if (m_walls) {
+		free(m_walls);
+		m_walls = 0;
 	}
 }
 
 void Map::resetPlayerState()
 {
-	if (player) {
-		delete player;
-		player = 0;
+	if (m_player) {
+		delete m_player;
+		m_player = 0;
 	}
 }
 
 void Map::restorePlayerState()
 {
-	if (player) {
-		*player = savedPlayerState;
+	if (m_player) {
+		*m_player = m_savedPlayerState;
 	}
 }
 
@@ -71,12 +71,12 @@ bool Map::load(const char *path)
 		lines.push_back(line);
 	}
 
-	if (!checkLines(width, height, lines)) {
+	if (!checkLines(m_width, m_height, lines)) {
 		return false;
 	}
 
-	walls = reinterpret_cast<uint8_t*>(malloc(width * height));
-	memset(walls, 0, width * height);
+	m_walls = reinterpret_cast<uint8_t*>(malloc(m_width * m_height));
+	memset(m_walls, 0, m_width * m_height);
 
 	int x = 0, y = 0;
 
@@ -96,13 +96,13 @@ bool Map::load(const char *path)
 
 			switch (c) {
 			case '@':
-				if (!player) {
-					player = new Character();
-					player->setName(getRandomName());
+				if (!m_player) {
+					m_player = new Character();
+					m_player->setName(getRandomName());
 				}
-				player->posX = x;
-				player->posY = y;
-				savedPlayerState = *player;
+				m_player->posX = x;
+				m_player->posY = y;
+				m_savedPlayerState = *m_player;
 				break;
 			case 'G':
 				spawnEnemy<Golem>(x, y);
@@ -134,50 +134,50 @@ bool Map::load(const char *path)
 void Map::removeEnemy(Entity *e)
 {
 	removeWall(e->getPosX(), e->getPosY());
-	enemies.erase(std::remove(enemies.begin(), enemies.end(), e));
+	m_enemies.erase(std::remove(m_enemies.begin(), m_enemies.end(), e));
 	delete e;
 }
 
 void Map::removeChest(Chest *c)
 {
 	removeWall(c->getPosX(), c->getPosY());
-	chests.erase(std::remove(chests.begin(), chests.end(), c));
+	m_chests.erase(std::remove(m_chests.begin(), m_chests.end(), c));
 	delete c;
 }
 
 void Map::addWall(int x, int y)
 {
-	walls[y * width + x] = 1;
+	m_walls[y * m_width + x] = 1;
 }
 
 void Map::removeWall(int x, int y)
 {
-	walls[y * width + x] = 0;
+	m_walls[y * m_width + x] = 0;
 }
 
 bool Map::isTileOccupied(int x, int y) const
 {
-	if (x < 0 || x >= width || y < 0 || y >= height) {
+	if (x < 0 || x >= m_width || y < 0 || y >= m_height) {
 		return true;
 	}
 
-	if (walls[y * width + x] == 1) {
+	if (m_walls[y * m_width + x] == 1) {
 		return true;
 	}
 
-	for (Entity* enemy : enemies) {
+	for (Entity* enemy : m_enemies) {
 		if (enemy->getPosX() == x && enemy->getPosY() == y) {
 			return true;
 		}
 	}
 
-	for (Chest* chest : chests) {
+	for (Chest* chest : m_chests) {
 		if (chest->getPosX() == x && chest->getPosY() == y) {
 			return true;
 		}
 	}
 
-	if (player && player->getPosX() == x && player->getPosY() == y) {
+	if (m_player && m_player->getPosX() == x && m_player->getPosY() == y) {
 		return true;
 	}
 
@@ -226,14 +226,14 @@ void Map::findDistanceToTilesRect(uint32_t* distance, int cx, int cy, int d) con
 				if (!visited[i]) stack.push_back(i);
 			}
 		}
-		if (rx+cx-d < width - 1 && rx < row - 1) {
+		if (rx+cx-d < m_width - 1 && rx < row - 1) {
 			i = (ry) * row + (rx + 1);
 			if (!isTileOccupied(rx+cx-d+1, ry+cy-d)) {
 				if (distance[i] > dist + 1) distance[i] = dist + 1;
 				if (!visited[i]) stack.push_back(i);
 			}
 		}
-		if (ry+cy-d < height - 1 && ry < row - 1) {
+		if (ry+cy-d < m_height - 1 && ry < row - 1) {
 			i = (ry + 1) * row + (rx);
 			if (!isTileOccupied(rx+cx-d, ry+cy-d+1)) {
 				if (distance[i] > dist + 1) distance[i] = dist + 1;
@@ -298,9 +298,9 @@ std::string Map::generateEnemiesName(int length)
 Chest* Map::spawnChest(int x, int y)
 {
 	Chest *chest = new Chest();
-	chest->posX = x;
-	chest->posY = y;
-	chests.push_back(chest);
+	chest->m_posX = x;
+	chest->m_posY = y;
+	m_chests.push_back(chest);
 
 	addWall(x, y);
 	return chest;

@@ -45,13 +45,13 @@ public:
 	std::string generateEnemiesName(int length);
 	inline const std::string& getRandomName() { return characterNames[rand() % characterNames.size()]; }
 
-	inline int getWidth() const { return width; }
-	inline int getHeight() const { return height; }
+	inline int getWidth() const { return m_width; }
+	inline int getHeight() const { return m_height; }
 
-	inline Character* getPlayer() const { return player; }
-	inline const std::vector<Chest*>& getChests() const { return chests; }
-	inline const std::vector<Entity*>& getEnemies() const { return enemies; }
-	inline const uint8_t* getWalls() const { return walls; }
+	inline Character* getPlayer() const { return m_player; }
+	inline const std::vector<Chest*>& getChests() const { return m_chests; }
+	inline const std::vector<Entity*>& getEnemies() const { return m_enemies; }
+	inline const uint8_t* getWalls() const { return m_walls; }
 
 private:
 
@@ -62,7 +62,7 @@ private:
 		enemy->posX = x;
 		enemy->posY = y;
 		enemy->setName(generateEnemiesName(10));
-		enemies.push_back(enemy);
+		m_enemies.push_back(enemy);
 
 		addWall(x, y);
 		return enemy;
@@ -79,15 +79,15 @@ private: // Parsing utils.
 
 private:
 
-	Character* player;
-	Character savedPlayerState;
-	std::vector<Chest*> chests;
-	std::vector<Entity*> enemies;
+	Character* m_player;
+	Character m_savedPlayerState;
+	std::vector<Chest*> m_chests;
+	std::vector<Entity*> m_enemies;
 
-	uint8_t* walls;
+	uint8_t* m_walls;
 
-	int width;
-	int height;
+	int m_width;
+	int m_height;
 
 	std::vector<std::string> characterNames = {
 	"Ezio", "Mario", "Luigi", "Dante", "Enzo",

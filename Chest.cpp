@@ -4,10 +4,10 @@
 
 Chest::Chest()
 {
-    health = 0;
-    attackDamage = 0;
-    defense = 0;
-    mana = 0;
+    m_health = 0;
+    m_attackDamage = 0;
+    m_defense = 0;
+    m_mana = 0;
 }
 
 Chest::~Chest()
@@ -23,10 +23,10 @@ Chest::Loot Chest::getLoot()
     {
         switch (randomStat)
         {
-        case HEALTH:  health       = 1000; break;
-        case ATTACK:  attackDamage = 1000; break;
-        case DEFENSE: defense      = 1000; break;
-        case MANA:    mana         = 1000; break;
+        case HEALTH:  m_health       = 1000; break;
+        case ATTACK:  m_attackDamage = 1000; break;
+        case DEFENSE: m_defense      = 1000; break;
+        case MANA:    m_mana         = 1000; break;
         }
 
     }
@@ -34,30 +34,30 @@ Chest::Loot Chest::getLoot()
     {
         switch (randomStat)
         {
-        case HEALTH:  health       = 100; break;
-        case ATTACK:  attackDamage = 100; break;
-        case DEFENSE: defense      = 100; break;
-        case MANA:    mana         = 100; break;
+        case HEALTH:  m_health       = 100; break;
+        case ATTACK:  m_attackDamage = 100; break;
+        case DEFENSE: m_defense      = 100; break;
+        case MANA:    m_mana         = 100; break;
         }
     }
     else if (random >= 900)
     {
         switch (randomStat)
         {
-        case HEALTH:  health       = 10; break;
-        case ATTACK:  attackDamage = 10; break;
-        case DEFENSE: defense      = 10; break;
-        case MANA:    mana         = 10; break;
+        case HEALTH:  m_health       = 10; break;
+        case ATTACK:  m_attackDamage = 10; break;
+        case DEFENSE: m_defense      = 10; break;
+        case MANA:    m_mana         = 10; break;
         }
     }
     else
     {
         switch (randomStat)
         {
-        case HEALTH:  health       = 1; break;
-        case ATTACK:  attackDamage = 1; break;
-        case DEFENSE: defense      = 1; break;
-        case MANA:    mana         = 1; break;
+        case HEALTH:  m_health       = 1; break;
+        case ATTACK:  m_attackDamage = 1; break;
+        case DEFENSE: m_defense      = 1; break;
+        case MANA:    m_mana         = 1; break;
         }
     }
 

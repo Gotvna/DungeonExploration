@@ -62,15 +62,15 @@ private:
 
 private:
 
-	Renderer renderer;
+	Renderer m_renderer;
 
 	// Remaining movement points for the player during their turn.
-	int playerRemainingMP;
+	int m_playerRemainingMP;
 
-	int currentMap;
+	int m_currentMap;
 
-	std::vector<Entity*> nearbyEnemies;
-	std::vector<Chest*> nearbyChests;
+	std::vector<Entity*> m_nearbyEnemies;
+	std::vector<Chest*> m_nearbyChests;
 };
 
 

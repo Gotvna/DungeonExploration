@@ -50,6 +50,6 @@ private:
 
 private:
 
-	int gridWidth;
-	int gridHeight;
+	int m_gridWidth;
+	int m_gridHeight;
 };

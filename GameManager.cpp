@@ -30,7 +30,7 @@ void GameManager::run()
 
 void GameManager::_run()
 {
-    currentMap = 0;
+    m_currentMap = 0;
 
     reloadMap();
 
@@ -52,43 +52,43 @@ void GameManager::_run()
 
 void GameManager::notifyEnemyAttack(Entity *attacker, Entity *target)
 {
-    renderer.clearPlayerRegion();
-    renderer.drawMessage(attacker->name + " attacked you!");
+    m_renderer.clearPlayerRegion();
+    m_renderer.drawMessage(attacker->name + " attacked you!");
     waitForEnter();
 
     int damage = attacker->attack(target);
 
-    renderer.clearPlayerRegion();
-    renderer.drawMessage(attacker->name + " deals " + std::to_string(damage) + " damage.");
+    m_renderer.clearPlayerRegion();
+    m_renderer.drawMessage(attacker->name + " deals " + std::to_string(damage) + " damage.");
     waitForEnter();
 }
 
 void GameManager::reloadMap()
 {
     Map::getInstance().reset();
-    Map::getInstance().load(GameManager::defaultMaps[currentMap]);
+    Map::getInstance().load(GameManager::defaultMaps[m_currentMap]);
 
     Map &map = Map::getInstance();
     System::getInstance().resizeForGridSize(map.getWidth(), map.getHeight());
 
     // Setup renderer.
-    renderer.setGridSize(map.getWidth(), map.getHeight());
-    renderer.clearEnemyRegion();
-    renderer.clearPlayerRegion();
+    m_renderer.setGridSize(map.getWidth(), map.getHeight());
+    m_renderer.clearEnemyRegion();
+    m_renderer.clearPlayerRegion();
 }
 
 void GameManager::loadNextMap()
 {
     Map::getInstance().clear();
-    Map::getInstance().load(GameManager::defaultMaps[currentMap]);
+    Map::getInstance().load(GameManager::defaultMaps[m_currentMap]);
 
     Map &map = Map::getInstance();
     System::getInstance().resizeForGridSize(map.getWidth(), map.getHeight());
 
     // Setup renderer.
-    renderer.setGridSize(map.getWidth(), map.getHeight());
-    renderer.clearEnemyRegion();
-    renderer.clearPlayerRegion();
+    m_renderer.setGridSize(map.getWidth(), map.getHeight());
+    m_renderer.clearEnemyRegion();
+    m_renderer.clearPlayerRegion();
 }
 
 void GameManager::redrawAll()
@@ -96,24 +96,24 @@ void GameManager::redrawAll()
     Map &map = Map::getInstance();
 
     // Redraw grid (forces contents to be cleared & redrawn).
-    renderer.drawGrid(COLOR_GRID, COLOR_WALL, map.getWalls());
+    m_renderer.drawGrid(COLOR_GRID, COLOR_WALL, map.getWalls());
 
     // Draw entities.
     Character *p = map.getPlayer();
-    renderer.drawEntity(p->getIcon(), p->getPosX(), p->getPosY());
+    m_renderer.drawEntity(p->getIcon(), p->getPosX(), p->getPosY());
 
     for (Entity *e : map.getEnemies())
     {
-        renderer.drawEntity(e->getIcon(), e->getPosX(), e->getPosY());
+        m_renderer.drawEntity(e->getIcon(), e->getPosX(), e->getPosY());
     }
     for (Chest *c : map.getChests())
     {
-        renderer.drawEntity('c', c->getPosX(), c->getPosY());
+        m_renderer.drawEntity('c', c->getPosX(), c->getPosY());
     }
 
     // Draw stats.
-    renderer.clearPlayerRegion();
-    renderer.drawPlayerStats(p->name, p->health, p->maxHealth, p->attackDamage, p->defense, p->mana, p->level, p->xp, p->xpToLevelUp);
+    m_renderer.clearPlayerRegion();
+    m_renderer.drawPlayerStats(p->name, p->health, p->maxHealth, p->attackDamage, p->defense, p->mana, p->level, p->xp, p->xpToLevelUp);
 }
 
 void GameManager::playerActionMove()
@@ -121,32 +121,32 @@ void GameManager::playerActionMove()
     Map &map = Map::getInstance();
     Entity *p = map.getPlayer();
 
-    playerRemainingMP = p->getMovementPoint();
+    m_playerRemainingMP = p->getMovementPoint();
 
     // Player move loop.
     int cursorX = p->getPosX(), cursorY = p->getPosY();
     int newX = cursorX, newY = cursorY;
 
-    while (playerRemainingMP > 0)
+    while (m_playerRemainingMP > 0)
     {
         redrawAll();
 
         const int MAX_MP_SIZE = 5 + 5 + 1;
         uint32_t distmap[MAX_MP_SIZE * MAX_MP_SIZE];
         bool rangemap[MAX_MP_SIZE * MAX_MP_SIZE];
-        Map::getInstance().findDistanceToTilesRect(distmap, p->getPosX(), p->getPosY(), playerRemainingMP);
-        Map::getInstance().getReachableTiles(rangemap, distmap, playerRemainingMP);
+        Map::getInstance().findDistanceToTilesRect(distmap, p->getPosX(), p->getPosY(), m_playerRemainingMP);
+        Map::getInstance().getReachableTiles(rangemap, distmap, m_playerRemainingMP);
 
-        const int bitmapSize = playerRemainingMP + playerRemainingMP + 1;
-        renderer.drawBitmap(COLOR_RANGE, rangemap, p->getPosX() - playerRemainingMP, p->getPosY() - playerRemainingMP, bitmapSize, bitmapSize);
-        renderer.drawColor(COLOR_CURSOR, cursorX, cursorY);
+        const int bitmapSize = m_playerRemainingMP + m_playerRemainingMP + 1;
+        m_renderer.drawBitmap(COLOR_RANGE, rangemap, p->getPosX() - m_playerRemainingMP, p->getPosY() - m_playerRemainingMP, bitmapSize, bitmapSize);
+        m_renderer.drawColor(COLOR_CURSOR, cursorX, cursorY);
 
         // Draw actions.
-        if (!nearbyEnemies.empty()) {
-            renderer.drawAction("(A) Attack", 0);
+        if (!m_nearbyEnemies.empty()) {
+            m_renderer.drawAction("(A) Attack", 0);
         }
-        if (!nearbyChests.empty()) {
-            renderer.drawAction("(C) Open chest", 1);
+        if (!m_nearbyChests.empty()) {
+            m_renderer.drawAction("(C) Open chest", 1);
         }
 
         WORD key = Input::getInstance().waitForInput();
@@ -164,17 +164,17 @@ void GameManager::playerActionMove()
             p->fillMana();
             break;
         case VK_RETURN:
-            playerRemainingMP = 0;
+            m_playerRemainingMP = 0;
             p->fillMana();
             break;
         case 'A':
-            if (nearbyEnemies.empty() == false)
+            if (m_nearbyEnemies.empty() == false)
             {
                 playerActionAttack();
             }
             break;
         case 'C':
-            if (nearbyChests.empty() == false)
+            if (m_nearbyChests.empty() == false)
             {
                playerActionCollect();
             }
@@ -182,7 +182,7 @@ void GameManager::playerActionMove()
         }
 
         // Move cursor with check.
-        if (isMoveValid(p, playerRemainingMP, newX, newY) && rangemap[(newY - p->getPosY() + playerRemainingMP) * bitmapSize + (newX - p->getPosX() + playerRemainingMP)]) {
+        if (isMoveValid(p, m_playerRemainingMP, newX, newY) && rangemap[(newY - p->getPosY() + m_playerRemainingMP) * bitmapSize + (newX - p->getPosX() + m_playerRemainingMP)]) {
             cursorX = newX;
             cursorY = newY;
         }
@@ -201,27 +201,27 @@ void GameManager::playerActionAttack()
     Entity* p = map.getPlayer();
     int damage;
 
-    if (nearbyEnemies.empty()) return;
+    if (m_nearbyEnemies.empty()) return;
 
     int enemyIndex = 0;
     bool done = false;
     while (!done)
     {
-        Entity* selectedEnemy = nearbyEnemies[enemyIndex];
+        Entity* selectedEnemy = m_nearbyEnemies[enemyIndex];
 
-        renderer.drawRange(COLOR_ATTACK_RANGE, p->getPosX(), p->getPosY(), 1);
-        renderer.drawColor(COLOR_CURSOR, selectedEnemy->getPosX(), selectedEnemy->getPosY());
+        m_renderer.drawRange(COLOR_ATTACK_RANGE, p->getPosX(), p->getPosY(), 1);
+        m_renderer.drawColor(COLOR_CURSOR, selectedEnemy->getPosX(), selectedEnemy->getPosY());
 
         if (getDistance(p, selectedEnemy->getPosX(), selectedEnemy->getPosY()) == 1) {
-            renderer.drawEnemyStats(selectedEnemy->name, selectedEnemy->health,
+            m_renderer.drawEnemyStats(selectedEnemy->name, selectedEnemy->health,
                 selectedEnemy->getMaxHealth(), selectedEnemy->getAttackDamage(),
                 selectedEnemy->getDefense());
         }
 
         // Draw actions.
-        renderer.drawAction("(Left/Right) Select enemy", 0);
-        renderer.drawAction("(Enter) Attack", 1);
-        renderer.drawAction("(A) Cancel", 2);
+        m_renderer.drawAction("(Left/Right) Select enemy", 0);
+        m_renderer.drawAction("(Enter) Attack", 1);
+        m_renderer.drawAction("(A) Cancel", 2);
 
         WORD key = Input::getInstance().waitForInput();
 
@@ -230,31 +230,31 @@ void GameManager::playerActionAttack()
         {
         case VK_LEFT:
             enemyIndex--;
-            if (enemyIndex == -1) enemyIndex = nearbyEnemies.size() - 1;
+            if (enemyIndex == -1) enemyIndex = m_nearbyEnemies.size() - 1;
             break;
         case VK_RIGHT:
             enemyIndex++;
-            if (enemyIndex == nearbyEnemies.size()) enemyIndex = 0;
+            if (enemyIndex == m_nearbyEnemies.size()) enemyIndex = 0;
             break;
         case 'S':
-            renderer.clearPlayerRegion();
-            renderer.drawMessage("You used a special attack on " + selectedEnemy->name + '!');
+            m_renderer.clearPlayerRegion();
+            m_renderer.drawMessage("You used a special attack on " + selectedEnemy->name + '!');
             waitForEnter();
 
             p->specialAttack(selectedEnemy);
 
-            renderer.clearEnemyRegion();
-            renderer.drawEnemyStats(selectedEnemy->name, selectedEnemy->health,
+            m_renderer.clearEnemyRegion();
+            m_renderer.drawEnemyStats(selectedEnemy->name, selectedEnemy->health,
                 selectedEnemy->getMaxHealth(), selectedEnemy->getAttackDamage(),
                 selectedEnemy->getDefense());
 
-            renderer.clearPlayerRegion();
-            renderer.drawMessage("You dealt damage.");
+            m_renderer.clearPlayerRegion();
+            m_renderer.drawMessage("You dealt damage.");
             waitForEnter();
 
             if (selectedEnemy->isDead()) {
-                renderer.clearPlayerRegion();
-                renderer.drawMessage(selectedEnemy->name + " is dead!");
+                m_renderer.clearPlayerRegion();
+                m_renderer.drawMessage(selectedEnemy->name + " is dead!");
                 waitForEnter();
 
                 killEnemy(selectedEnemy);
@@ -262,30 +262,30 @@ void GameManager::playerActionAttack()
 
             updateNearbyEnemyAndChest();
 
-            playerRemainingMP = 0;
+            m_playerRemainingMP = 0;
 
             done = true;
             p->fillMana();
             break;
 
         case VK_RETURN:
-            renderer.clearPlayerRegion();
-            renderer.drawMessage("You attacked " + selectedEnemy->name + '!');
+            m_renderer.clearPlayerRegion();
+            m_renderer.drawMessage("You attacked " + selectedEnemy->name + '!');
             waitForEnter();
 
             damage = p->attack(selectedEnemy);
 
-            renderer.clearEnemyRegion();
-            renderer.drawEnemyStats(selectedEnemy->name, selectedEnemy->health,
+            m_renderer.clearEnemyRegion();
+            m_renderer.drawEnemyStats(selectedEnemy->name, selectedEnemy->health,
                 selectedEnemy->getMaxHealth(), selectedEnemy->getAttackDamage(),
                 selectedEnemy->getDefense());
-            renderer.clearPlayerRegion();
-            renderer.drawMessage("You dealt " + std::to_string(damage) + " damage.");
+            m_renderer.clearPlayerRegion();
+            m_renderer.drawMessage("You dealt " + std::to_string(damage) + " damage.");
             waitForEnter();
 
             if (selectedEnemy->isDead()) {
-                renderer.clearPlayerRegion();
-                renderer.drawMessage(selectedEnemy->name + " is dead!");
+                m_renderer.clearPlayerRegion();
+                m_renderer.drawMessage(selectedEnemy->name + " is dead!");
                 waitForEnter();
 
                 killEnemy(selectedEnemy);
@@ -294,7 +294,7 @@ void GameManager::playerActionAttack()
             updateNearbyEnemyAndChest();
 
             // End turn automatically.
-            playerRemainingMP = 0;
+            m_playerRemainingMP = 0;
 
             done = true;
             p->fillMana();
@@ -305,7 +305,7 @@ void GameManager::playerActionAttack()
         }
     }
 
-    renderer.clearEnemyRegion();
+    m_renderer.clearEnemyRegion();
 }
 
 void GameManager::playerActionCollect()
@@ -313,15 +313,15 @@ void GameManager::playerActionCollect()
     Map &map = Map::getInstance();
     Character *p = map.getPlayer();
 
-    for (Chest *chest : nearbyChests) {
+    for (Chest *chest : m_nearbyChests) {
         Chest::Loot loot = p->openChest(chest);
 
-        renderer.clearPlayerRegion();
+        m_renderer.clearPlayerRegion();
         switch (loot) {
-        case Chest::HEALTH:  renderer.drawMessage("You found a chest with " + std::to_string(chest->getHealth())       + " health!");        break;
-        case Chest::ATTACK:  renderer.drawMessage("You found a chest with " + std::to_string(chest->getAttackDamage()) + " attack damage!"); break;
-        case Chest::DEFENSE: renderer.drawMessage("You found a chest with " + std::to_string(chest->getDefense())      + " defense!");       break;
-        case Chest::MANA:    renderer.drawMessage("You found a chest with " + std::to_string(chest->getMaxMana())         + " mana!");          break;
+        case Chest::HEALTH:  m_renderer.drawMessage("You found a chest with " + std::to_string(chest->getHealth())       + " health!");        break;
+        case Chest::ATTACK:  m_renderer.drawMessage("You found a chest with " + std::to_string(chest->getAttackDamage()) + " attack damage!"); break;
+        case Chest::DEFENSE: m_renderer.drawMessage("You found a chest with " + std::to_string(chest->getDefense())      + " defense!");       break;
+        case Chest::MANA:    m_renderer.drawMessage("You found a chest with " + std::to_string(chest->getMaxMana())         + " mana!");          break;
         }
         waitForEnter();
         p->fillMana();
@@ -340,8 +340,8 @@ void GameManager::enemyAction()
     }
 
     if (Map::getInstance().getPlayer()->isDead()) {
-        renderer.clearPlayerRegion();
-        renderer.drawMessage("You are dead! Game over!");
+        m_renderer.clearPlayerRegion();
+        m_renderer.drawMessage("You are dead! Game over!");
         waitForEnter();
     }
 }
@@ -349,24 +349,24 @@ void GameManager::enemyAction()
 bool GameManager::checkPlayerWin()
 {
     if (hasPlayerWon()) {
-        if (currentMap == 0) {
-            renderer.clearPlayerRegion();
-            renderer.drawMessage("Congratulations! You have completed the first dungeon!");
+        if (m_currentMap == 0) {
+            m_renderer.clearPlayerRegion();
+            m_renderer.drawMessage("Congratulations! You have completed the first dungeon!");
             waitForEnter();
 
-            renderer.clearPlayerRegion();
-            renderer.drawMessage("But your quest is not over yet. Onward, hero!");
+            m_renderer.clearPlayerRegion();
+            m_renderer.drawMessage("But your quest is not over yet. Onward, hero!");
             waitForEnter();
 
-            currentMap++;
+            m_currentMap++;
             loadNextMap();
         }
         else {
-            renderer.clearPlayerRegion();
-            renderer.drawMessage("You have completed the game!!!");
+            m_renderer.clearPlayerRegion();
+            m_renderer.drawMessage("You have completed the game!!!");
             waitForEnter();
 
-            currentMap = 0;
+            m_currentMap = 0;
             Map::getInstance().resetPlayerState();
             reloadMap();
         }
@@ -389,18 +389,18 @@ void GameManager::updateNearbyEnemyAndChest()
     Map& map = Map::getInstance();
     Character* p = map.getPlayer();
 
-    nearbyEnemies.clear();
-    nearbyChests.clear();
+    m_nearbyEnemies.clear();
+    m_nearbyChests.clear();
 
     for (Entity *enemy : map.getEnemies()) {
         if (getDistance(p, enemy->getPosX(), enemy->getPosY()) == 1) {
-            nearbyEnemies.push_back(enemy);
+            m_nearbyEnemies.push_back(enemy);
         }
     }
 
     for (Chest *chest : map.getChests()) {
         if (getDistance(p, chest->getPosX(), chest->getPosY()) == 1) {
-            nearbyChests.push_back(chest);
+            m_nearbyChests.push_back(chest);
         }
     }
 }
@@ -410,7 +410,7 @@ void GameManager::movePlayerTo(int x, int y)
     Map& map = Map::getInstance();
     Entity* p = map.getPlayer();
 
-    playerRemainingMP -= getDistance(p, x, y);
+    m_playerRemainingMP -= getDistance(p, x, y);
     p->posX = x;
     p->posY = y;
 

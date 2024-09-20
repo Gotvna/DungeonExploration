@@ -46,8 +46,8 @@ static void fillGridBuffer(uint8_t *buf, uint8_t *linePattern, int numCharsPerLi
 
 void Renderer::setGridSize(int width, int height)
 {
-	gridWidth = width;
-	gridHeight = height;
+	m_gridWidth = width;
+	m_gridHeight = height;
 }
 
 
@@ -55,7 +55,7 @@ void Renderer::drawGrid(uint16_t backColor, uint16_t wallColor, const uint8_t *w
 {
 	uint8_t line[256];
 
-	const int numCharsPerLine = gridWidth * 2 + 1;
+	const int numCharsPerLine = m_gridWidth * 2 + 1;
 
 	int baseY = MARGIN_TOP;
 
@@ -66,11 +66,11 @@ void Renderer::drawGrid(uint16_t backColor, uint16_t wallColor, const uint8_t *w
 
 	// Grid cells.
 	fillGridBuffer(line, gridCells, numCharsPerLine);
-	for (int i = 0; i < gridHeight; i++) {
+	for (int i = 0; i < m_gridHeight; i++) {
 		blitLine(line, numCharsPerLine, 0, baseY + 1 + i * 2);
 		color(backColor, numCharsPerLine, 0, baseY + 1 + i * 2);
-		for (int x = 0; x < gridWidth; x++) {
-			if (walls[i * gridWidth + x] == 1) {
+		for (int x = 0; x < m_gridWidth; x++) {
+			if (walls[i * m_gridWidth + x] == 1) {
 				drawColor(wallColor, x, i);
 			}
 		}
@@ -78,15 +78,15 @@ void Renderer::drawGrid(uint16_t backColor, uint16_t wallColor, const uint8_t *w
 
 	// Horizontal delimiters.
 	fillGridBuffer(line, gridDelims, numCharsPerLine);
-	for (int i = 0; i < gridHeight - 1; i++) {
+	for (int i = 0; i < m_gridHeight - 1; i++) {
 		blitLine(line, numCharsPerLine, 0, baseY + 2 + i * 2);
 		color(backColor, numCharsPerLine, 0, baseY + 2 + i * 2);
 	}
 
 	// Grid bottom.
 	fillGridBuffer(line, gridBottom, numCharsPerLine);
-	blitLine(line, numCharsPerLine, 0, baseY + 2 + (gridHeight - 1) * 2);
-	color(backColor, numCharsPerLine, 0, baseY + 2 + (gridHeight - 1) * 2);
+	blitLine(line, numCharsPerLine, 0, baseY + 2 + (m_gridHeight - 1) * 2);
+	color(backColor, numCharsPerLine, 0, baseY + 2 + (m_gridHeight - 1) * 2);
 }
 
 void Renderer::drawEntity(char icon, int posX, int posY)
@@ -118,7 +118,7 @@ void Renderer::drawColor(uint16_t color, int posX, int posY)
 void Renderer::drawPlayerStats(const std::string &name, int health, int maxHealth, int attackDamage, int defense, int mana, int level, int xp, int xpToLevelUp)
 {
 	int w, h;
-	Renderer::getConsoleSizeForGrid(w, h, gridWidth, gridHeight);
+	Renderer::getConsoleSizeForGrid(w, h, m_gridWidth, m_gridHeight);
 
 	blitLine((uint8_t*) name.c_str(), name.size(), 2, h - 4);
 	color(0x07, name.size(), 2, h - 4);
@@ -176,9 +176,9 @@ void Renderer::drawRange(uint16_t c, int centerX, int centerY, int range)
 {
 	int cx, cy;
 
-	for (int y = max(0, centerY - range), i = 0; y <= min(gridHeight - 1, centerY + range); y++, i++) {
+	for (int y = max(0, centerY - range), i = 0; y <= min(m_gridHeight - 1, centerY + range); y++, i++) {
 		int d = (range - abs(y - centerY));
-		for (int x = max(0, centerX - d); min(gridWidth - 1, x <= centerX + d); x++) {
+		for (int x = max(0, centerX - d); min(m_gridWidth - 1, x <= centerX + d); x++) {
 			calculateConsolePosition(cx, cy, x, y);
 			color(c, 1, cx, cy);
 		}
@@ -190,7 +190,7 @@ void Renderer::clearPlayerRegion()
 	uint8_t line[256];
 
 	int w, h;
-	Renderer::getConsoleSizeForGrid(w, h, gridWidth, gridHeight);
+	Renderer::getConsoleSizeForGrid(w, h, m_gridWidth, m_gridHeight);
 
 	memset(line, ' ', w);
 
@@ -205,7 +205,7 @@ void Renderer::clearEnemyRegion()
 	uint8_t line[256];
 
 	int w, h;
-	Renderer::getConsoleSizeForGrid(w, h, gridWidth, gridHeight);
+	Renderer::getConsoleSizeForGrid(w, h, m_gridWidth, m_gridHeight);
 
 	memset(line, ' ', w);
 
@@ -224,7 +224,7 @@ void Renderer::drawMessage(const std::string &msg)
 	//blitLine(msg.c_str() + offset, lineBreak - offset, );
 
 	int w, h;
-	Renderer::getConsoleSizeForGrid(w, h, gridWidth, gridHeight);
+	Renderer::getConsoleSizeForGrid(w, h, m_gridWidth, m_gridHeight);
 
 	blitLine((uint8_t*) msg.c_str(), msg.size(), 2, h - 4);
 }
@@ -232,7 +232,7 @@ void Renderer::drawMessage(const std::string &msg)
 void Renderer::drawAction(const std::string &msg, int row)
 {
 	int w, h;
-	Renderer::getConsoleSizeForGrid(w, h, gridWidth, gridHeight);
+	Renderer::getConsoleSizeForGrid(w, h, m_gridWidth, m_gridHeight);
 
 	blitLine((uint8_t *)msg.c_str(), msg.size(), w - 3 - msg.length(), h - 4 + row);
 }

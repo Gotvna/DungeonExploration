@@ -17,15 +17,15 @@ public:
 
     Loot getLoot();
 
-    int getHealth() { return health; }
-    int getAttackDamage() { return attackDamage; }
-    int getDefense() { return defense; }
-    int getMaxMana() { return mana; }
+    int getHealth() { return m_health; }
+    int getAttackDamage() { return m_attackDamage; }
+    int getDefense() { return m_defense; }
+    int getMaxMana() { return m_mana; }
 
 private:
-    int health;
-    int attackDamage;
-    int defense;
-    int mana;
+    int m_health;
+    int m_attackDamage;
+    int m_defense;
+    int m_mana;
 
 };
