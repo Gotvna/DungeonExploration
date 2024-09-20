@@ -1,6 +1,6 @@
 #pragma once
-#include "Entity.h"
-#include "Chest.h"
+#include "Game/Map/Entity.h"
+#include "Game/Map/Chest.h"
 
 class Character : public Entity
 {

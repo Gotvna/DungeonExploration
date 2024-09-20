@@ -1,8 +1,8 @@
 #include "Golem.h"
 
-#include "Map.h"
-#include "Character.h"
-#include "GameManager.h"
+#include "Game/Map/Map.h"
+#include "Game/Character/Character.h"
+#include "Game/GameManager.h"
 
 Golem::Golem()
 {

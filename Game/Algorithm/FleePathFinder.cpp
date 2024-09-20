@@ -1,4 +1,7 @@
 #include "FleePathfinder.h"
+
+#include "Game/Map/Map.h"
+
 #include <cmath>
 #include <algorithm>
 #include <unordered_set>

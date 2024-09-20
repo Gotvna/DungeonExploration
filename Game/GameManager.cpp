@@ -1,10 +1,10 @@
 #include "GameManager.h"
 
-#include "System.h"
-#include "Input.h"
-#include "Map.h"
-#include "Chest.h"
-#include "Character.h"
+#include "Engine/System.h"
+#include "Engine/Input.h"
+#include "Game/Map/Map.h"
+#include "Game/Map/Chest.h"
+#include "Game/Character/Character.h"
 
 #include "Config/Color.h"
 

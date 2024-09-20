@@ -1,10 +1,10 @@
 #include "Map.h"
 
 #include "Entity.h"
-#include "Golem.h"
-#include "Reaper.h"
-#include "Ghost.h"
-#include "Character.h"
+#include "Game/Enemy/Golem.h"
+#include "Game/Enemy/Reaper.h"
+#include "Game/Enemy/Ghost.h"
+#include "Game/Character/Character.h"
 #include "Chest.h"
 
 #include <iostream>

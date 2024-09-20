@@ -1,6 +1,6 @@
-#include "GameManager.h"
-#include "System.h"
-#include "Input.h"
+#include "Game/GameManager.h"
+#include "Engine/System.h"
+#include "Engine/Input.h"
 
 #include <stdlib.h>
 #include <time.h>

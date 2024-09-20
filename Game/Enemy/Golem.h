@@ -1,12 +1,13 @@
 #pragma once
-#include "Entity.h"
+#include "Game/Map/Entity.h"
 
-class Reaper : public Entity
+class Golem : public Entity
 {
     public:
-        Reaper();
-        ~Reaper();
+        Golem();
+        ~Golem();
     public:
+
         virtual void update();
         virtual void die();
         virtual int getMaxHealth();
@@ -14,4 +15,6 @@ class Reaper : public Entity
         virtual int getAttackDamage();
         virtual int getDefense();
         virtual char getIcon();
+
+        virtual float getBlockChance() override;
 };

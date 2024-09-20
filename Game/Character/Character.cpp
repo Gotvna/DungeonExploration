@@ -1,5 +1,5 @@
 #include "Character.h"
-#include "Chest.h"
+#include "Game/Map/Chest.h"
 
 Character::Character()
 {

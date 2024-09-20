@@ -1,9 +1,9 @@
 #include "Ghost.h"
 
-#include "Map.h"
-#include "Character.h"
-#include "GameManager.h"
-#include "FleePathfinder.h"
+#include "Game/Map/Map.h"
+#include "Game/Character/Character.h"
+#include "Game/GameManager.h"
+#include "Game/Algorithm/FleePathFinder.h"
 
 Ghost::Ghost()
 {

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Character.h"
+#include "Game/Character/Character.h"
 
 #include <vector>
 #include <string>

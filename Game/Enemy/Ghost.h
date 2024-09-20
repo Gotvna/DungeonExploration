@@ -1,5 +1,5 @@
 #pragma once
-#include "Entity.h"
+#include "Game/Map/Entity.h"
 
 class Ghost : public Entity
 {

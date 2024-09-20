@@ -1,8 +1,9 @@
 #include "Reaper.h"
-#include "Map.h"
-#include "Character.h"
-#include "GameManager.h"
-#include "AStarPathfinder.h"
+
+#include "Game/Map/Map.h"
+#include "Game/Character/Character.h"
+#include "Game/GameManager.h"
+#include "Game/Algorithm/AStarPathFinder.h"
 
 Reaper::Reaper()
 {

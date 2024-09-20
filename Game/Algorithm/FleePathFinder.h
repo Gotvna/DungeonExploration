@@ -1,6 +1,7 @@
 #pragma once
-#include "Map.h"
 #include <vector>
+
+class Map;
 
 class FleePathfinder {
 public:
